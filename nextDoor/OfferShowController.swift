@@ -1,14 +1,14 @@
 //
-//  SecondViewController.swift
-//  Neighbors
+//  OfferController.swift
+//  nextDoor
 //
-//  Created by Tim Kohlstadt on 16.05.20.
+//  Created by Tim Kohlstadt on 02.06.20.
 //  Copyright © 2020 Tim Kohlstadt. All rights reserved.
 //
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class OfferShowController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,4 +17,3 @@ class SecondViewController: UIViewController {
 
 
 }
-
