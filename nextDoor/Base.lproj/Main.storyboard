@@ -294,7 +294,7 @@
         <!--Profil-->
         <scene sceneID="JfO-go-w21">
             <objects>
-                <viewController id="KvE-hH-pOg" sceneMemberID="viewController">
+                <viewController id="KvE-hH-pOg" customClass="ProfileViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jQ4-dF-YIe">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -375,7 +375,7 @@
         <!--Passwort ändern-->
         <scene sceneID="XGP-I5-VNN">
             <objects>
-                <viewController id="NxS-nG-GxR" sceneMemberID="viewController">
+                <viewController id="NxS-nG-GxR" customClass="PasswordViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OK0-Nx-FCy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -399,12 +399,20 @@
                                 <state key="normal" title="Speichern">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="touchSave:" destination="NxS-nG-GxR" eventType="touchUpInside" id="RAe-CV-Av3"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="WR4-FF-hrt"/>
                     </view>
                     <navigationItem key="navigationItem" title="Passwort ändern" id="dVT-sw-Zir"/>
+                    <connections>
+                        <outlet property="newPasswordText" destination="eIY-2F-8c5" id="lbd-FN-T7P"/>
+                        <outlet property="repeatPasswordText" destination="6AA-a7-3qf" id="z3t-8G-8qJ"/>
+                        <outlet property="saveButton" destination="AY2-H8-eSH" id="GdT-AC-y8L"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E6a-Cv-9Yl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
