@@ -320,6 +320,9 @@
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="150" minValue="50" maxValue="500" translatesAutoresizingMaskIntoConstraints="NO" id="E5t-pZ-iwM">
                                 <rect key="frame" x="18" y="316" width="378" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="radiusChanged:" destination="KvE-hH-pOg" eventType="valueChanged" id="cdA-Kr-Ibu"/>
+                                </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Radius" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ur-um-yZ6">
                                 <rect key="frame" x="20" y="287" width="52" height="21"/>
@@ -332,7 +335,10 @@
                                 <rect key="frame" x="132" y="353" width="97" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="radiusChanged:" destination="KvE-hH-pOg" eventType="editingDidEnd" id="BKN-LC-jHM"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Meter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="90U-VC-vtQ">
                                 <rect key="frame" x="237" y="360" width="45" height="21"/>
@@ -367,6 +373,15 @@
                         <viewLayoutGuide key="safeArea" id="ade-Ky-ePg"/>
                     </view>
                     <navigationItem key="navigationItem" title="Profil" id="1bd-WD-bBY"/>
+                    <connections>
+                        <outlet property="addressText" destination="Wi5-of-Pvz" id="xnQ-1A-VPM"/>
+                        <outlet property="bioTextView" destination="Ghl-nh-ZN6" id="wJU-hX-s7u"/>
+                        <outlet property="firstNameText" destination="FH7-tZ-BUh" id="Ncw-zc-hhQ"/>
+                        <outlet property="lastNameText" destination="3im-Qw-FKR" id="c6Z-nF-6Ss"/>
+                        <outlet property="radiusSlider" destination="E5t-pZ-iwM" id="gBd-aa-Ldl"/>
+                        <outlet property="radiusText" destination="1dK-JA-uY5" id="qM9-OG-kzt"/>
+                        <outlet property="saveButton" destination="YVb-Mv-dUk" id="oXd-E5-eJ4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Xh-IY-13T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
