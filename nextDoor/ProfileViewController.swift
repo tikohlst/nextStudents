@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UITextViewDelegate {
+class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var firstNameText: UITextField!
     @IBOutlet weak var lastNameText: UITextField!
@@ -21,11 +21,27 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bioTextView.delegate = self
+        // prepare placeholder
         bioTextView.text = placeholderText
         bioTextView.textColor = UIColor.lightGray
         
-        // Do any additional setup after loading the view.
+        // tag all text fields
+        firstNameText.tag = 0
+        lastNameText.tag = 1
+        addressText.tag = 2
+        radiusText.tag = 3
+        bioTextView.tag = 4
+        
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+
+            view.addGestureRecognizer(tap)
+        }
+
+        //Calls this function when the tap is recognized.
+        @objc func dismissKeyboard() {
+            //Causes the view (or one of its embedded text fields) to resign the first responder status.
+            view.endEditing(true)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -73,6 +89,18 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    /// Focus the next tagged text field.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        let nextTag = textField.tag + 1
+
+        if let nextResponder = textField.superview?.viewWithTag(nextTag) {
+            nextResponder.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
+    }
 
     /*
     // MARK: - Navigation
@@ -85,7 +113,6 @@ class ProfileViewController: UIViewController, UITextViewDelegate {
     */
     
     @IBAction func radiusChanged(_ sender: Any) {
-        // TODO: change respective UI Element when radius got changed
         if type(of: sender) == type(of: radiusSlider!) {
             let oldValue = Int(round(radiusSlider.value))
             let newValue = oldValue/50 * 50
