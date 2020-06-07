@@ -8,8 +8,11 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, GIDSignInDelegate {
+    
     // MARK: - Variables
     
     @IBOutlet weak var emailText: UITextField!
@@ -22,6 +25,9 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        GIDSignIn.sharedInstance().delegate = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,6 +39,28 @@ class LoginViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        guard let auth = user.authentication else { return }
+        let credentials = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
+        Auth.auth().signIn(with: credentials) { (authResult, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Login Successful.")
+                //This is where you should add the functionality of successful login
+                //i.e. dismissing this view or push the home view controller etc
+            }
+        }
+    }
+    
+    @IBAction func googleSignInPressed(_ sender: Any) {
+         GIDSignIn.sharedInstance().signIn()
     }
     
     private func signIn() {
