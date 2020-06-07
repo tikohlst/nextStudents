@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class registrationViewController: UIViewController {
     // MARK: - Variables
@@ -23,10 +25,13 @@ class registrationViewController: UIViewController {
     private var passwordsMatch: Bool{
         return newPasswordText.text == repeatPasswordText.text
     }
+    var db: Firestore!
     
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        db = Firestore.firestore()
 
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
@@ -94,6 +99,26 @@ class registrationViewController: UIViewController {
                             style: .default)
                     )
                     self.present(alert, animated: true, completion: nil)
+                    // write userdata to firestore
+                } else if authResult != nil {
+                    if let givenName = self.givenNameText.text, let name = self.nameText.text, let address = self.addressText.text, let radius = self.radiusText.text, let user = Auth.auth().currentUser{
+                        self.db.collection("users").document(user.uid).setData([
+                            "uid" : user.uid,
+                            "givenName" : givenName,
+                            "name" : name,
+                            "address" : address,
+                            "radius" : radius
+                        ]) { err in
+                            if let err = err {
+                                print("Error adding document: \(err)")
+                            } else {
+                                print("Document added with ID: \(user.uid)")
+                                //TODO: segue to main scene
+                            }
+                        }
+                    } else {
+                        print("something went wrong")
+                    }
                 }
             }
         }
