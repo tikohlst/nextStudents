@@ -49,7 +49,7 @@ class registrationViewController: UIViewController {
         if passwordsMatch {
             if isValidEmail(emailText.text!) {
                 // TODO: require all textfields to be filled
-                signUp()
+                //signUp()
             } else {
                 // TODO: refactor this copy pasta
                 let alert = UIAlertController(
@@ -74,8 +74,6 @@ class registrationViewController: UIViewController {
             )
             self.present(alert, animated: true, completion: nil)
         }
-        // TODO: do firebase signup process
-        // TODO: after succsessful signup, segue to the main scene
     }
     
     private func isValidEmail(_ email: String) -> Bool {

@@ -49,12 +49,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
-        
-        let db = Firestore.firestore()
-        
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
+        
+        // user is not logged in -> show registration screen
+        if Auth.auth().currentUser == nil {
+            showRegistrationScreen(false)
+        }
+        
         return true
+    }
+    
+    private func showRegistrationScreen(_ animated: Bool) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let registrationScreen = storyboard.instantiateViewController(identifier: "registrationScreen")
+        self.window?.makeKeyAndVisible()
+        self.window?.rootViewController?.present(registrationScreen, animated: animated, completion: nil)
     }
 
     // MARK: - UISceneSession Lifecycle
