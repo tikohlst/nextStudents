@@ -145,6 +145,7 @@
 				2260842E24700BD700D30E81 /* Frameworks */,
 				2260842F24700BD700D30E81 /* Resources */,
 				D578F87EBB97D5C1246D851E /* [CP] Embed Pods Frameworks */,
+				A274B2F7BBE5BE48AC6642F3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -203,6 +204,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		A274B2F7BBE5BE48AC6642F3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoor/Pods-nextDoor-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoor/Pods-nextDoor-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nextDoor/Pods-nextDoor-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C3DF7DE2CD5EA696B4D05F74 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
