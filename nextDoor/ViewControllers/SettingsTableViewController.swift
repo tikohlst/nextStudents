@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SettingsTableViewController: UITableViewController {
 
+    // MARK: - Variables
+    
+    @IBOutlet weak var signOutButton: UIButton!
+    
+    // MARK: - Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,16 +27,29 @@ class SettingsTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    
+    @IBAction func touchSignOut(_ sender: UIButton) {
+        do {
+            try Auth.auth().signOut()
+        }catch {
+            print("Something went wrong")
+        }
+        
+    }
+    
+    
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 4
     }
 
     /*
