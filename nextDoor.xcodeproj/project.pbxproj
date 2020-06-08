@@ -91,29 +91,61 @@
 		2260843324700BD700D30E81 /* nextDoor */ = {
 			isa = PBXGroup;
 			children = (
-				2260843424700BD700D30E81 /* AppDelegate.swift */,
-				221B088B248702B000CE8A9B /* OfferShowController.swift */,
-				221B088F2487A2F800CE8A9B /* OfferEditController.swift */,
-				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
-				221B088D2487098A00CE8A9B /* NeighborController.swift */,
-				2260843624700BD700D30E81 /* SceneDelegate.swift */,
-				2260843824700BD700D30E81 /* NeighborsController.swift */,
-				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
-				2253260824753B1E00B35802 /* OffersViewController.swift */,
+				22CB9D62248E710200D87E3F /* Controllers */,
+				22CB9D61248E70F200D87E3F /* Models */,
+				22CB9D60248E70CE00D87E3F /* SupportingFiles */,
+				22CB9D5F248E70BB00D87E3F /* ViewControllers */,
 				2260843C24700BD700D30E81 /* Main.storyboard */,
-				8F803B5C248BA0730026E9E7 /* registrationViewController.swift */,
-				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
-				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
-				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
-				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
-				221A0CD424781BF700A46E1E /* User.swift */,
-				221B08912487A54C00CE8A9B /* Offer.swift */,
-				2260843F24700BDB00D30E81 /* Assets.xcassets */,
-				2260844124700BDB00D30E81 /* LaunchScreen.storyboard */,
 				2260844424700BDB00D30E81 /* Info.plist */,
-				8F0B5609248C059700703F0A /* GoogleService-Info.plist */,
 			);
 			path = nextDoor;
+			sourceTree = "<group>";
+		};
+		22CB9D5F248E70BB00D87E3F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
+				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
+				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
+				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
+				2253260824753B1E00B35802 /* OffersViewController.swift */,
+				8F803B5C248BA0730026E9E7 /* registrationViewController.swift */,
+				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
+				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		22CB9D60248E70CE00D87E3F /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				2260843F24700BDB00D30E81 /* Assets.xcassets */,
+				8F0B5609248C059700703F0A /* GoogleService-Info.plist */,
+				2260844124700BDB00D30E81 /* LaunchScreen.storyboard */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		22CB9D61248E70F200D87E3F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				221A0CD424781BF700A46E1E /* User.swift */,
+				221B08912487A54C00CE8A9B /* Offer.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		22CB9D62248E710200D87E3F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2260843424700BD700D30E81 /* AppDelegate.swift */,
+				2260843624700BD700D30E81 /* SceneDelegate.swift */,
+				221B088B248702B000CE8A9B /* OfferShowController.swift */,
+				221B088F2487A2F800CE8A9B /* OfferEditController.swift */,
+				221B088D2487098A00CE8A9B /* NeighborController.swift */,
+				2260843824700BD700D30E81 /* NeighborsController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		53562F4D59636B0F1396BE58 /* Pods */ = {
