@@ -1,5 +1,5 @@
 //
-//  registrationViewController.swift
+//  RegistrationViewController.swift
 //  nextDoor
 //
 //  Created by Benedict Zendel on 06.06.20.

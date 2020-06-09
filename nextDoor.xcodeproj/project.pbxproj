@@ -22,7 +22,7 @@
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
-		8F803B5D248BA0730026E9E7 /* registrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* registrationViewController.swift */; };
+		8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */; };
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
 		8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E82488E7A700572566 /* ProfileViewController.swift */; };
 		8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */; };
@@ -48,7 +48,7 @@
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		8F803B5C248BA0730026E9E7 /* registrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registrationViewController.swift; sourceTree = "<group>"; };
+		8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E82488E7A700572566 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
 				221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */,
 				2253260824753B1E00B35802 /* OffersViewController.swift */,
-				8F803B5C248BA0730026E9E7 /* registrationViewController.swift */,
+				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
 				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
 				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
 			);
@@ -305,7 +305,7 @@
 				8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */,
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
 				221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */,
-				8F803B5D248BA0730026E9E7 /* registrationViewController.swift in Sources */,
+				8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */,
 				221B088E2487098A00CE8A9B /* NeighborTableViewController.swift in Sources */,
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,

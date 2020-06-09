@@ -1,5 +1,5 @@
 //
-//  SettingsViewControllerTableViewController.swift
+//  SettingsTableViewController.swift
 //  nextDoor
 //
 //  Created by Benedict Zendel on 03.06.20.

@@ -1,5 +1,5 @@
 //
-//  OfferController.swift
+//  OfferShowController.swift
 //  nextDoor
 //
 //  Created by Tim Kohlstadt on 02.06.20.
