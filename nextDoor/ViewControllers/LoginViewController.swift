@@ -86,13 +86,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
     }
     
     @IBAction func presentTabBarViewController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabBarViewController = storyboard.instantiateViewController(identifier: "tabbarvc")
-
-        tabBarViewController.modalPresentationStyle = .fullScreen
-        tabBarViewController.modalTransitionStyle = .crossDissolve
-
-        present(tabBarViewController, animated: true, completion: nil)
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let tabBarViewController = storyboard.instantiateViewController(identifier: "tabbarvc")
+//
+//        tabBarViewController.modalPresentationStyle = .fullScreen
+//        tabBarViewController.modalTransitionStyle = .crossDissolve
+//
+//        present(tabBarViewController, animated: true, completion: nil)
+        self.parent!.dismiss(animated: true) {}
     }
 
     @IBAction func touchLogin(_ sender: UIButton) {

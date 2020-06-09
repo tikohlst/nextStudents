@@ -111,7 +111,7 @@ class registrationViewController: UIViewController {
                                 print("Error adding document: \(err)")
                             } else {
                                 print("Document added with ID: \(user.uid)")
-                                //TODO: segue to main scene
+                                self.dismiss(animated: true) {}
                             }
                         }
                     } else {

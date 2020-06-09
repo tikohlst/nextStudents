@@ -22,6 +22,7 @@
 		2260844324700BDB00D30E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260844124700BDB00D30E81 /* LaunchScreen.storyboard */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
+		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
 		8F803B5D248BA0730026E9E7 /* registrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* registrationViewController.swift */; };
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
@@ -49,6 +50,7 @@
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8F0B560D248FA60B00703F0A /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8F803B5C248BA0730026E9E7 /* registrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = registrationViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
 				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
 				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
+				8F0B560D248FA60B00703F0A /* MainController.swift */,
 				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
 				2253260824753B1E00B35802 /* OffersViewController.swift */,
 				8F803B5C248BA0730026E9E7 /* registrationViewController.swift */,
@@ -306,6 +309,7 @@
 				2253260924753B1E00B35802 /* OffersViewController.swift in Sources */,
 				221B08922487A54C00CE8A9B /* Offer.swift in Sources */,
 				221B08902487A2F800CE8A9B /* OfferEditController.swift in Sources */,
+				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
 				8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */,
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
 				221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */,
