@@ -52,9 +52,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                print("Login Successful.")
-                //This is where you should add the functionality of successful login
-                //i.e. dismissing this view or push the home view controller etc
+                self.presentTabBarViewController()
             }
         }
     }

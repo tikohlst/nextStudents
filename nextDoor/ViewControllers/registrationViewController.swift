@@ -49,7 +49,8 @@ class registrationViewController: UIViewController {
         if passwordsMatch {
             if isValidEmail(emailText.text!) {
                 // TODO: require all textfields to be filled
-                //signUp()
+                signUp()
+                self.presentLoginViewController()
             } else {
                 // TODO: refactor this copy pasta
                 let alert = UIAlertController(
@@ -76,6 +77,16 @@ class registrationViewController: UIViewController {
         }
     }
     
+    @IBAction func presentLoginViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let startViewController = storyboard.instantiateViewController(identifier: "loginVC")
+
+        startViewController.modalPresentationStyle = .fullScreen
+        startViewController.modalTransitionStyle = .crossDissolve
+
+        present(startViewController, animated: true, completion: nil)
+    }
+
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 
