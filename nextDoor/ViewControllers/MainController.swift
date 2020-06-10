@@ -19,7 +19,7 @@ class MainController: UITabBarController {
         handle = Auth.auth().addStateDidChangeListener({ (auth, user) in
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(identifier: "registrationvc")
+            let vc = storyboard.instantiateViewController(identifier: "loginVC")
 
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
