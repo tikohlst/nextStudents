@@ -12,18 +12,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-struct NeighborsInRange {
-    var name: String
-    var radius: String
-    //var image: UIImage
-
-    init(name: String, radius: String) { //image: UIImage
-        self.name = name
-        self.radius = radius
-        //self.image = image
-    }
-}
-
 class NeighborTableViewCell: UITableViewCell {
     @IBOutlet weak var neighborNameLabel: UILabel!
     @IBOutlet weak var neighborRangeLabel: UILabel!
@@ -50,10 +38,11 @@ class NeighborTableViewController: UITableViewController {
                         if (Auth.auth().currentUser?.uid != (document.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
                             let user = User(uid: document.documentID,
-                                                  firstName: document.data()["givenName"] as! String,
-                                                  lastName: document.data()["name"] as! String,
-                                                  address: document.data()["address"] as! String,
-                                                  radius: document.data()["radius"] as! String)
+                                            firstName: document.data()["givenName"] as! String,
+                                            lastName: document.data()["name"] as! String,
+                                            address: document.data()["address"] as! String,
+                                            radius: document.data()["radius"] as! String,
+                                            bio: document.data()["bio"] as! String)
                             self.usersInRangeArray.append(user)
 
                             // Update the table
@@ -103,7 +92,7 @@ class NeighborTableViewController: UITableViewController {
             let detailViewController = segue.destination as! NeighborDetailViewController
 
             // Set the customer ID at the CustomerDetailTableViewController.
-            detailViewController.uid = selectedEntity.uid
+            detailViewController.user = selectedEntity
 
             // Set the title of the navigation item on the NeighborDetailViewController
             detailViewController.navigationItem.title = "\(usersInRangeArray[indexPath.row].firstName ), \(usersInRangeArray[indexPath.row].radius )"

@@ -10,7 +10,9 @@ import UIKit
 
 class NeighborDetailViewController: UIViewController {
 
-    var uid: String!
+    var user: User!
+
+    @IBOutlet weak var bioTextView: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,5 +22,8 @@ class NeighborDetailViewController: UIViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        // show user bio
+        bioTextView.text = user.bio
     }
 }

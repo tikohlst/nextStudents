@@ -15,14 +15,16 @@ struct User {
     var lastName: String
     var address: String
     var radius: String
+    var bio: String
     //var image: UIImage
     
-    init(uid: String, firstName: String, lastName: String, address: String, radius: String) { //image: UIImage
+    init(uid: String, firstName: String, lastName: String, address: String, radius: String, bio: String) { //image: UIImage
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.address = address
         self.radius = radius
+        self.bio = bio
         //self.image = image
     }
 }

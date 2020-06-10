@@ -818,6 +818,9 @@
                         <viewLayoutGuide key="safeArea" id="5gq-Lq-Hvo"/>
                     </view>
                     <navigationItem key="navigationItem" title="Name des Nachbarn" id="fWg-JE-f8f"/>
+                    <connections>
+                        <outlet property="bioTextView" destination="gnD-TG-bt3" id="U5y-tj-0So"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8C-9U-QIt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
