@@ -40,23 +40,26 @@ class NeighborTableViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         db = Firestore.firestore()
-        db.collection("users").whereField("radius", isEqualTo: "200")
+        db.collection("users").whereField("radius", isGreaterThan: "0")
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
                     for document in querySnapshot!.documents {
-                        // Create User object for every neighbor in the radius and write it into an array
-                        let user: User = User(uid: document.data()["uid"] as! String,
-                                              firstName: document.data()["givenName"] as! String,
-                                              lastName: document.data()["name"] as! String,
-                                              address: document.data()["address"] as! String,
-                                              radius: document.data()["radius"] as! String)
-                        self.usersInRangeArray.append(user)
+                        // Don't show currentUser as its own neighbor
+                        if (Auth.auth().currentUser?.uid != (document.data()["uid"] as! String)) {
+                            // Create User object for every neighbor in the radius and write it into an array
+                            let user: User = User(uid: document.data()["uid"] as! String,
+                                                  firstName: document.data()["givenName"] as! String,
+                                                  lastName: document.data()["name"] as! String,
+                                                  address: document.data()["address"] as! String,
+                                                  radius: document.data()["radius"] as! String)
+                            self.usersInRangeArray.append(user)
 
-                        // Update the table
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
+                            // Update the table
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
                         }
                     }
                 }
