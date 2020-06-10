@@ -47,9 +47,9 @@ class NeighborTableViewController: UITableViewController {
                 } else {
                     for document in querySnapshot!.documents {
                         // Don't show currentUser as its own neighbor
-                        if (Auth.auth().currentUser?.uid != (document.data()["uid"] as! String)) {
+                        if (Auth.auth().currentUser?.uid != (document.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
-                            let user: User = User(uid: document.data()["uid"] as! String,
+                            let user = User(uid: document.documentID,
                                                   firstName: document.data()["givenName"] as! String,
                                                   lastName: document.data()["name"] as! String,
                                                   address: document.data()["address"] as! String,
