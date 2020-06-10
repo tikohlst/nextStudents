@@ -93,7 +93,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
 //        tabBarViewController.modalTransitionStyle = .crossDissolve
 //
 //        present(tabBarViewController, animated: true, completion: nil)
-        self.parent!.dismiss(animated: true) {}
+        //self.presentingViewController!.dismiss(animated: true) {}
     }
 
     @IBAction func touchLogin(_ sender: UIButton) {

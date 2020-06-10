@@ -8,26 +8,12 @@
 
 import Foundation
 
-struct User {
-    private static var identifierCounter = 0
+class User {
     
-    private let identifier: Int
-    var firstName: String
-    var lastName: String
-    var address: String
+    var firstName: String? = nil
+    var lastName: String? = nil
+    var address: String? = nil
+    var radius: String? = nil
+    var bio: String? = nil
     
-    
-    private static func getUniqueIdentifier() -> Int {
-        // Inside of the struct/class the Classname for the static var isnt needed
-        // Card.identifierCounter += 1
-        identifierCounter += 1
-        return identifierCounter
-    }
-    
-    init() {
-        self.identifier = User.getUniqueIdentifier()
-        self.firstName = ""
-        self.lastName = ""
-        self.address = ""
-    }
 }

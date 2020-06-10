@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
 
@@ -18,9 +21,12 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
     let placeholderText = "Erzähl was über dich..."
+    var currentUser: User?
+    var db: Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        db = Firestore.firestore()
         // prepare placeholder
         bioTextView.text = placeholderText
         bioTextView.textColor = UIColor.lightGray
@@ -34,8 +40,20 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-
-            view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(tap)
+        
+        // add user information
+        if let user = currentUser {
+            firstNameText.text = user.firstName
+            lastNameText.text = user.lastName
+            addressText.text = user.address
+            radiusText.text = user.radius
+            bioTextView.text = user.bio
+            
+            if user.radius != nil {
+                radiusChanged(radiusText!)
+            }
+        }
         }
 
         //Calls this function when the tap is recognized.
@@ -44,6 +62,8 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             view.endEditing(true)
     }
     
+    
+    // MARK: - UI methods
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         // Combine the textView text and the replacement text to
@@ -102,15 +122,28 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         return true
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func touchSave(_ sender: UIButton) {
+        if let user = currentUser, let authUser = Auth.auth().currentUser {
+            user.firstName = firstNameText.text
+            user.lastName = lastNameText.text
+            user.address = addressText.text
+            user.radius = radiusText.text
+            user.bio = bioTextView.text
+            
+            self.db.collection("users").document(authUser.uid).setData([
+                "givenName" : user.firstName ?? "",
+                "name" : user.lastName ?? "",
+                "address" : user.address ?? "",
+                "radius" : user.radius ?? "",
+                "bio" : user.bio ?? ""
+            ]) { err in
+                if let err = err {
+                    print("Error editing document: \(err)")
+                }
+            }
+        }
     }
-    */
+    
     
     @IBAction func radiusChanged(_ sender: Any) {
         if type(of: sender) == type(of: radiusSlider!) {
@@ -128,5 +161,14 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         }
     }
     
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }

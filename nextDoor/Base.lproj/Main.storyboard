@@ -223,7 +223,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="KvE-hH-pOg" kind="show" id="dGT-ia-W4g"/>
+                                            <segue destination="KvE-hH-pOg" kind="show" identifier="userProfileSegue" id="dGT-ia-W4g"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="nLa-TG-OJG" style="IBUITableViewCellStyleDefault" id="bPy-mf-Xxn">
@@ -395,6 +395,9 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="touchSave:" destination="KvE-hH-pOg" eventType="touchUpInside" id="E7t-rO-ypf"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -974,7 +977,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="eoH-gJ-RNs" kind="show" id="Zgs-IX-82v"/>
+                                    <segue destination="eoH-gJ-RNs" kind="show" identifier="showLoginSegue" id="Zgs-IX-82v"/>
                                 </connections>
                             </button>
                         </subviews>
