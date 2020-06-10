@@ -33,7 +33,8 @@ class NeighborTableViewCell: UITableViewCell {
 class NeighborTableViewController: UITableViewController {
 
     var db: Firestore!
-    var neighborsInRangeArray: [NeighborsInRange] = []
+    var usersInRangeArray: [User] = []
+    private let showNeighborDetailSegue = "showNeighborDetail"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +46,13 @@ class NeighborTableViewController: UITableViewController {
                     print("Error getting documents: \(err)")
                 } else {
                     for document in querySnapshot!.documents {
-                        // Create NeighborsInRange objects for every neighbor in the radius and write them in an array
-                        let neighbor: NeighborsInRange = NeighborsInRange(name: document.data()["name"] as! String, radius: document.data()["radius"] as! String)
-                        self.neighborsInRangeArray.append(neighbor)
+                        // Create User object for every neighbor in the radius and write it into an array
+                        let user: User = User(uid: document.data()["uid"] as! String,
+                                              firstName: document.data()["givenName"] as! String,
+                                              lastName: document.data()["name"] as! String,
+                                              address: document.data()["address"] as! String,
+                                              radius: document.data()["radius"] as! String)
+                        self.usersInRangeArray.append(user)
 
                         // Update the table
                         DispatchQueue.main.async {
@@ -59,7 +64,7 @@ class NeighborTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.neighborsInRangeArray.count
+        return self.usersInRangeArray.count
     }
 
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -69,13 +74,40 @@ class NeighborTableViewController: UITableViewController {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
 
-        if neighborsInRangeArray.count > 0 {
-            let actualNeighbor = neighborsInRangeArray[indexPath.row]
-            cell.neighborNameLabel?.text = actualNeighbor.name
-            cell.neighborRangeLabel?.text = actualNeighbor.radius
+        if usersInRangeArray.count > 0 {
+            let actualUser = usersInRangeArray[indexPath.row]
+            cell.neighborNameLabel?.text = actualUser.firstName
+            cell.neighborRangeLabel?.text = actualUser.radius
             //cell.neighborImageView?.image = UIImage(named: fruit)
         }
 
         return cell
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Implement a switch over the segue identifiers to distinct which segue get's called.
+        if segue.identifier == showNeighborDetailSegue {
+
+            // Show the selected Customer on the Detail view
+            guard let indexPath = self.tableView.indexPathForSelectedRow else {
+                return
+            }
+
+            // Retrieve the selected customer
+            let selectedEntity = usersInRangeArray[indexPath.row]
+
+            // Get an instance of the NeighborDetailViewController with asking the segue for it's destination.
+            let detailViewController = segue.destination as! NeighborDetailViewController
+
+            // Set the customer ID at the CustomerDetailTableViewController.
+            detailViewController.uid = selectedEntity.uid
+
+            // Set the title of the navigation item on the NeighborDetailViewController
+            detailViewController.navigationItem.title = "\(usersInRangeArray[indexPath.row].firstName ), \(usersInRangeArray[indexPath.row].radius )"
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showNeighborDetailSegue, sender: tableView.cellForRow(at: indexPath))
     }
 }

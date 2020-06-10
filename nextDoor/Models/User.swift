@@ -9,25 +9,20 @@
 import Foundation
 
 struct User {
-    private static var identifierCounter = 0
     
-    private let identifier: Int
+    let uid: String
     var firstName: String
     var lastName: String
     var address: String
+    var radius: String
+    //var image: UIImage
     
-    
-    private static func getUniqueIdentifier() -> Int {
-        // Inside of the struct/class the Classname for the static var isnt needed
-        // Card.identifierCounter += 1
-        identifierCounter += 1
-        return identifierCounter
-    }
-    
-    init() {
-        self.identifier = User.getUniqueIdentifier()
-        self.firstName = ""
-        self.lastName = ""
-        self.address = ""
+    init(uid: String, firstName: String, lastName: String, address: String, radius: String) { //image: UIImage
+        self.uid = uid
+        self.firstName = firstName
+        self.lastName = lastName
+        self.address = address
+        self.radius = radius
+        //self.image = image
     }
 }

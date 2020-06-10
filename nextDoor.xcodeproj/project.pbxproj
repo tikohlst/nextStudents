@@ -19,6 +19,7 @@
 		2260843E24700BD700D30E81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260843C24700BD700D30E81 /* Main.storyboard */; };
 		2260844024700BDB00D30E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2260843F24700BDB00D30E81 /* Assets.xcassets */; };
 		2260844324700BDB00D30E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260844124700BDB00D30E81 /* LaunchScreen.storyboard */; };
+		226F1C0B2490DA5F007F709D /* NeighborDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
@@ -44,6 +45,7 @@
 		2260843F24700BDB00D30E81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2260844224700BDB00D30E81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2260844424700BDB00D30E81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborDetailViewController.swift; sourceTree = "<group>"; };
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
 				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
 				221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */,
+				226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */,
 				2253260824753B1E00B35802 /* OffersViewController.swift */,
 				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
 				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
@@ -306,6 +309,7 @@
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
 				221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */,
 				8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */,
+				226F1C0B2490DA5F007F709D /* NeighborDetailViewController.swift in Sources */,
 				221B088E2487098A00CE8A9B /* NeighborTableViewController.swift in Sources */,
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,

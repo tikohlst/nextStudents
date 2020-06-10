@@ -512,7 +512,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aj3-na-rj2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1876.8115942028987" y="1368.75"/>
+            <point key="canvasLocation" x="1636" y="1369"/>
         </scene>
         <!--Neues Angebot-->
         <scene sceneID="EMB-kf-xnK">
@@ -630,7 +630,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODq-ZT-qzz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="638" y="2845"/>
+            <point key="canvasLocation" x="638" y="2839"/>
         </scene>
         <!--Nachbarn-->
         <scene sceneID="Nld-Cw-p50">
@@ -695,6 +695,7 @@
                                     <outlet property="neighborImageView" destination="tqS-jU-Qyk" id="kc6-dz-Pob"/>
                                     <outlet property="neighborNameLabel" destination="3T6-8R-ghu" id="yol-aK-slY"/>
                                     <outlet property="neighborRangeLabel" destination="YTx-9w-P0C" id="YbV-TC-6l8"/>
+                                    <segue destination="X5a-lJ-Sy7" kind="show" identifier="showNeighborDetail" trigger="accessoryAction" id="NX6-r1-6wX"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -747,22 +748,14 @@
             </objects>
             <point key="canvasLocation" x="638" y="2092"/>
         </scene>
-        <!--Nam des Nachbarn-->
+        <!--Name des Nachbarn-->
         <scene sceneID="LI8-Bp-LKH">
             <objects>
-                <viewController id="X5a-lJ-Sy7" sceneMemberID="viewController">
+                <viewController id="X5a-lJ-Sy7" customClass="NeighborDetailViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ugF-VN-XPZ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="shf-9D-bfj">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="barTintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <items>
-                                    <navigationItem title="Name des Nachbarn" id="Hmx-Ef-zf1"/>
-                                </items>
-                            </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IN8-5o-47d">
                                 <rect key="frame" x="211" y="77" width="183" height="300.5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -815,11 +808,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="5gq-Lq-Hvo"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Nam des Nachbarn" id="fWg-JE-f8f"/>
+                    <navigationItem key="navigationItem" title="Name des Nachbarn" id="fWg-JE-f8f"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8C-9U-QIt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1262.3188405797102" y="2091.9642857142858"/>
+            <point key="canvasLocation" x="-1262" y="2092"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="2Gr-VT-WRG">
@@ -835,7 +828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y78-zP-j2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-315" y="2076"/>
+            <point key="canvasLocation" x="-317" y="2092"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
