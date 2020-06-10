@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eoH-gJ-RNs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -207,7 +207,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="KvE-hH-pOg" kind="show" id="dGT-ia-W4g"/>
+                                            <segue destination="KvE-hH-pOg" kind="show" identifier="userProfileSegue" id="dGT-ia-W4g"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="nLa-TG-OJG" style="IBUITableViewCellStyleDefault" id="bPy-mf-Xxn">
@@ -273,6 +273,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Einstellungen" id="bpg-G2-dTJ"/>
+                    <connections>
+                        <outlet property="bioLabel" destination="R0h-DX-aJ3" id="XlP-gO-yGL"/>
+                        <outlet property="imageView" destination="hPo-wr-Cob" id="lPs-V4-UyS"/>
+                        <outlet property="nameLabel" destination="sSI-l4-bGl" id="sXs-G6-WP0"/>
+                        <outlet property="signOutCell" destination="e2t-eT-1qY" id="K3o-wi-lMm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pyR-U6-IGd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -373,6 +379,9 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="touchSave:" destination="KvE-hH-pOg" eventType="touchUpInside" id="E7t-rO-ypf"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -830,10 +839,10 @@
             </objects>
             <point key="canvasLocation" x="-317" y="2092"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController storyboardIdentifier="tabbarvc" id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabbarvc" id="49e-Tb-3d3" customClass="MainController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="wcA-j0-VCb"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
@@ -849,12 +858,12 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136" y="-215"/>
+            <point key="canvasLocation" x="439" y="-216"/>
         </scene>
         <!--Registration View Controller-->
         <scene sceneID="h6J-4S-3Bi">
             <objects>
-                <viewController id="p2L-FK-iGR" customClass="registrationViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="registrationvc" id="p2L-FK-iGR" customClass="registrationViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uuz-sA-Dva">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -944,6 +953,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cjG-XH-bo4">
+                                <rect key="frame" x="20" y="752" width="374" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Einloggen">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="eoH-gJ-RNs" kind="show" identifier="showLoginSegue" id="Zgs-IX-82v"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="9Bc-ab-feP"/>
@@ -1087,7 +1112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9OO-Ms-7CS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1613.0434782608697" y="-216.29464285714286"/>
+            <point key="canvasLocation" x="-554" y="-216"/>
         </scene>
         <!--Angebote-->
         <scene sceneID="f9j-mS-lUi">

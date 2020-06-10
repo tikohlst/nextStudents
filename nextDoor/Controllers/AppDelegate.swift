@@ -55,6 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // user is not logged in -> show registration screen
         if Auth.auth().currentUser == nil {
             showRegistrationScreen(false)
+        } else {
+            print(Auth.auth().currentUser!)
         }
         
         return true
@@ -62,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     private func showRegistrationScreen(_ animated: Bool) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let registrationScreen = storyboard.instantiateViewController(identifier: "registrationScreen")
+        let registrationScreen = storyboard.instantiateViewController(identifier: "registrationvc")
         self.window?.makeKeyAndVisible()
         self.window?.rootViewController?.present(registrationScreen, animated: animated, completion: nil)
     }

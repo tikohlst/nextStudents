@@ -22,6 +22,8 @@
 		226F1C0B2490DA5F007F709D /* NeighborDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
+		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
+		8F250FCB24913EBB00A6CD39 /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F250FCA24913EBB00A6CD39 /* AuthUser.swift */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
 		8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */; };
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
@@ -49,6 +51,8 @@
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8F0B560D248FA60B00703F0A /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		8F250FCA24913EBB00A6CD39 /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +111,7 @@
 				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
 				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
 				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
+				8F0B560D248FA60B00703F0A /* MainController.swift */,
 				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
 				221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */,
 				226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */,
@@ -131,6 +136,7 @@
 		22CB9D61248E70F200D87E3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8F250FCA24913EBB00A6CD39 /* AuthUser.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
 			);
@@ -305,6 +311,7 @@
 				2253260924753B1E00B35802 /* OffersViewController.swift in Sources */,
 				221B08922487A54C00CE8A9B /* Offer.swift in Sources */,
 				221B08902487A2F800CE8A9B /* OfferEditController.swift in Sources */,
+				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
 				8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */,
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
 				221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */,
@@ -314,6 +321,7 @@
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,
 				2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */,
+				8F250FCB24913EBB00A6CD39 /* AuthUser.swift in Sources */,
 				8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
