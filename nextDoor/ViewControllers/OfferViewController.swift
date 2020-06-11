@@ -2,8 +2,7 @@
 //  OffersViewController.swift
 //  nextDoor
 //
-//  Created by Tim Kohlstadt on 20.05.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit

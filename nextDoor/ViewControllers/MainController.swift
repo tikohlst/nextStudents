@@ -2,13 +2,11 @@
 //  MainController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 09.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
 import Firebase
-import FirebaseAuth
 
 class MainController: UITabBarController {
     

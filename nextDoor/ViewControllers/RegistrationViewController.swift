@@ -2,13 +2,11 @@
 //  RegistrationViewController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 06.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
 import Firebase
-import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class registrationViewController: UIViewController {
@@ -33,15 +31,15 @@ class registrationViewController: UIViewController {
         
         db = Firestore.firestore()
 
-        //Looks for single or multiple taps.
+        // Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
 
             view.addGestureRecognizer(tap)
         }
 
-        //Calls this function when the tap is recognized.
+        // Calls this function when the tap is recognized.
         @objc func dismissKeyboard() {
-            //Causes the view (or one of its embedded text fields) to resign the first responder status.
+            // Causes the view (or one of its embedded text fields) to resign the first responder status.
             view.endEditing(true)
     }
     
@@ -111,7 +109,9 @@ class registrationViewController: UIViewController {
                     // write userdata to firestore
                 } else if authResult != nil {
                     if let givenName = self.givenNameText.text, let name = self.nameText.text, let address = self.addressText.text, let radius = self.radiusText.text, let user = Auth.auth().currentUser{
-                        self.db.collection("users").document(user.uid).setData([
+                        self.db.collection("users")
+                            .document(user.uid)
+                            .setData([
                             "uid" : user.uid,
                             "givenName" : givenName,
                             "name" : name,

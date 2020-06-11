@@ -2,19 +2,16 @@
 //  SettingsTableViewController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 03.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
-import FirebaseAuth
-import FirebaseFirestore
+import Firebase
 import FirebaseFirestoreSwift
 
 class SettingsTableViewController: UITableViewController {
 
     // MARK: - Variables
-    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var bioLabel: UILabel!
@@ -36,7 +33,8 @@ class SettingsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // fetch user name and //TODO: image
-        let user = db.collection("users").document("\(String(describing: Auth.auth().currentUser!.uid))")
+        let user = db.collection("users")
+            .document("\(String(describing: Auth.auth().currentUser!.uid))")
         
         user.getDocument{(document, error) in
             if let document = document, document.exists {
@@ -54,8 +52,7 @@ class SettingsTableViewController: UITableViewController {
                 
 
             } else {
-                print("document doesn't exist")
-                print("uid: \(String(describing: Auth.auth().currentUser!.uid))")
+                print("Document doesn't exist.")
             }
         }
     }
@@ -69,7 +66,7 @@ class SettingsTableViewController: UITableViewController {
     private func signOut() {
         do {
             try Auth.auth().signOut()
-        }catch {
+        } catch {
             print("Something went wrong signing out the user")
         }
     }
