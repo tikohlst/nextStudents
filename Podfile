@@ -13,6 +13,9 @@ target 'nextDoor' do
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
   pod 'GoogleSignIn'
+  pod 'Firebase/Core'
+  pod 'SDWebImage'
+  pod 'MessageInputBar'
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 end

@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		221A0CD524781BF700A46E1E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A0CD424781BF700A46E1E /* User.swift */; };
-		221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088B248702B000CE8A9B /* OfferShowController.swift */; };
-		221B088E2487098A00CE8A9B /* NeighborTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */; };
-		221B08902487A2F800CE8A9B /* OfferEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088F2487A2F800CE8A9B /* OfferEditController.swift */; };
+		221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */; };
+		221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */; };
 		221B08922487A54C00CE8A9B /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B08912487A54C00CE8A9B /* Offer.swift */; };
-		2253260924753B1E00B35802 /* OffersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253260824753B1E00B35802 /* OffersViewController.swift */; };
+		2253260924753B1E00B35802 /* OfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253260824753B1E00B35802 /* OfferViewController.swift */; };
 		2260843524700BD700D30E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260843424700BD700D30E81 /* AppDelegate.swift */; };
 		2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260843624700BD700D30E81 /* SceneDelegate.swift */; };
-		2260843B24700BD700D30E81 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260843A24700BD700D30E81 /* MessagesViewController.swift */; };
 		2260843E24700BD700D30E81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260843C24700BD700D30E81 /* Main.storyboard */; };
 		2260844024700BDB00D30E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2260843F24700BDB00D30E81 /* Assets.xcassets */; };
 		2260844324700BDB00D30E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260844124700BDB00D30E81 /* LaunchScreen.storyboard */; };
-		226F1C0B2490DA5F007F709D /* NeighborDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */; };
+		226DC60024916A5600C30B4A /* ChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */; };
+		226F1C0B2490DA5F007F709D /* NeighborViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborViewController.swift */; };
+		22AAADC02491654300542F5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
+		22AAADC22491657C00542F5E /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
@@ -34,20 +35,21 @@
 
 /* Begin PBXFileReference section */
 		221A0CD424781BF700A46E1E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		221B088B248702B000CE8A9B /* OfferShowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferShowController.swift; sourceTree = "<group>"; };
-		221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborTableViewController.swift; sourceTree = "<group>"; };
-		221B088F2487A2F800CE8A9B /* OfferEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditController.swift; sourceTree = "<group>"; };
+		221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborsTableViewController.swift; sourceTree = "<group>"; };
+		221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersTableViewController.swift; sourceTree = "<group>"; };
 		221B08912487A54C00CE8A9B /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
-		2253260824753B1E00B35802 /* OffersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersViewController.swift; sourceTree = "<group>"; };
+		2253260824753B1E00B35802 /* OfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferViewController.swift; sourceTree = "<group>"; };
 		2260843124700BD700D30E81 /* nextDoor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nextDoor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2260843424700BD700D30E81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2260843624700BD700D30E81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2260843A24700BD700D30E81 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		2260843D24700BD700D30E81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2260843F24700BDB00D30E81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2260844224700BDB00D30E81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2260844424700BDB00D30E81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborDetailViewController.swift; sourceTree = "<group>"; };
+		226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsTableViewController.swift; sourceTree = "<group>"; };
+		226F1C0A2490DA5F007F709D /* NeighborViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborViewController.swift; sourceTree = "<group>"; };
+		22AAADBF2491654300542F5E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		22AAADC12491657C00542F5E /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -108,17 +110,18 @@
 		22CB9D5F248E70BB00D87E3F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
-				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
-				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
 				8F0B560D248FA60B00703F0A /* MainController.swift */,
-				2260843A24700BD700D30E81 /* MessagesViewController.swift */,
-				221B088D2487098A00CE8A9B /* NeighborTableViewController.swift */,
-				226F1C0A2490DA5F007F709D /* NeighborDetailViewController.swift */,
-				2253260824753B1E00B35802 /* OffersViewController.swift */,
 				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
-				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
+				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
+				221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */,
+				226F1C0A2490DA5F007F709D /* NeighborViewController.swift */,
+				226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */,
+				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
+				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
+				2253260824753B1E00B35802 /* OfferViewController.swift */,
+				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
 				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
+				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -139,6 +142,8 @@
 				8F250FCA24913EBB00A6CD39 /* AuthUser.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
+				22AAADBF2491654300542F5E /* Message.swift */,
+				22AAADC12491657C00542F5E /* Chat.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -148,8 +153,6 @@
 			children = (
 				2260843424700BD700D30E81 /* AppDelegate.swift */,
 				2260843624700BD700D30E81 /* SceneDelegate.swift */,
-				221B088B248702B000CE8A9B /* OfferShowController.swift */,
-				221B088F2487A2F800CE8A9B /* OfferEditController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -305,19 +308,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2260843B24700BD700D30E81 /* MessagesViewController.swift in Sources */,
 				221A0CD524781BF700A46E1E /* User.swift in Sources */,
 				8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */,
-				2253260924753B1E00B35802 /* OffersViewController.swift in Sources */,
+				2253260924753B1E00B35802 /* OfferViewController.swift in Sources */,
 				221B08922487A54C00CE8A9B /* Offer.swift in Sources */,
-				221B08902487A2F800CE8A9B /* OfferEditController.swift in Sources */,
+				221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */,
 				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
+				22AAADC02491654300542F5E /* Message.swift in Sources */,
 				8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */,
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
-				221B088C248702B000CE8A9B /* OfferShowController.swift in Sources */,
+				226DC60024916A5600C30B4A /* ChatsTableViewController.swift in Sources */,
 				8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */,
-				226F1C0B2490DA5F007F709D /* NeighborDetailViewController.swift in Sources */,
-				221B088E2487098A00CE8A9B /* NeighborTableViewController.swift in Sources */,
+				226F1C0B2490DA5F007F709D /* NeighborViewController.swift in Sources */,
+				22AAADC22491657C00542F5E /* Chat.swift in Sources */,
+				221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */,
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,
 				2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */,
