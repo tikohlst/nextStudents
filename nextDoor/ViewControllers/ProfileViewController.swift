@@ -53,6 +53,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             addressText.text = user.address
             radiusText.text = user.radius
             bioTextView.text = user.bio
+            profilePictureImageView.image = user.profileImage
             
             if user.radius != nil {
                 radiusChanged(radiusText!)
@@ -176,7 +177,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
                         print("Error while uploading profile image: \(error.localizedDescription)")
                         return
                     }
-                    print("upload complete with metadata: \(storageMetadata)")
+                    print("upload complete with metadata: \(String(describing: storageMetadata))")
                 }
             } else {
                 if profilePictureImageView.image == nil {

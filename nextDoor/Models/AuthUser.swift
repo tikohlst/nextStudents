@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 class AuthUser {
     
     var firstName: String? = nil
@@ -13,4 +14,5 @@ class AuthUser {
     var address: String? = nil
     var radius: String? = nil
     var bio: String? = nil
+    var profileImage: UIImage? = nil
 }

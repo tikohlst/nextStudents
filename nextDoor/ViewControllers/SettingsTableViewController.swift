@@ -18,12 +18,14 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var signOutCell: UITableViewCell!
     var db = Firestore.firestore()
     var currentUser = AuthUser()
+    var storage: Storage!
     
     // MARK: - Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        storage = Storage.storage()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -45,6 +47,21 @@ class SettingsTableViewController: UITableViewController {
                 self.currentUser.lastName = data?["name"] as? String
                 self.currentUser.radius = data?["radius"] as? String
                 self.currentUser.bio = data?["bio"] as? String
+                
+                // get profile image if it exists
+                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
+                
+                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print("Error while downloading profile image: \(error.localizedDescription)")
+                        self.imageView.image = nil
+                    } else {
+                        // Data for "profilePicture.jpg" is returned
+                        let image = UIImage(data: data!)
+                        self.currentUser.profileImage = image
+                        self.imageView.image = image
+                    }
+                }
                 
                 if self.currentUser.firstName != nil && self.currentUser.lastName != nil {
                     self.nameLabel.text = self.currentUser.firstName! + " " + self.currentUser.lastName!
