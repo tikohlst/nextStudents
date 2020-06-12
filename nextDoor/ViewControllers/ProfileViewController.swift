@@ -8,8 +8,9 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
-class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
+class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     @IBOutlet weak var firstNameText: UITextField!
     @IBOutlet weak var lastNameText: UITextField!
@@ -17,14 +18,19 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     @IBOutlet weak var radiusSlider: UISlider!
     @IBOutlet weak var radiusText: UITextField!
     @IBOutlet weak var bioTextView: UITextView!
+    @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var changeProfilePictureButton: UIButton!
+    @IBOutlet weak var deleteProfilePictureButton: UIButton!
     let placeholderText = "Erzähl was über dich..."
     var currentUser: AuthUser?
     var db: Firestore!
+    var storage: Storage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         db = Firestore.firestore()
+        storage = Storage.storage()
         // prepare placeholder
         bioTextView.text = placeholderText
         bioTextView.textColor = UIColor.lightGray
@@ -60,8 +66,28 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             view.endEditing(true)
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        self.dismiss(animated: true, completion: nil)
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+         profilePictureImageView.image = pickedImage
+        }
+    }
     
     // MARK: - UI methods
+    @IBAction func touchChangeProfilePicture(_ sender: UIButton) {
+        let pickerController = UIImagePickerController()
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            pickerController.delegate = self
+            pickerController.allowsEditing = true
+            pickerController.mediaTypes = ["public.image"]
+            pickerController.sourceType = .photoLibrary
+            
+            present(pickerController, animated: true, completion: nil)
+        }
+    }
+    @IBAction func touchDeleteProfilePicture(_ sender: UIButton) {
+        profilePictureImageView.image = nil
+    }
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
         // Combine the textView text and the replacement text to
@@ -121,6 +147,8 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     }
 
     @IBAction func touchSave(_ sender: UIButton) {
+        let storageRef = storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser?.uid))/profilePicture.jpg")
+        // TODO: upload or delete user image
         if let user = currentUser, let authUser = Auth.auth().currentUser {
             user.firstName = firstNameText.text
             user.lastName = lastNameText.text
