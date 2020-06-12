@@ -12,6 +12,7 @@ target 'nextDoor' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Storage'
   pod 'GoogleSignIn'
   pod 'Firebase/Core'
   pod 'SDWebImage'
