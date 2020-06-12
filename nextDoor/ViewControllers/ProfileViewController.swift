@@ -147,8 +147,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     }
 
     @IBAction func touchSave(_ sender: UIButton) {
-        let storageRef = storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser?.uid))/profilePicture.jpg")
-        // TODO: upload or delete user image
+        
         if let user = currentUser, let authUser = Auth.auth().currentUser {
             user.firstName = firstNameText.text
             user.lastName = lastNameText.text
@@ -165,6 +164,29 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             ]) { err in
                 if let err = err {
                     print("Error editing document: \(err)")
+                }
+            }
+            // profile image upload
+            let storageRef = storage.reference(withPath: "profilePictures/\(String(describing: authUser.uid))/profilePicture.jpg")
+            if let imageData = profilePictureImageView.image?.jpegData(compressionQuality: 0.75) {
+                let imageMetadata = StorageMetadata.init()
+                imageMetadata.contentType = "image/jpeg"
+                storageRef.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+                    if let error = error {
+                        print("Error while uploading profile image: \(error.localizedDescription)")
+                        return
+                    }
+                    print("upload complete with metadata: \(storageMetadata)")
+                }
+            } else {
+                if profilePictureImageView.image == nil {
+                    storageRef.delete { error in
+                        if let error = error {
+                            print("Error while deleting profile image: \(error.localizedDescription)")
+                        } else {
+                            print("File deleted successfully")
+                        }
+                    }
                 }
             }
         }
