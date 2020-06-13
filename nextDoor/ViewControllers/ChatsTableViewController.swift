@@ -42,9 +42,11 @@ class ChatsTableViewController: UITableViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        self.chatsArray = []
 
         db.collection("Chats")
             .whereField("users", arrayContains: currentUserUID ?? 0)
