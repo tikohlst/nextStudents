@@ -683,23 +683,20 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Dauer des Angebots" id="iRW-qI-Zgc">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="prN-Fd-Eeg" detailTextLabel="DkJ-cy-2hX" style="IBUITableViewCellStyleValue1" id="NJZ-85-IJN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="NJZ-85-IJN">
                                         <rect key="frame" x="20" y="338" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NJZ-85-IJN" id="woT-Df-OQF">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="prN-Fd-Eeg">
-                                                    <rect key="frame" x="20" y="12" width="33.5" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DkJ-cy-2hX">
-                                                    <rect key="frame" x="291" y="12" width="44" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
+                                                    <rect key="frame" x="129" y="0.0" width="75" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                </pickerView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-wO-GgM">
+                                                    <rect key="frame" x="212" y="12" width="33" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -716,13 +713,29 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Neues Angebot" id="SK0-eC-KTa">
-                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="wlK-Ft-BQS"/>
-                        <barButtonItem key="rightBarButtonItem" title="Erstellen" id="fRj-vV-x6M"/>
+                        <barButtonItem key="leftBarButtonItem" title="Abbrechen" id="wlK-Ft-BQS">
+                            <connections>
+                                <action selector="touchCancel:" destination="FfJ-Ih-jnY" id="z1q-Vb-ey2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Erstellen" id="fRj-vV-x6M">
+                            <connections>
+                                <action selector="touchCreate:" destination="FfJ-Ih-jnY" id="Hga-xL-KBj"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="cancelBarButtonItem" destination="wlK-Ft-BQS" id="Fj2-Cl-CHV"/>
+                        <outlet property="createBarButtonItem" destination="fRj-vV-x6M" id="RtK-A7-7nA"/>
+                        <outlet property="descriptionTextField" destination="fWo-Kj-cu0" id="FPl-tp-ytG"/>
+                        <outlet property="offerNeedControl" destination="G0z-oO-UCT" id="sZW-nx-j2o"/>
+                        <outlet property="timePickerView" destination="qow-mU-ANG" id="9By-C0-N6V"/>
+                        <outlet property="titleTextField" destination="dVh-Sl-lEb" id="fBq-vV-Ze9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODq-ZT-qzz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="638" y="2839"/>
+            <point key="canvasLocation" x="637.68115942028987" y="2838.6160714285711"/>
         </scene>
         <!--Nachbarn-->
         <scene sceneID="Nld-Cw-p50">
@@ -826,6 +839,7 @@
         <!--Navigation Controller-->
         <scene sceneID="tvS-tx-4YT">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xWW-Gg-Vj8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="mgA-qX-UQl" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="WYW-Of-IZ3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Vxu-Om-yer">
@@ -836,7 +850,6 @@
                         <segue destination="FfJ-Ih-jnY" kind="relationship" relationship="rootViewController" id="On0-CY-p8U"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xWW-Gg-Vj8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="638" y="2092"/>
         </scene>

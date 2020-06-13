@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class SettingsTableViewController: UITableViewController {
 
