@@ -83,7 +83,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                 else if queryCount >= 1 {
                     // Chat(s) found for currentUser
                     for doc in chatQuerySnap!.documents {
-                        let chat = Chat(dictionary: doc.data())
+                        // Timestamp is irrelevant for this declaration
+                        let chat = Chat(dictionary: doc.data(), timestamp: Timestamp.init(date: Date()))
                         // Get the chat which has user2 id
                         if chat!.users.contains(self.user2UID ?? "") {
                             self.docReference = doc.reference
