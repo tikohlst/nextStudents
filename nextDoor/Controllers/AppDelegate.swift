@@ -10,62 +10,25 @@ import Firebase
 import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
-    
-    // MARK: - Variables
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
     var window: UIWindow?
-    
-    // MARK: - Methods
-    
-    // sign in with google
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        // ...
-        if let error = error {
-          // ...
-          return
-        }
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                          accessToken: authentication.accessToken)
-        // ...
-        
-    }
-    
-    // sign out google user
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        // Perform any operations when the user disconnects from app here.
-        // ...
-    }
-    
-    @available(iOS 9.0, *)
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any])
-      -> Bool {
-      return GIDSignIn.sharedInstance().handle(url)
-    }
-    
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
         FirebaseApp.configure()
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().delegate = self
-        
-        // user is not logged in -> show registration screen
-        if Auth.auth().currentUser == nil {
-            showRegistrationScreen(false)
-        } else {
-            print(Auth.auth().currentUser!)
-        }
+
+        let navigation = UINavigationController(rootViewController: LoginViewController())
+
+        let frame = UIScreen.main.bounds
+        window = UIWindow(frame: frame)
+
+        window!.rootViewController = navigation
+        window!.makeKeyAndVisible()
         
         return true
-    }
-    
-    private func showRegistrationScreen(_ animated: Bool) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let registrationScreen = storyboard.instantiateViewController(identifier: "registrationvc")
-        self.window?.makeKeyAndVisible()
-        self.window?.rootViewController?.present(registrationScreen, animated: animated, completion: nil)
     }
 
     // MARK: - UISceneSession Lifecycle
@@ -82,6 +45,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
-

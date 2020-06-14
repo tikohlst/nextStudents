@@ -12,12 +12,13 @@ import GoogleSignIn
 class LoginViewController: UIViewController, GIDSignInDelegate {
     
     // MARK: - Variables
-    
+
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     var handle: AuthStateDidChangeListenerHandle?
-    
+    var db = Firestore.firestore()
+
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,18 +26,18 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
         // Do any additional setup after loading the view.
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-          // ...
+            self.checkMissingUserData()
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
+        self.checkMissingUserData()
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -49,20 +50,19 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
         Auth.auth().signIn(with: credentials) { (authResult, error) in
             if let error = error {
                 print(error.localizedDescription)
-            } else {
-                self.presentTabBarViewController()
             }
         }
+        self.checkMissingUserData()
     }
     
     @IBAction func googleSignInPressed(_ sender: Any) {
-         GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance().signIn()
     }
-    
-    private func signIn() {
+
+    @IBAction func touchLogin(_ sender: UIButton) {
         if let email = emailText.text, let password = passwordText.text {
             Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-              guard let strongSelf = self else { return }
+                guard let strongSelf = self else { return }
                 if error != nil {
                     let alert = UIAlertController(
                         title: nil, message: error!.localizedDescription,
@@ -75,25 +75,51 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
                     strongSelf.present(alert, animated: true, completion: nil)
                 }
                 else {
-                    self!.presentTabBarViewController()
+                    self?.checkMissingUserData()
                 }
             }
         }
     }
     
-    @IBAction func presentTabBarViewController() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let tabBarViewController = storyboard.instantiateViewController(identifier: "tabbarvc")
-//
-//        tabBarViewController.modalPresentationStyle = .fullScreen
-//        tabBarViewController.modalTransitionStyle = .crossDissolve
-//
-//        present(tabBarViewController, animated: true, completion: nil)
-        //self.presentingViewController!.dismiss(animated: true) {}
-    }
+    func checkMissingUserData() {
+        handle = Auth.auth().addStateDidChangeListener({ (auth, user) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            self.db.collection("users")
+                .getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for user in querySnapshot!.documents {
+                            if auth.currentUser?.uid == user.documentID {
+                                let givenName = user.data()["givenName"] as! String
+                                let name = user.data()["name"] as! String
+                                let address = user.data()["address"] as! String
+                                let radius = user.data()["radius"] as! String
 
-    @IBAction func touchLogin(_ sender: UIButton) {
-        signIn()
+                                // If a user is logged in but user data is still missing (Example: Login via Google Account)
+                                if (givenName.isEmpty ||
+                                    name.isEmpty ||
+                                    address.isEmpty ||
+                                    radius.isEmpty) {
+                                    // Show registration screen to enter the missing data
+                                    let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
+                                    vc.modalPresentationStyle = .fullScreen
+                                    vc.modalTransitionStyle = .crossDissolve
+                                    vc.varHeaderLabel = "Account vervollständigen"
+                                    vc.varRegisterButton = "Speichern"
+                                    vc.hideMailAndPassword = true
+                                    self.present(vc, animated: true, completion: nil)
+                                } else {
+                                    let vc = storyboard.instantiateViewController(identifier: "tabbarvc") as MainController
+                                    vc.modalPresentationStyle = .fullScreen
+                                    vc.modalTransitionStyle = .crossDissolve
+                                    self.present(vc, animated: true, completion: nil)
+                                }
+                            }
+                        }
+                    }
+            }
+        })
     }
     
     

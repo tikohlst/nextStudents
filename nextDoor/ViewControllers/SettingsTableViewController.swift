@@ -83,6 +83,12 @@ class SettingsTableViewController: UITableViewController {
     private func signOut() {
         do {
             try Auth.auth().signOut()
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
+            vc.modalPresentationStyle = .fullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
         } catch {
             print("Something went wrong signing out the user")
         }

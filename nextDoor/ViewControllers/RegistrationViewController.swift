@@ -7,24 +7,37 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestoreSwift
 
-class registrationViewController: UIViewController {
+class RegistrationViewController: UIViewController {
     // MARK: - Variables
-    @IBOutlet weak var givenNameText: UITextField!
-    @IBOutlet weak var nameText: UITextField!
-    @IBOutlet weak var addressText: UITextField!
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var givennameTextField: UITextField!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var radiusSlider: UISlider!
-    @IBOutlet weak var radiusText: UITextField!
-    @IBOutlet weak var newPasswordText: UITextField!
-    @IBOutlet weak var repeatPasswordText: UITextField!
+    @IBOutlet weak var radiusTextField: UITextField!
+    @IBOutlet weak var newPasswordTextField: UITextField!
+    @IBOutlet weak var repeatPasswordTextField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var emailText: UITextField!
-    private var passwordsMatch: Bool{
-        return newPasswordText.text == repeatPasswordText.text
+    @IBOutlet weak var emailTextField: UITextField!
+
+    private var passwordsMatch: Bool {
+        return newPasswordTextField.text == repeatPasswordTextField.text
     }
+
     var db: Firestore!
+    var varHeaderLabel = "Registrierung"
+    var varRegisterButton = "Registrieren"
+    var hideMailAndPassword = false
     
+    override func viewWillAppear(_ animated: Bool) {
+        headerLabel.text = varHeaderLabel
+        registerButton.setTitle(varRegisterButton, for: [])
+        emailTextField.isHidden = hideMailAndPassword
+        newPasswordTextField.isHidden = hideMailAndPassword
+        repeatPasswordTextField.isHidden = hideMailAndPassword
+    }
+
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,15 +57,29 @@ class registrationViewController: UIViewController {
     }
     
     @IBAction func touchRegister(_ sender: Any) {
-        if passwordsMatch {
-            if isValidEmail(emailText.text!) {
-                // TODO: require all textfields to be filled
-                signUp()
-                self.presentLoginViewController()
+        //
+        if hideMailAndPassword == false {
+            if passwordsMatch {
+                if isValidEmail(emailTextField.text!) {
+                    // TODO: require all textfields to be filled
+                    signUp()
+                    self.presentLoginViewController()
+                } else {
+                    // TODO: refactor this copy pasta
+                    let alert = UIAlertController(
+                        title: "Fehler", message: "Bitte geben Sie eine gültige E-Mail Adresse ein",
+                        preferredStyle: .alert)
+                    alert.addAction(
+                        UIAlertAction(
+                            title: NSLocalizedString("OK", comment: "Default Action"),
+                            style: .default)
+                    )
+                    self.present(alert, animated: true, completion: nil)
+                }
             } else {
                 // TODO: refactor this copy pasta
                 let alert = UIAlertController(
-                    title: "Fehler", message: "Bitte geben Sie eine gültige E-Mail Adresse ein",
+                    title: "Fehler", message: "Passwörter stimmen nicht überein",
                     preferredStyle: .alert)
                 alert.addAction(
                     UIAlertAction(
@@ -62,16 +89,7 @@ class registrationViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         } else {
-            // TODO: refactor this copy pasta
-            let alert = UIAlertController(
-                title: "Fehler", message: "Passwörter stimmen nicht überein",
-                preferredStyle: .alert)
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("OK", comment: "Default Action"),
-                    style: .default)
-            )
-            self.present(alert, animated: true, completion: nil)
+            signUp()
         }
     }
     
@@ -84,54 +102,89 @@ class registrationViewController: UIViewController {
 
         present(startViewController, animated: true, completion: nil)
     }
-
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
     
-    private func signUp() {
-        if let email = emailText.text, let password = newPasswordText.text {
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                // error handling
-                if error != nil {
-                    let alert = UIAlertController(
-                        title: nil, message: error!.localizedDescription,
-                        preferredStyle: .alert)
-                    alert.addAction(
-                        UIAlertAction(
-                            title: NSLocalizedString("OK", comment: "Default Action"),
-                            style: .default)
-                    )
-                    self.present(alert, animated: true, completion: nil)
-                    // write userdata to firestore
-                } else if authResult != nil {
-                    if let givenName = self.givenNameText.text, let name = self.nameText.text, let address = self.addressText.text, let radius = self.radiusText.text, let user = Auth.auth().currentUser{
-                        self.db.collection("users")
-                            .document(user.uid)
-                            .setData([
-                            "uid" : user.uid,
-                            "givenName" : givenName,
-                            "name" : name,
-                            "address" : address,
-                            "radius" : radius
-                        ]) { err in
-                            if let err = err {
-                                print("Error adding document: \(err)")
-                            } else {
-                                print("Document added with ID: \(user.uid)")
-                                self.dismiss(animated: true) {}
-                            }
-                        }
-                    } else {
-                        print("something went wrong")
-                    }
-                }
-            }
-        }
-    }
+    private func isValidEmail(_ email: String) -> Bool {
+           let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+           let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+           return emailPred.evaluate(with: email)
+       }
+       
+       private func signUp() {
+           // If the registration is not via Google Account
+           if hideMailAndPassword == false {
+               if let email = emailTextField.text,
+                   let password = newPasswordTextField.text {
+                   Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                       // error handling
+                       if error != nil {
+                           let alert = UIAlertController(
+                               title: nil, message: error!.localizedDescription,
+                               preferredStyle: .alert)
+                           alert.addAction(
+                               UIAlertAction(
+                                   title: NSLocalizedString("OK", comment: "Default Action"),
+                                   style: .default)
+                           )
+                           self.present(alert, animated: true, completion: nil)
+                           // Write userdata to firestore
+                       } else if authResult != nil {
+                           if let givenName = self.givennameTextField.text,
+                            let name = self.nameTextField.text,
+                            let address = self.addressTextField.text,
+                            let radius = self.radiusTextField.text,
+                            let user = Auth.auth().currentUser {
+                               self.db.collection("users")
+                                   .document(user.uid)
+                                   .setData([
+                                   "uid" : user.uid,
+                                   "givenName" : givenName,
+                                   "name" : name,
+                                   "address" : address,
+                                   "radius" : radius
+                               ]) { err in
+                                   if let err = err {
+                                       print("Error adding document: \(err)")
+                                   } else {
+                                       print("Document added with ID: \(user.uid)")
+                                       self.dismiss(animated: true) {}
+                                   }
+                               }
+                           } else {
+                               print("something went wrong")
+                           }
+                       }
+                   }
+               }
+           }
+           // If the registration is via Google Account and the missing user data must be set
+           else {
+               if let givenName = self.givennameTextField.text,
+                   let name = self.nameTextField.text,
+                   let address = self.addressTextField.text,
+                   let radius = self.radiusTextField.text,
+                   let user = Auth.auth().currentUser {
+                   self.db.collection("users")
+                       .document(user.uid)
+                       .setData([
+                       "uid" : user.uid,
+                       "givenName" : givenName,
+                       "name" : name,
+                       "address" : address,
+                       "radius" : radius
+                   ]) { err in
+                       if let err = err {
+                           print("Error adding document: \(err)")
+                       } else {
+                           print("Document added with ID: \(user.uid)")
+                           self.dismiss(animated: true) {}
+                       }
+                   }
+               } else {
+                   print("something went wrong")
+               }
+           }
+       }
     
     /*
     // MARK: - Navigation
