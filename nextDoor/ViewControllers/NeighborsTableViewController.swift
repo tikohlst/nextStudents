@@ -22,9 +22,12 @@ class NeighborsTableViewController: UITableViewController {
     private let showNeighborDetailSegue = "showNeighborDetail"
     let currentUserUID = Auth.auth().currentUser?.uid
 
-    override func viewDidLoad() {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        self.usersInRangeArray = []
+
         db.collection("users")
             .whereField("radius", isGreaterThan: "0")
             .getDocuments() { (querySnapshot, err) in

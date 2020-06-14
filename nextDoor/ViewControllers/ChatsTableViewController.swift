@@ -42,9 +42,11 @@ class ChatsTableViewController: UITableViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        self.chatsArray = []
 
         db.collection("Chats")
             .whereField("users", arrayContains: currentUserUID ?? 0)
@@ -52,16 +54,33 @@ class ChatsTableViewController: UITableViewController {
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    for document in querySnapshot!.documents {
-                        // Create Chat object with the uid of the currentUser and its chat partner
-                        let chat = Chat(dictionary: document.data())
-                        if chat != nil {
-                            self.chatsArray.append(chat!)
-                        }
+                    for chat in querySnapshot!.documents {
+                        // Get newest message from the chat with the found chat id
+                        self.db.collection("Chats")
+                            .document(chat.documentID)
+                            .collection("thread")
+                            .order(by: "created", descending: true)
+                            .limit(to: 1)
+                            .getDocuments() { (querySnapshot, err) in
+                                if let err = err {
+                                    print("Error getting documents: \(err)")
+                                } else {
+                                    for newestMessage in querySnapshot!.documents {
+                                        // Create Chat object with the uid of the currentUser and its chat partner and the timestamp from the latest message
+                                        let chat = Chat(dictionary: chat.data(), timestamp: (newestMessage.data()["created"] as? Timestamp)!)
+                                        self.chatsArray.append(chat!)
 
-                        // Update the table
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
+                                        // Sort the chats by time
+                                        self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
+                                            firstChat.timestamp.seconds > secondChat.timestamp.seconds
+                                        })
+
+                                        // Update the table
+                                        DispatchQueue.main.async {
+                                            self.tableView.reloadData()
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
