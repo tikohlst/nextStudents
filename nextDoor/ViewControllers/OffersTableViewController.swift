@@ -22,9 +22,10 @@ class OffersTableViewController: UITableViewController {
     var db: Firestore!
     var offersArray: [Offer] = []
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         db = Firestore.firestore()
+        offersArray.removeAll(keepingCapacity: false)
         if let currentUserUID = Auth.auth().currentUser?.uid {
             
             // TODO: query all offers from users in range
@@ -43,11 +44,11 @@ class OffersTableViewController: UITableViewController {
                                     let offerData = Offer(from: offer.data(), with: offer.documentID, owner: document.documentID)
                                     self.offersArray.append(offerData)
                                 }
+                                // Update the table
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+                                }
                             }
-                        }
-                        // Update the table
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
                         }
                     }
                 }
@@ -70,7 +71,7 @@ class OffersTableViewController: UITableViewController {
             cell.titleLabel.text = currentOffer.title
             cell.typeLabel.text = currentOffer.type
             // get the owner of the offer
-            db.document("offers/\(currentOffer.owner)").getDocument { (document, error) in
+            db.document("users/\(currentOffer.owner)").getDocument { (document, error) in
                 if error != nil {
                     print("error getting document: \(error!.localizedDescription)")
                 } else {
@@ -84,7 +85,6 @@ class OffersTableViewController: UITableViewController {
                 }
             }
         }
-        
         return cell
     }
     

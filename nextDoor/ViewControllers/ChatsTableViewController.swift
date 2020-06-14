@@ -43,8 +43,7 @@ class ChatsTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        super.viewWillAppear(animated)
 
         self.chatsArray = []
 

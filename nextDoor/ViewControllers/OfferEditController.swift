@@ -64,7 +64,8 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
     
     @IBAction func touchCreate(_ sender: UIBarButtonItem) {
         if let user = Auth.auth().currentUser {
-            self.db.collection("offers/\(user.uid)/offer").document(UUID.init().uuidString).setData([
+            self.db.collection("offers").document(user.uid).setData([:])
+            self.db.collection("offers").document(user.uid).collection("offer").document(UUID.init().uuidString).setData([
                 "date" : FieldValue.serverTimestamp(),
                 "title" : titleTextField.text ?? "",
                 "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
