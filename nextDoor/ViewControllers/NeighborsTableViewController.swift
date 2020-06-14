@@ -23,7 +23,7 @@ class NeighborsTableViewController: UITableViewController {
     let currentUserUID = Auth.auth().currentUser?.uid
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidLoad()
+        super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
 
         self.usersInRangeArray = []
@@ -43,7 +43,7 @@ class NeighborsTableViewController: UITableViewController {
                                             lastName: document.data()["name"] as! String,
                                             address: document.data()["address"] as! String,
                                             radius: document.data()["radius"] as! String,
-                                            bio: document.data()["bio"] as! String)
+                                            bio: document.data()["bio"] as? String ?? "")
                             self.usersInRangeArray.append(user)
 
                             // Update the table
