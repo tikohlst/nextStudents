@@ -46,22 +46,21 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - Custom messages handlers
-
     func createNewChat() {
         let users = [self.currentUserUID, self.user2UID]
-         let data: [String: Any] = [
+        let data: [String: Any] = [
              "users":users
-         ]
+        ]
 
-         db.collection("Chats")
+        db.collection("Chats")
             .addDocument(data: data) { (error) in
-             if let error = error {
-                 print("Unable to create chat! \(error)")
-                 return
-             } else {
-                 self.loadChat()
-             }
-         }
+                if let error = error {
+                    print("Unable to create chat! \(error)")
+                    return
+                } else {
+                    self.loadChat()
+                }
+        }
     }
 
     func loadChat() {
@@ -117,9 +116,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         }
     }
 
-
     private func insertNewMessage(_ message: Message) {
-
         messages.append(message)
         messagesCollectionView.reloadData()
 
@@ -129,7 +126,6 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     private func save(_ message: Message) {
-
         let data: [String: Any] = [
             "content": message.content,
             "created": message.created,
@@ -148,7 +144,6 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - InputBarAccessoryViewDelegate
-
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = Message(id: UUID().uuidString, content: text, created: Timestamp(), senderID: currentUserUID, senderName: "sender")
 
@@ -159,7 +154,6 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         messagesCollectionView.reloadData()
         messagesCollectionView.scrollToBottom(animated: true)
     }
-
 
     // MARK: - MessagesDataSource
     func currentSender() -> SenderType {
@@ -207,4 +201,5 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight: .bottomLeft
         return .bubbleTail(corner, .curved)
     }
+
 }

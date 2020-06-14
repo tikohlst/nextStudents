@@ -19,9 +19,8 @@ class SettingsTableViewController: UITableViewController {
     var db = Firestore.firestore()
     var currentUser = AuthUser()
     var storage: Storage!
-    
+
     // MARK: - Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,26 +30,26 @@ class SettingsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // fetch user name and //TODO: image
         let user = db.collection("users")
             .document("\(String(describing: Auth.auth().currentUser!.uid))")
-        
+
         user.getDocument{(document, error) in
             if let document = document, document.exists {
                 let data = document.data()
-                
+
                 self.currentUser.address = data?["address"] as? String
                 self.currentUser.firstName = data?["givenName"] as? String
                 self.currentUser.lastName = data?["name"] as? String
                 self.currentUser.radius = data?["radius"] as? String
                 self.currentUser.bio = data?["bio"] as? String
-                
+
                 // get profile image if it exists
                 let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
-                
+
                 storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
                     if let error = error {
                         print("Error while downloading profile image: \(error.localizedDescription)")
@@ -62,28 +61,27 @@ class SettingsTableViewController: UITableViewController {
                         self.imageView.image = image
                     }
                 }
-                
+
                 if self.currentUser.firstName != nil && self.currentUser.lastName != nil {
                     self.nameLabel.text = self.currentUser.firstName! + " " + self.currentUser.lastName!
                 }
-                
 
             } else {
                 print("Document doesn't exist.")
             }
         }
     }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath == self.tableView.indexPath(for: signOutCell) {
             signOut()
         }
     }
 
-    
     private func signOut() {
         do {
             try Auth.auth().signOut()
-            
+
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
             vc.modalPresentationStyle = .fullScreen
@@ -93,10 +91,7 @@ class SettingsTableViewController: UITableViewController {
             print("Something went wrong signing out the user")
         }
     }
-    
-    
-    
-    
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -163,14 +158,15 @@ class SettingsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         if let identifier = segue.identifier {
             switch identifier {
-                case "userProfileSegue":
-                    if let vc = segue.destination as? ProfileViewController {
-                        vc.currentUser = currentUser
-                    }
-                    break
-                default:
-                    break
+            case "userProfileSegue":
+                if let vc = segue.destination as? ProfileViewController {
+                    vc.currentUser = currentUser
+                }
+                break
+            default:
+                break
             }
         }
     }
+
 }

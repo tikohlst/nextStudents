@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 
 class RegistrationViewController: UIViewController {
+
     // MARK: - Variables
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var givennameTextField: UITextField!
@@ -29,7 +30,7 @@ class RegistrationViewController: UIViewController {
     var varHeaderLabel = "Registrierung"
     var varRegisterButton = "Registrieren"
     var hideMailAndPassword = false
-    
+
     override func viewWillAppear(_ animated: Bool) {
         headerLabel.text = varHeaderLabel
         registerButton.setTitle(varRegisterButton, for: [])
@@ -57,7 +58,6 @@ class RegistrationViewController: UIViewController {
     }
     
     @IBAction func touchRegister(_ sender: Any) {
-        //
         if hideMailAndPassword == false {
             if passwordsMatch {
                 if isValidEmail(emailTextField.text!) {
@@ -104,87 +104,87 @@ class RegistrationViewController: UIViewController {
     }
     
     private func isValidEmail(_ email: String) -> Bool {
-           let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
 
-           let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-           return emailPred.evaluate(with: email)
-       }
-       
-       private func signUp() {
-           // If the registration is not via Google Account
-           if hideMailAndPassword == false {
-               if let email = emailTextField.text,
-                   let password = newPasswordTextField.text {
-                   Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                       // error handling
-                       if error != nil {
-                           let alert = UIAlertController(
-                               title: nil, message: error!.localizedDescription,
-                               preferredStyle: .alert)
-                           alert.addAction(
-                               UIAlertAction(
-                                   title: NSLocalizedString("OK", comment: "Default Action"),
-                                   style: .default)
-                           )
-                           self.present(alert, animated: true, completion: nil)
-                           // Write userdata to firestore
-                       } else if authResult != nil {
-                           if let givenName = self.givennameTextField.text,
+    private func signUp() {
+        // If the registration is not via Google Account
+        if hideMailAndPassword == false {
+            if let email = emailTextField.text,
+                let password = newPasswordTextField.text {
+                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    // error handling
+                    if error != nil {
+                        let alert = UIAlertController(
+                            title: nil, message: error!.localizedDescription,
+                            preferredStyle: .alert)
+                        alert.addAction(
+                            UIAlertAction(
+                                title: NSLocalizedString("OK", comment: "Default Action"),
+                                style: .default)
+                        )
+                        self.present(alert, animated: true, completion: nil)
+                        // Write userdata to firestore
+                    } else if authResult != nil {
+                        if let givenName = self.givennameTextField.text,
                             let name = self.nameTextField.text,
                             let address = self.addressTextField.text,
                             let radius = self.radiusTextField.text,
                             let user = Auth.auth().currentUser {
-                               self.db.collection("users")
-                                   .document(user.uid)
-                                   .setData([
-                                   "uid" : user.uid,
-                                   "givenName" : givenName,
-                                   "name" : name,
-                                   "address" : address,
-                                   "radius" : radius
-                               ]) { err in
-                                   if let err = err {
-                                       print("Error adding document: \(err)")
-                                   } else {
-                                       print("Document added with ID: \(user.uid)")
-                                       self.dismiss(animated: true) {}
-                                   }
-                               }
-                           } else {
-                               print("something went wrong")
-                           }
-                       }
-                   }
-               }
-           }
-           // If the registration is via Google Account and the missing user data must be set
-           else {
-               if let givenName = self.givennameTextField.text,
-                   let name = self.nameTextField.text,
-                   let address = self.addressTextField.text,
-                   let radius = self.radiusTextField.text,
-                   let user = Auth.auth().currentUser {
-                   self.db.collection("users")
-                       .document(user.uid)
-                       .setData([
-                       "uid" : user.uid,
-                       "givenName" : givenName,
-                       "name" : name,
-                       "address" : address,
-                       "radius" : radius
-                   ]) { err in
-                       if let err = err {
-                           print("Error adding document: \(err)")
-                       } else {
-                           print("Document added with ID: \(user.uid)")
-                           self.dismiss(animated: true) {}
-                       }
-                   }
-               } else {
-                   print("something went wrong")
-               }
-           }
-       }
+                            self.db.collection("users")
+                                .document(user.uid)
+                                .setData([
+                                    "uid" : user.uid,
+                                    "givenName" : givenName,
+                                    "name" : name,
+                                    "address" : address,
+                                    "radius" : radius
+                                ]) { err in
+                                    if let err = err {
+                                        print("Error adding document: \(err)")
+                                    } else {
+                                        print("Document added with ID: \(user.uid)")
+                                        self.dismiss(animated: true) {}
+                                    }
+                            }
+                        } else {
+                           print("something went wrong")
+                        }
+                    }
+                }
+            }
+        }
+        // If the registration is via Google Account and the missing user data must be set
+        else {
+            if let givenName = self.givennameTextField.text,
+                let name = self.nameTextField.text,
+                let address = self.addressTextField.text,
+                let radius = self.radiusTextField.text,
+                let user = Auth.auth().currentUser {
+                self.db.collection("users")
+                    .document(user.uid)
+                    .setData([
+                        "uid" : user.uid,
+                        "givenName" : givenName,
+                        "name" : name,
+                        "address" : address,
+                        "radius" : radius
+                    ]) { err in
+                        if let err = err {
+                            print("Error adding document: \(err)")
+                        } else {
+                            print("Document added with ID: \(user.uid)")
+                            self.dismiss(animated: true) {}
+                        }
+                }
+            } else {
+                print("something went wrong")
+            }
+        }
+    }
     
     /*
     // MARK: - Navigation

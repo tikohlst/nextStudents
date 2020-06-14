@@ -8,7 +8,7 @@
 import Foundation
 
 struct User {
-    
+
     let uid: String
     var firstName: String
     var lastName: String
@@ -16,8 +16,9 @@ struct User {
     var radius: String
     var bio: String
     //var image: UIImage
-    
-    init(uid: String, firstName: String, lastName: String, address: String, radius: String, bio: String) { //image: UIImage
+
+    init(uid: String, firstName: String, lastName: String, address: String,
+         radius: String, bio: String) { //image: UIImage
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
@@ -26,4 +27,5 @@ struct User {
         self.bio = bio
         //self.image = image
     }
+
 }

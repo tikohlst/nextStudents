@@ -12,7 +12,7 @@ class PasswordViewController: UIViewController {
     @IBOutlet weak var newPasswordText: UITextField!
     @IBOutlet weak var repeatPasswordText: UITextField!
     @IBOutlet weak var saveButton: UIButton!
-    
+
     private var passwordsMatch: Bool{
         return newPasswordText.text == repeatPasswordText.text
     }
@@ -22,8 +22,6 @@ class PasswordViewController: UIViewController {
 //
 //        // Do any additional setup after loading the view.
 //    }
-    
-    
 
     /*
     // MARK: - Navigation
@@ -34,6 +32,7 @@ class PasswordViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
     @IBAction func touchSave(_ sender: UIButton) {
         if passwordsMatch {
             //TODO: set new password
@@ -49,5 +48,5 @@ class PasswordViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
 }

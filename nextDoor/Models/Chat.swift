@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 
 struct Chat {
+
     var users: [String]
     var dictionary: [String:Any] {
         return [
@@ -16,11 +17,14 @@ struct Chat {
         ]
     }
     var timestamp: Timestamp
+
 }
 
 extension Chat {
+
     init?(dictionary: [String:Any], timestamp: Timestamp) {
         guard let chatUsers = dictionary["users"] as? [String] else {return nil}
         self.init(users: chatUsers, timestamp: timestamp)
     }
+
 }

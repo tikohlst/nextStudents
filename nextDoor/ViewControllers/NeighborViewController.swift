@@ -27,11 +27,11 @@ class NeighborViewController: UIViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
+
         // show user bio
         bioTextView.text = user.bio
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if segue.identifier == createOrShowChatSegue {
@@ -67,4 +67,5 @@ class NeighborViewController: UIViewController {
             detailViewController.navigationItem.title = "\(firstName) \(lastName)"
         }
     }
+
 }

@@ -10,9 +10,8 @@ import Firebase
 import GoogleSignIn
 
 class LoginViewController: UIViewController, GIDSignInDelegate {
-    
-    // MARK: - Variables
 
+    // MARK: - Variables
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -27,19 +26,19 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             self.checkMissingUserData()
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
         self.checkMissingUserData()
     }
-    
+
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
             print(error.localizedDescription)
@@ -54,7 +53,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
         }
         self.checkMissingUserData()
     }
-    
+
     @IBAction func googleSignInPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
     }
@@ -80,7 +79,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
             }
         }
     }
-    
+
     func checkMissingUserData() {
         handle = Auth.auth().addStateDidChangeListener({ (auth, user) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -121,7 +120,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
             }
         })
     }
-    
     
     /*
     // MARK: - Navigation

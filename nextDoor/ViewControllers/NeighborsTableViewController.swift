@@ -10,9 +10,11 @@ import Firebase
 import FirebaseFirestoreSwift
 
 class NeighborTableViewCell: UITableViewCell {
+
     @IBOutlet weak var neighborNameLabel: UILabel!
     @IBOutlet weak var neighborRangeLabel: UILabel!
     @IBOutlet weak var neighborImageView: UIImageView!
+
 }
 
 class NeighborsTableViewController: UITableViewController {
@@ -43,7 +45,7 @@ class NeighborsTableViewController: UITableViewController {
                                             lastName: document.data()["name"] as! String,
                                             address: document.data()["address"] as! String,
                                             radius: document.data()["radius"] as! String,
-                                            bio: document.data()["bio"] as! String)
+                                            bio: document.data()["bio"] as? String ?? "")
                             self.usersInRangeArray.append(user)
 
                             // Update the table

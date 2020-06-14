@@ -104,7 +104,7 @@ class ChatsTableViewController: UITableViewController {
 
             // Get both users of the chat
             let users = currentChat.dictionary["users"] as! Array<String>
-            
+
             // Get uid from other chat partner
             let chatPartnerUID = users.first(where: { $0 != currentUserUID})! as String
 
@@ -187,4 +187,5 @@ class ChatsTableViewController: UITableViewController {
             }
         }
     }
+
 }

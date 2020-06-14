@@ -22,11 +22,12 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var changeProfilePictureButton: UIButton!
     @IBOutlet weak var deleteProfilePictureButton: UIButton!
+
     let placeholderText = "Erzähl was über dich..."
     var currentUser: AuthUser?
     var db: Firestore!
     var storage: Storage!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         db = Firestore.firestore()
@@ -34,18 +35,18 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         // prepare placeholder
         bioTextView.text = placeholderText
         bioTextView.textColor = UIColor.lightGray
-        
+
         // tag all text fields
         firstNameText.tag = 0
         lastNameText.tag = 1
         addressText.tag = 2
         radiusText.tag = 3
         bioTextView.tag = 4
-        
-        //Looks for single or multiple taps.
+
+        // Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         view.addGestureRecognizer(tap)
-        
+
         // add user information
         if let user = currentUser {
             firstNameText.text = user.firstName
@@ -54,26 +55,26 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             radiusText.text = user.radius
             bioTextView.text = user.bio
             profilePictureImageView.image = user.profileImage
-            
+
             if user.radius != nil {
                 radiusChanged(radiusText!)
             }
         }
-        }
-
-        //Calls this function when the tap is recognized.
-        @objc func dismissKeyboard() {
-            //Causes the view (or one of its embedded text fields) to resign the first responder status.
-            view.endEditing(true)
     }
-    
+
+    // Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        // Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         self.dismiss(animated: true, completion: nil)
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-         profilePictureImageView.image = pickedImage
+            profilePictureImageView.image = pickedImage
         }
     }
-    
+
     // MARK: - UI methods
     @IBAction func touchChangeProfilePicture(_ sender: UIButton) {
         let pickerController = UIImagePickerController()
@@ -82,50 +83,47 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             pickerController.allowsEditing = true
             pickerController.mediaTypes = ["public.image"]
             pickerController.sourceType = .photoLibrary
-            
+
             present(pickerController, animated: true, completion: nil)
         }
     }
+
     @IBAction func touchDeleteProfilePicture(_ sender: UIButton) {
         profilePictureImageView.image = nil
     }
+
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         // Combine the textView text and the replacement text to
         // create the updated text string
         let currentText:String = textView.text
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: text)
-        
+
         // If updated text view will be empty, add the placeholder
         // and set the cursor to the beginning of the text view
         if updatedText.isEmpty {
-            
             textView.text = placeholderText
             textView.textColor = UIColor.lightGray
             
             textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         }
-            
-            // Else if the text view's placeholder is showing and the
-            // length of the replacement string is greater than 0, set
-            // the text color to black then set its text to the
-            // replacement string
+        // Else if the text view's placeholder is showing and the
+        // length of the replacement string is greater than 0, set
+        // the text color to black then set its text to the
+        // replacement string
         else if textView.textColor == UIColor.lightGray && !text.isEmpty {
             textView.textColor = UIColor.black
             textView.text = text
         }
-            
-            // For every other case, the text should change with the usual
-            // behavior...
+        // For every other case, the text should change with the usual
+        // behavior...
         else {
             return true
         }
-        
         // ...otherwise return false since the updates have already
         // been made
         return false
     }
-    
+
     func textViewDidChangeSelection(_ textView: UITextView) {
         if self.view.window != nil {
             if textView.textColor == UIColor.lightGray {
@@ -133,10 +131,9 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             }
         }
     }
-    
+
     /// Focus the next tagged text field.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         let nextTag = textField.tag + 1
 
         if let nextResponder = textField.superview?.viewWithTag(nextTag) {
@@ -148,14 +145,13 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     }
 
     @IBAction func touchSave(_ sender: UIButton) {
-        
         if let user = currentUser, let authUser = Auth.auth().currentUser {
             user.firstName = firstNameText.text
             user.lastName = lastNameText.text
             user.address = addressText.text
             user.radius = radiusText.text
             user.bio = bioTextView.text
-            
+
             self.db.collection("users").document(authUser.uid).setData([
                 "givenName" : user.firstName ?? "",
                 "name" : user.lastName ?? "",
@@ -192,8 +188,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             }
         }
     }
-    
-    
+
     @IBAction func radiusChanged(_ sender: Any) {
         if type(of: sender) == type(of: radiusSlider!) {
             let oldValue = Int(round(radiusSlider.value))
@@ -201,7 +196,6 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
 
             radiusText.text = String(newValue)
             radiusSlider.value = Float(newValue)
-            
         } else {
             let oldValue = Int(radiusText.text!) ?? 0
             let newValue = oldValue / 50 * 50 + (oldValue < 50 ? 50 : 0)
@@ -209,7 +203,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             radiusText.text = String(newValue)
         }
     }
-    
+
     /*
     // MARK: - Navigation
 
