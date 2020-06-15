@@ -27,11 +27,11 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     var messages: [Message] = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         self.title = user2Name ?? "Chat"
-
+        navigationItem.title = user2Name ?? "ChatTest"
         navigationItem.largeTitleDisplayMode = .never
         maintainPositionOnKeyboardFrameChanged = true
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
