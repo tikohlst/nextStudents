@@ -26,7 +26,7 @@ class OffersTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         db = Firestore.firestore()
         offersArray.removeAll(keepingCapacity: false)
-        if let currentUserUID = Auth.auth().currentUser?.uid {
+        if Auth.auth().currentUser?.uid != nil {
             
             // TODO: query all offers from users in range
             
@@ -101,6 +101,22 @@ class OffersTableViewController: UITableViewController {
             }
                 
             completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier {
+            switch identifier {
+                case "showOfferDetails":
+                    if let vc = segue.destination as? OfferViewController {
+                        let selectedIndex = self.tableView.indexPathForSelectedRow!
+                        let selectedOffer = offersArray[selectedIndex.row]
+                        vc.offer = selectedOffer
+                        // if current user is the owner, show edit screen
+                }
+                default:
+                    break
+            }
         }
     }
 }
