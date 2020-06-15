@@ -25,7 +25,7 @@ class NeighborsTableViewController: UITableViewController {
     let currentUserUID = Auth.auth().currentUser?.uid
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidLoad()
+        super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
 
         self.usersInRangeArray = []

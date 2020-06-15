@@ -160,7 +160,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
                 "bio" : user.bio ?? ""
             ]) { err in
                 if let err = err {
-                    print("Error editing document: \(err)")
+                    print("Error editing document: \(err.localizedDescription)")
                 }
             }
             // profile image upload
