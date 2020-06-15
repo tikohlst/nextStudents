@@ -188,12 +188,13 @@
                         <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="Mie-4S-WMj"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tnT-4Z-JUT">
                             <connections>
-                                <segue destination="FfJ-Ih-jnY" kind="show" identifier="editOffer" id="4Zl-ks-Q0N"/>
+                                <segue destination="FfJ-Ih-jnY" kind="show" identifier="createNewOffer" id="4Zl-ks-Q0N"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="Kpx-xo-5Um" kind="show" identifier="showOfferDetails" id="3Rf-LC-dN3"/>
+                        <segue destination="FfJ-Ih-jnY" kind="show" identifier="editOffer" id="GkJ-ve-uKj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M2Q-L3-g9I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1277,6 +1278,9 @@
             <point key="canvasLocation" x="-1262" y="2795"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="4Zl-ks-Q0N"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="NextDoor_icon" width="96" height="96"/>
         <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
