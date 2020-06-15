@@ -130,16 +130,18 @@ class OffersTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let selectedIndex = self.tableView.indexPathForSelectedRow!
-        let selectedOffer = offersArray[selectedIndex.row]
         if let identifier = segue.identifier {
             switch identifier {
                 case "showOfferDetails":
                     if let vc = segue.destination as? OfferViewController {
+                        let selectedIndex = self.tableView.indexPathForSelectedRow!
+                        let selectedOffer = offersArray[selectedIndex.row]
                         vc.offer = selectedOffer
                 }
                 case "editOffer":
                     if let vc = segue.destination as? OfferEditController {
+                        let selectedIndex = self.tableView.indexPathForSelectedRow!
+                        let selectedOffer = offersArray[selectedIndex.row]
                         vc.currentOffer = selectedOffer
                     }
                 default:
