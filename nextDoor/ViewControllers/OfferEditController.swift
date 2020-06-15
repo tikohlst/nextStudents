@@ -75,7 +75,7 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
     }
 
     @IBAction func touchCancel(_ sender: UIBarButtonItem) {
-        presentingViewController?.dismiss(animated: true)
+        performSegue(withIdentifier: "backToOffers", sender: nil)
     }
     
     private func create() {
@@ -90,8 +90,6 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
             ]) { err in
                 if let err = err {
                     print("Error creating document: \(err.localizedDescription)")
-                } else {
-                    self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
             }
         }
@@ -107,8 +105,6 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
             ]) { err in
                 if let err = err {
                     print("Error editing document: \(err.localizedDescription)")
-                } else {
-                    self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
             }
         }
@@ -120,6 +116,7 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
         } else {
             create()
         }
+        performSegue(withIdentifier: "backToOffers", sender: nil)
     }
     
     /*

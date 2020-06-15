@@ -149,4 +149,8 @@ class OffersTableViewController: UITableViewController {
             }
         }
     }
+    // unwind segue
+    @IBAction func goBack(segue: UIStoryboardSegue) {
+        
+    }
 }
