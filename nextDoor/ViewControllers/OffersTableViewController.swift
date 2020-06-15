@@ -56,6 +56,16 @@ class OffersTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedOffer = offersArray[indexPath.row]
+        if selectedOffer.owner == Auth.auth().currentUser?.uid {
+            // selected offer is owned by current user
+            performSegue(withIdentifier: "editOffer", sender: nil)
+        } else {
+            performSegue(withIdentifier: "showOfferDetails", sender: nil)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return offersArray.count
     }
@@ -104,16 +114,34 @@ class OffersTableViewController: UITableViewController {
         }
     }
     
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        switch identifier {
+            case "showOfferDetails":
+                let selectedIndex = self.tableView.indexPathForSelectedRow!
+                let selectedOffer = offersArray[selectedIndex.row]
+                if selectedOffer.owner == Auth.auth().currentUser?.uid {
+                    return false
+                }
+            default:
+                break
+        }
+        return true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let selectedIndex = self.tableView.indexPathForSelectedRow!
+        let selectedOffer = offersArray[selectedIndex.row]
         if let identifier = segue.identifier {
             switch identifier {
                 case "showOfferDetails":
                     if let vc = segue.destination as? OfferViewController {
-                        let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = offersArray[selectedIndex.row]
                         vc.offer = selectedOffer
-                        // if current user is the owner, show edit screen
                 }
+                case "editOffer":
+                    if let vc = segue.destination as? OfferEditController {
+                        vc.currentOffer = selectedOffer
+                    }
                 default:
                     break
             }

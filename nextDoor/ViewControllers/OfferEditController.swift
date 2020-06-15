@@ -21,6 +21,22 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
     var pickerData = [String]()
     var db = Firestore.firestore()
+    var currentOffer: Offer?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // if we edit an existing offer
+        if currentOffer != nil {
+            titleTextField.text = currentOffer!.title
+            createBarButtonItem.title = "Speichern"
+            navigationItem.title = currentOffer!.title
+            offerNeedControl.selectedSegmentIndex = currentOffer!.type == "Biete" ? 0 : 1
+            descriptionTextField.text = currentOffer!.description
+            timePickerView.selectRow(pickerData.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,10 +75,10 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
     }
 
     @IBAction func touchCancel(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true)
     }
     
-    @IBAction func touchCreate(_ sender: UIBarButtonItem) {
+    private func create() {
         if let user = Auth.auth().currentUser {
             self.db.collection("offers").document(user.uid).setData([:])
             self.db.collection("offers").document(user.uid).collection("offer").document(UUID.init().uuidString).setData([
@@ -75,9 +91,34 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
                 if let err = err {
                     print("Error creating document: \(err.localizedDescription)")
                 } else {
-                    self.dismiss(animated: true, completion: nil)
+                    self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
             }
+        }
+    }
+    
+    private func save() {
+        if let user = Auth.auth().currentUser {
+            self.db.collection("offers").document(user.uid).collection("offer").document(currentOffer!.id).updateData([
+                "title" : titleTextField.text ?? "",
+                "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+                "description" : descriptionTextField.text ?? "",
+                "duration" : pickerData[timePickerView.selectedRow(inComponent: 0)]
+            ]) { err in
+                if let err = err {
+                    print("Error editing document: \(err.localizedDescription)")
+                } else {
+                    self.presentingViewController?.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    @IBAction func touchCreate(_ sender: UIBarButtonItem) {
+        if currentOffer != nil {
+            save()
+        } else {
+            create()
         }
     }
     
