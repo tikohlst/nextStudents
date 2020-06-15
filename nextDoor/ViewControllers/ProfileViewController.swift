@@ -204,6 +204,47 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         }
     }
 
+    @IBAction func presentDeletionFailsafe(_ sender: Any) {
+        let alert = UIAlertController(title: nil, message: "Are you sure you'd like to delete your account?", preferredStyle: .alert)
+
+        let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            self.deleteUser()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    func deleteUser() {
+        let user = Auth.auth().currentUser
+        
+        // Delete user from the firebase database
+        db.collection("users").document(user!.uid).delete { error in
+            if let error = error {
+                // An error happened.
+                print(error)
+            } else {
+                // Delete user from the firebase authentication
+                user!.delete { error in
+                    if let error = error {
+                        // An error happened.
+                        print(error)
+                    } else {
+                        // Account was deleted. Go to login screen
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
+                        vc.modalPresentationStyle = .fullScreen
+                        vc.modalTransitionStyle = .crossDissolve
+                        self.present(vc, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
