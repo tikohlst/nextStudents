@@ -34,7 +34,6 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // fetch user name and //TODO: image
         let user = db.collection("users")
             .document("\(String(describing: Auth.auth().currentUser!.uid))")
 
@@ -163,7 +162,6 @@ class SettingsTableViewController: UITableViewController {
                 if let vc = segue.destination as? ProfileViewController {
                     vc.currentUser = currentUser
                 }
-                break
             default:
                 break
             }
