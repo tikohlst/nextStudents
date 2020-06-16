@@ -57,12 +57,15 @@ class OffersTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedOffer = offersArray[indexPath.row]
-        if selectedOffer.owner == Auth.auth().currentUser?.uid {
-            // selected offer is owned by current user
-            performSegue(withIdentifier: "editOffer", sender: nil)
-        } else {
-            performSegue(withIdentifier: "showOfferDetails", sender: nil)
+        if offersArray.count > 0 {
+            let selectedOffer = offersArray[indexPath.row]
+            if selectedOffer.owner == Auth.auth().currentUser?.uid {
+                // selected offer is owned by current user
+                performSegue(withIdentifier: "editOffer", sender: nil)
+            } else {
+                performSegue(withIdentifier: "showOfferDetails", sender: nil)
+            }
+            
         }
     }
     

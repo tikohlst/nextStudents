@@ -8,12 +8,13 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class ChatTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var chatPartnerNameLabel: UILabel!
-    @IBOutlet weak var lastMessageLabel: UILabel!
-    @IBOutlet weak var chatPartnerImageView: UIImageView!
+    @IBOutlet weak var chatPartnerNameLabel: UILabel?
+    @IBOutlet weak var lastMessageLabel: UILabel?
+    @IBOutlet weak var chatPartnerImageView: UIImageView?
 
 }
 
@@ -24,7 +25,13 @@ class ChatsTableViewController: UITableViewController {
     private let showChatDetailSegue = "showChatDetail"
     let currentUserUID = Auth.auth().currentUser?.uid
     var chatPartnerUID = ""
+    var storage: Storage!
 
+    
+    override func viewDidLoad() {
+        storage = Storage.storage()
+        getAndSortChatsAndUpdateTable()
+    }
     func getFirstAndLastName(completion: @escaping (String) -> Void) {
         // The database query is actually asynchronous, but in order
         // to display the name, it must be executed synchronously
@@ -97,7 +104,7 @@ class ChatsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getAndSortChatsAndUpdateTable()
+        //getAndSortChatsAndUpdateTable()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -125,12 +132,27 @@ class ChatsTableViewController: UITableViewController {
             // Get first and last name of the chat partner and write it in the correct label
             self.chatPartnerUID = chatPartnerUID
             getFirstAndLastName { firstAndLastName in
-                cell.chatPartnerNameLabel?.text = firstAndLastName
+                //cell.chatPartnerNameLabel?.text = firstAndLastName
+                cell.textLabel?.text = firstAndLastName
             }
 
             // Get image of the chat partner and write it in the correct image
-            cell.chatPartnerImageView?.image = UIImage(named: "Test")
+            
+            // get profile image if it exists
+            let storageRef = self.storage.reference(withPath: "profilePictures/\(self.chatPartnerUID)/profilePicture.jpg")
 
+            storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("Error while downloading profile image: \(error.localizedDescription)")
+                    cell.chatPartnerImageView?.image = UIImage(named: "Test")
+                } else {
+                    // Data for "profilePicture.jpg" is returned
+                    let image = UIImage(data: data!)
+                    //cell.chatPartnercurrentUser.profileImage = image
+                    //cell.chatPartnerImageView?.image = image
+                    cell.imageView?.image  = image
+                }
+            }
             // Get the chat id from the chat with currentUserUID and chatPartnerUID
             db.collection("Chats")
                 .whereField("users", in: [[currentUserUID, chatPartnerUID], [chatPartnerUID, currentUserUID]])
@@ -153,7 +175,8 @@ class ChatsTableViewController: UITableViewController {
 
                                     for document in documents {
                                         // Write last message in cell
-                                        cell.lastMessageLabel?.text = document.data()["content"] as? String
+                                        //cell.lastMessageLabel?.text = document.data()["content"] as? String
+                                        cell.detailTextLabel?.text = document.data()["content"] as? String
                                     }
                             }
                         }
