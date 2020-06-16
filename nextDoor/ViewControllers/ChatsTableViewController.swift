@@ -10,41 +10,44 @@ import Firebase
 import FirebaseFirestoreSwift
 
 class ChatTableViewCell: UITableViewCell {
+
     @IBOutlet weak var chatPartnerNameLabel: UILabel!
     @IBOutlet weak var lastMessageLabel: UILabel!
     @IBOutlet weak var chatPartnerImageView: UIImageView!
+
 }
 
 class ChatsTableViewController: UITableViewController {
+
     var db = Firestore.firestore()
     var chatsArray: [Chat] = []
     private let showChatDetailSegue = "showChatDetail"
     let currentUserUID = Auth.auth().currentUser?.uid
-    var counter2 = 0
     var chatPartnerUID = ""
 
-    func getFirstNameLastName(completion: @escaping (String) -> Void) {
+    func getFirstAndLastName(completion: @escaping (String) -> Void) {
         // The database query is actually asynchronous, but in order
         // to display the name, it must be executed synchronously
         db.collection("users")
-            .whereField("uid", isEqualTo: chatPartnerUID)
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        // Get first and last name of the chat partner
-                        let firstName = document.data()["givenName"] as! String
-                        let lastName = document.data()["name"] as! String
-                        completion("\(firstName) \(lastName)")
-                    }
+            .document(chatPartnerUID)
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
                 }
-        }
+                guard let data = document.data() else {
+                    print("Document data was empty.")
+                    return
+                }
+
+                // Get first and last name of the chat partner
+                let firstName = data["givenName"] as! String
+                let lastName = data["name"] as! String
+                completion("\(firstName) \(lastName)")
+            }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
+    func getAndSortChatsAndUpdateTable() {
         self.chatsArray = []
 
         db.collection("Chats")
@@ -60,30 +63,41 @@ class ChatsTableViewController: UITableViewController {
                             .collection("thread")
                             .order(by: "created", descending: true)
                             .limit(to: 1)
-                            .getDocuments() { (querySnapshot, err) in
-                                if let err = err {
-                                    print("Error getting documents: \(err)")
-                                } else {
-                                    for newestMessage in querySnapshot!.documents {
-                                        // Create Chat object with the uid of the currentUser and its chat partner and the timestamp from the latest message
-                                        let chat = Chat(dictionary: chat.data(), timestamp: (newestMessage.data()["created"] as? Timestamp)!)
-                                        self.chatsArray.append(chat!)
-
-                                        // Sort the chats by time
-                                        self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
-                                            firstChat.timestamp.seconds > secondChat.timestamp.seconds
-                                        })
-
-                                        // Update the table
-                                        DispatchQueue.main.async {
-                                            self.tableView.reloadData()
-                                        }
-                                    }
+                            .addSnapshotListener { querySnapshot, error in
+                                guard let documents = querySnapshot?.documents else {
+                                    print("Error fetching documents: \(error!)")
+                                    return
                                 }
-                        }
+
+                                for newestMessage in documents {
+                                    // Create Chat object with the uid of the currentUser and its chat partner and the timestamp from the latest message
+                                    let newChat = Chat(dictionary: chat.data(), timestamp: (newestMessage.data()["created"] as? Timestamp)!)
+
+                                    // Remove existing chat object if exists
+                                    if let existingChat = self.chatsArray.firstIndex(where: { $0.users.sorted() == newChat?.users.sorted() })
+                                    {
+                                        self.chatsArray.remove(at: existingChat)
+                                    }
+
+                                    self.chatsArray.append(newChat!)
+
+                                    // Sort the chats by time
+                                    self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
+                                        firstChat.timestamp.seconds > secondChat.timestamp.seconds
+                                    })
+
+                                    // Update the table
+                                    self.tableView.reloadData()
+                                }
+                            }
                     }
                 }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getAndSortChatsAndUpdateTable()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,6 +108,7 @@ class ChatsTableViewController: UITableViewController {
     // for visible table cells.
     override func tableView(_ tableView: UITableView,
                              cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath) as! ChatTableViewCell
 
@@ -109,7 +124,7 @@ class ChatsTableViewController: UITableViewController {
 
             // Get first and last name of the chat partner and write it in the correct label
             self.chatPartnerUID = chatPartnerUID
-            getFirstNameLastName { firstAndLastName in
+            getFirstAndLastName { firstAndLastName in
                 cell.chatPartnerNameLabel?.text = firstAndLastName
             }
 
@@ -130,19 +145,15 @@ class ChatsTableViewController: UITableViewController {
                                 .collection("thread")
                                 .order(by: "created", descending: true)
                                 .limit(to: 1)
-                                .getDocuments() { (querySnapshot, err) in
-                                    if let err = err {
-                                        print("Error getting documents: \(err)")
-                                    } else {
-                                        for document in querySnapshot!.documents {
-                                            // Write last message in cell
-                                            cell.lastMessageLabel?.text = document.data()["content"] as? String
+                                .addSnapshotListener { querySnapshot, error in
+                                    guard let documents = querySnapshot?.documents else {
+                                        print("Error fetching documents: \(error!)")
+                                        return
+                                    }
 
-                                            // Update the table
-                                            DispatchQueue.main.async {
-                                                self.tableView.reloadData()
-                                            }
-                                        }
+                                    for document in documents {
+                                        // Write last message in cell
+                                        cell.lastMessageLabel?.text = document.data()["content"] as? String
                                     }
                             }
                         }
@@ -151,6 +162,46 @@ class ChatsTableViewController: UITableViewController {
         }
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Retrieve the selected chat
+            let currentChat = chatsArray[indexPath.row]
+
+            // Get both users of the chat
+            let users = currentChat.dictionary["users"] as! Array<String>
+
+            // Get uid from chat partner
+            let chatPartnerUID = users.first(where: { $0 != currentUserUID})! as String
+
+            chatsArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+
+            // Get the chat id from the chat with currentUserUID and chatPartnerUID
+            db.collection("Chats")
+                .whereField("users", in: [[currentUserUID, chatPartnerUID], [chatPartnerUID, currentUserUID]])
+                .getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            print("\ndocument.documentID: \(document.documentID)\n")
+                            // Delete chat from the firebase database
+                            self.db.collection("Chats")
+                                .document(document.documentID)
+                                .delete() { error in
+                                if let error = error {
+                                    // An error happened.
+                                    print(error)
+                                } else {
+                                    print("Success")
+                                }
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -174,15 +225,16 @@ class ChatsTableViewController: UITableViewController {
             // Set the user ID at the ChatViewController
             detailViewController.user2UID = chatPartnerUID
 
-            // Get first and last name of the chat partner and write it in the correct label
-            //detailViewController.user2Name = getFirstNameLastName(chatPartnerUID: chatPartnerUID)
-
             detailViewController.user2ImgUrl = "https://image.flaticon.com/icons/svg/21/21104.svg"
 
-            // Set the title of the navigation item on the ChatViewController
             self.chatPartnerUID = chatPartnerUID
-            getFirstNameLastName { firstAndLastName in
+
+            // Get first and last name of the chat partner
+            getFirstAndLastName { firstAndLastName in
+                // Set the title of the navigation item on the ChatViewController
                 detailViewController.navigationItem.title = firstAndLastName
+                // Set the user name of the user label on the ChatViewController
+                detailViewController.user2Name = firstAndLastName
             }
         }
     }
