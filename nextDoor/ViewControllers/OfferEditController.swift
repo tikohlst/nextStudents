@@ -122,6 +122,7 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
         }
         performSegue(withIdentifier: "backToOffers", sender: nil)
     }
+<<<<<<< HEAD
 
     // This function is called when you click return key in the text field.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -130,6 +131,9 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
         return true
     }
 
+=======
+    
+>>>>>>> offers-tab
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
