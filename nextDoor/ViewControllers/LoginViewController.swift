@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import GoogleSignIn
 
-class LoginViewController: UIViewController, GIDSignInDelegate {
+class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDelegate {
 
     // MARK: - Variables
     @IBOutlet weak var emailText: UITextField!
@@ -25,6 +25,10 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
         // Do any additional setup after loading the view.
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
+
+        // Must be set for func textFieldShouldReturn()
+        emailText.delegate = self
+        passwordText.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +124,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate {
             }
         })
     }
-    
+
+    // This function is called when you click return key in the text field.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Resign the first responder from textField to close the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+
     /*
     // MARK: - Navigation
 

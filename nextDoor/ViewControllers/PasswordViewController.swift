@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PasswordViewController: UIViewController {
+class PasswordViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var newPasswordText: UITextField!
     @IBOutlet weak var repeatPasswordText: UITextField!
@@ -16,12 +16,15 @@ class PasswordViewController: UIViewController {
     private var passwordsMatch: Bool{
         return newPasswordText.text == repeatPasswordText.text
     }
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        // Do any additional setup after loading the view.
-//    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+
+        // Must be set for func textFieldShouldReturn()
+        newPasswordText.delegate = self
+        repeatPasswordText.delegate = self
+    }
 
     /*
     // MARK: - Navigation
@@ -47,6 +50,13 @@ class PasswordViewController: UIViewController {
             )
             self.present(alert, animated: true, completion: nil)
         }
+    }
+
+    // This function is called when you click return key in the text field.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Resign the first responder from textField to close the keyboard.
+        textField.resignFirstResponder()
+        return true
     }
 
 }

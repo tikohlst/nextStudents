@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource{
+class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var offerNeedControl: UISegmentedControl!
     @IBOutlet weak var titleTextField: UITextField!
@@ -25,7 +25,11 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
+        // Must be set for func textFieldShouldReturn()
+        titleTextField.delegate = self
+        descriptionTextField.delegate = self
+
         // if we edit an existing offer
         if currentOffer != nil {
             titleTextField.text = currentOffer!.title
@@ -118,7 +122,14 @@ class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPicker
         }
         performSegue(withIdentifier: "backToOffers", sender: nil)
     }
-    
+
+    // This function is called when you click return key in the text field.
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Resign the first responder from textField to close the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
