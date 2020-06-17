@@ -30,8 +30,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.title = user2Name ?? "Gelöschter Account"
-        navigationItem.title = user2Name ?? "Gelöschter Account"
+        self.title = user2Name
+        navigationItem.title = user2Name
         navigationItem.largeTitleDisplayMode = .never
         maintainPositionOnKeyboardFrameChanged = true
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
@@ -82,8 +82,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                 else if queryCount >= 1 {
                     // Chat(s) found for currentUser
                     for doc in chatQuerySnap!.documents {
-                        // Timestamp is irrelevant for this declaration
-                        let chat = Chat(dictionary: doc.data(), timestamp: Timestamp.init(date: Date()))
+                        let chat = Chat(dictionary: doc.data())
                         // Get the chat which has user2 id
                         if chat!.users.contains(self.user2UID ?? "") {
                             self.docReference = doc.reference

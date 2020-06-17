@@ -16,15 +16,21 @@ struct Chat {
             "users": users
         ]
     }
-    var timestamp: Timestamp
+    var timestamp: Timestamp?
+    var latestMessage: String = ""
+    var chatUID: String = ""
+    var chatPartnerUID: String = ""
+    var chatPartnerProfileImage: UIImage? = nil
+    var chatPartnerFirstName = "Gelöschter"
+    var chatPartnerLastName = "Account"
 
 }
 
 extension Chat {
 
-    init?(dictionary: [String:Any], timestamp: Timestamp) {
+    init?(dictionary: [String:Any]) {
         guard let chatUsers = dictionary["users"] as? [String] else {return nil}
-        self.init(users: chatUsers, timestamp: timestamp)
+        self.init(users: chatUsers)
     }
 
 }
