@@ -61,7 +61,7 @@ class OfferViewController: UIViewController {
                             // Get first and last name of the chat partner and write it in the correct label
                             detailViewController.user2Name = "\(firstName) \(lastName)"
                             
-                            detailViewController.user2ImgUrl = "https://image.flaticon.com/icons/svg/21/21104.svg"
+                            //detailViewController.user2Img = "https://image.flaticon.com/icons/svg/21/21104.svg"
                             
                             // Set the title of the navigation item on the ChatViewController
                             detailViewController.navigationItem.title = "\(firstName) \(lastName)"

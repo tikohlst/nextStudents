@@ -11,17 +11,21 @@ import FirebaseFirestoreSwift
 import MessageKit
 import InputBarAccessoryView
 import SDWebImage
+import FirebaseStorage
 
 class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
 
     var db = Firestore.firestore()
+    var storage = Storage.storage()
     let currentUserUID = Auth.auth().currentUser!.uid
+    var currentUserProfileImage: UIImage? = nil
+
     var chatsArray: [Chat] = []
     private let showChatDetailSegue = "showChatDetail"
 
     var user2UID: String?
     var user2Name: String?
-    var user2ImgUrl: String?
+    var user2Img: UIImage? = nil
 
     private var docReference: DocumentReference?
 
@@ -42,7 +46,18 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
 
-        loadChat()
+        // Get profile image of the current user
+        let storageRef = self.storage.reference(withPath: "profilePictures/\(currentUserUID)/profilePicture.jpg")
+        storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+            if let error = error {
+                print("Error while downloading profile image: \(error.localizedDescription)")
+                self.currentUserProfileImage = UIImage(named: "defaultProfilePicture")
+            } else {
+                // Data for "profilePicture.jpg" is returned
+                self.currentUserProfileImage = UIImage(data: data!)
+            }
+            self.loadChat()
+        }
     }
 
     // MARK: - Custom messages handlers
@@ -135,7 +150,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
         docReference?.collection("thread").addDocument(data: data, completion: { (error) in
             if let error = error {
-                print("Error Sending message: \(error)")
+                print("Error sending message: \(error)")
                 return
             }
             self.messagesCollectionView.scrollToBottom()
@@ -183,18 +198,14 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         return isFromCurrentSender(message: message) ? .blue: .lightGray
     }
 
-//    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-//
-//        if message.sender.senderId == currentUserUID {
-//            SDWebImageManager.shared.loadImage(with: currentUser.photoURL, options: .highPriority, progress: nil) { (image, data, error, cacheType, isFinished, imageUrl) in
-//                avatarView.image = image
-//            }
-//        } else {
-//            SDWebImageManager.shared.loadImage(with: URL(string: user2ImgUrl!), options: .highPriority, progress: nil) { (image, data, error, cacheType, isFinished, imageUrl) in
-//                avatarView.image = image
-//            }
-//        }
-//    }
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+
+        if message.sender.senderId == currentUserUID {
+            avatarView.image = currentUserProfileImage
+        } else {
+            avatarView.image = user2Img
+        }
+    }
 
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight: .bottomLeft

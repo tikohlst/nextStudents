@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class NeighborTableViewCell: UITableViewCell {
 
@@ -20,15 +21,14 @@ class NeighborTableViewCell: UITableViewCell {
 class NeighborsTableViewController: UITableViewController {
 
     var db = Firestore.firestore()
-    var usersInRangeArray: [User] = []
-    private let showNeighborDetailSegue = "showNeighborDetail"
+    var storage = Storage.storage()
     let currentUserUID = Auth.auth().currentUser?.uid
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Do any additional setup after loading the view.
+    private let showNeighborDetailSegue = "showNeighborDetail"
+    var usersInRangeArray: [User] = []
 
-        self.usersInRangeArray = []
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         db.collection("users")
             .whereField("radius", isGreaterThan: "0")
@@ -40,16 +40,32 @@ class NeighborsTableViewController: UITableViewController {
                         // Don't show currentUser as its own neighbor
                         if (self.currentUserUID != (document.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
-                            let user = User(uid: document.documentID,
+                            var newUser = User(uid: document.documentID,
                                             firstName: document.data()["givenName"] as! String,
                                             lastName: document.data()["name"] as! String,
                                             address: document.data()["address"] as! String,
                                             radius: document.data()["radius"] as! String,
                                             bio: document.data()["bio"] as? String ?? "")
-                            self.usersInRangeArray.append(user)
 
-                            // Update the table
-                            DispatchQueue.main.async {
+                            // Get profile image of the neighbor
+                            let storageRef = self.storage.reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
+                            storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+                                if let error = error {
+                                    print("Error while downloading profile image: \(error.localizedDescription)")
+                                    newUser.profileImage = UIImage(named: "defaultProfilePicture")
+                                } else {
+                                    // Data for "profilePicture.jpg" is returned
+                                    newUser.profileImage = UIImage(data: data!)
+                                }
+
+                                self.usersInRangeArray.append(newUser)
+
+                                // Sort the user by first name
+                                self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
+                                    firstUser.firstName < secondUser.firstName
+                                })
+
+                                // Update the table
                                 self.tableView.reloadData()
                             }
                         }
@@ -69,11 +85,18 @@ class NeighborsTableViewController: UITableViewController {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
 
+        // Show all existing users
         if usersInRangeArray.count > 0 {
             let currentUser = usersInRangeArray[indexPath.row]
-            cell.neighborNameLabel?.text = currentUser.firstName
-            cell.neighborRangeLabel?.text = currentUser.radius
-            //cell.neighborImageView?.image = UIImage(named: fruit)
+
+            // Write first name of the neighbor in the cell
+            cell.textLabel?.text = currentUser.firstName
+
+            // Write radius to actual user in cell
+            cell.detailTextLabel?.text = currentUser.radius
+
+            // Write profil image in cell
+            cell.imageView?.image = currentUser.profileImage
         }
 
         return cell
@@ -83,21 +106,19 @@ class NeighborsTableViewController: UITableViewController {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if segue.identifier == showNeighborDetailSegue {
             // Show the selected User on the Detail view
-            guard let indexPath = self.tableView.indexPathForSelectedRow else {
-                return
-            }
+            let indexPath = self.tableView.indexPathForSelectedRow!
 
-            // Retrieve the selected User
-            let selectedEntity = usersInRangeArray[indexPath.row]
+            // Retrieve the selected user
+            let currentUser = usersInRangeArray[indexPath.row]
 
             // Get an instance of the NeighborViewController with asking the segue for it's destination.
             let detailViewController = segue.destination as! NeighborViewController
 
-            // Set the customer ID at the NeighborViewController.
-            detailViewController.user = selectedEntity
+            // Set the currentUser at the NeighborViewController.
+            detailViewController.user = currentUser
 
             // Set the title of the navigation item on the NeighborViewController
-            detailViewController.navigationItem.title = "\(usersInRangeArray[indexPath.row].firstName ), \(usersInRangeArray[indexPath.row].radius )"
+            detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
         }
     }
 

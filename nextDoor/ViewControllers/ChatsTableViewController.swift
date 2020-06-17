@@ -22,8 +22,8 @@ class ChatsTableViewController: UITableViewController {
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
-
     let currentUserUID = Auth.auth().currentUser?.uid
+
     private let showChatDetailSegue = "showChatDetail"
     var chatsArray: [Chat] = []
 
@@ -94,6 +94,7 @@ class ChatsTableViewController: UITableViewController {
                                     storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
                                         if let error = error {
                                             print("Error while downloading profile image: \(error.localizedDescription)")
+                                            newChat?.chatPartnerProfileImage = UIImage(named: "defaultProfilePicture")
                                         } else {
                                             // Data for "profilePicture.jpg" is returned
                                             newChat?.chatPartnerProfileImage = UIImage(data: data!)
@@ -135,11 +136,11 @@ class ChatsTableViewController: UITableViewController {
             // Write first and last name of the chat partner in the cell
             cell.textLabel?.text = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
 
-            // Write profil image in cell
-            cell.imageView?.image = currentChat.chatPartnerProfileImage
-            
             // Write latest message in cell
             cell.detailTextLabel?.text = currentChat.latestMessage
+
+            // Write profil image in cell
+            cell.imageView?.image = currentChat.chatPartnerProfileImage
         }
 
         return cell
@@ -182,10 +183,10 @@ class ChatsTableViewController: UITableViewController {
             detailViewController.user2UID = currentChat.chatPartnerUID
 
             // Set the label on the ChatViewController
-            detailViewController.user2Name = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
+            detailViewController.user2Name = "\(currentChat.chatPartnerFirstName) \(currentChat.chatPartnerLastName)"
 
             // Set the user image
-            detailViewController.user2ImgUrl = "https://image.flaticon.com/icons/svg/21/21104.svg"
+            detailViewController.user2Img = currentChat.chatPartnerProfileImage
         }
     }
 

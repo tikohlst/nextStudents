@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct User {
 
@@ -15,7 +16,7 @@ struct User {
     var address: String
     var radius: String
     var bio: String
-    //var image: UIImage
+    var profileImage: UIImage? = nil
 
     init(uid: String, firstName: String, lastName: String, address: String,
          radius: String, bio: String) { //image: UIImage
@@ -25,7 +26,6 @@ struct User {
         self.address = address
         self.radius = radius
         self.bio = bio
-        //self.image = image
     }
 
 }
