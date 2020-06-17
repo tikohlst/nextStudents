@@ -17,17 +17,17 @@ struct Offer {
     var duration: String
     var date: Date
     var type: String
-    var owner: String
+    var ownerUID: String
     
     
-    init(from dictionary: [String:Any], with id: String, owner: String) {
+    init(from dictionary: [String:Any], with id: String, ownerUID: String) {
         self.title = dictionary["title"] as! String
         self.description = dictionary["description"] as! String
         self.date = (dictionary["date"] as! Timestamp).dateValue()
         self.duration = dictionary["duration"] as! String
         self.type = dictionary["type"] as! String
         self.id = id
-        self.owner = owner
+        self.ownerUID = ownerUID
     }
 
 }
