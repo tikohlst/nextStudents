@@ -33,14 +33,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     override func viewWillAppear(_ animated: Bool) {
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            self.checkMissingUserData()
+            //self.checkMissingUserData()
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
-        self.checkMissingUserData()
+        //self.checkMissingUserData()
     }
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -78,7 +78,10 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                     strongSelf.present(alert, animated: true, completion: nil)
                 }
                 else {
-                    self?.checkMissingUserData()
+                    //self?.checkMissingUserData()
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
                 }
             }
         }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct User {
+class User {
 
     let uid: String
     var firstName: String

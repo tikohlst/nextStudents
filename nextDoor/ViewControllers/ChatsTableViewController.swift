@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 import FirebaseStorage
 
 class ChatTableViewCell: UITableViewCell {

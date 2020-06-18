@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 import FirebaseStorage
 
 class SettingsTableViewController: UITableViewController {
@@ -18,13 +19,13 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var signOutCell: UITableViewCell!
     var db = Firestore.firestore()
-    var currentUser = AuthUser()
+    var currentUser : User!
     var storage: Storage!
 
     // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        currentUser = (parent?.parent as! MainController).currentUser
         storage = Storage.storage()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -34,42 +35,44 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let user = db.collection("users")
-            .document("\(String(describing: Auth.auth().currentUser!.uid))")
-
-        user.getDocument{(document, error) in
-            if let document = document, document.exists {
-                let data = document.data()
-
-                self.currentUser.address = data?["address"] as? String
-                self.currentUser.firstName = data?["givenName"] as? String
-                self.currentUser.lastName = data?["name"] as? String
-                self.currentUser.radius = data?["radius"] as? String
-                self.currentUser.bio = data?["bio"] as? String
-
-                // get profile image if it exists
-                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
-
-                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
-                    if let error = error {
-                        print("Error while downloading profile image: \(error.localizedDescription)")
-                        self.imageView.image = nil
-                    } else {
-                        // Data for "profilePicture.jpg" is returned
-                        let image = UIImage(data: data!)
-                        self.currentUser.profileImage = image
-                        self.imageView.image = image
-                    }
-                }
-
-                if self.currentUser.firstName != nil && self.currentUser.lastName != nil {
-                    self.nameLabel.text = self.currentUser.firstName! + " " + self.currentUser.lastName!
-                }
-
-            } else {
-                print("Document doesn't exist.")
-            }
-        }
+//        let user = db.collection("users")
+//            .document("\(String(describing: Auth.auth().currentUser!.uid))")
+//
+//        user.getDocument{(document, error) in
+//            if let document = document, document.exists {
+//                let data = document.data()
+//
+//                self.currentUser.address = data?["address"] as? String
+//                self.currentUser.firstName = data?["givenName"] as? String
+//                self.currentUser.lastName = data?["name"] as? String
+//                self.currentUser.radius = data?["radius"] as? String
+//                self.currentUser.bio = data?["bio"] as? String
+//
+//                // get profile image if it exists
+//                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
+//
+//                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+//                    if let error = error {
+//                        print("Error while downloading profile image: \(error.localizedDescription)")
+//                        self.imageView.image = nil
+//                    } else {
+//                        // Data for "profilePicture.jpg" is returned
+//                        let image = UIImage(data: data!)
+//                        self.currentUser.profileImage = image
+//                        self.imageView.image = image
+//                    }
+//                }
+//
+//                if self.currentUser.firstName != nil && self.currentUser.lastName != nil {
+//                    self.nameLabel.text = self.currentUser.firstName! + " " + self.currentUser.lastName!
+//                }
+//
+//            } else {
+//                print("Document doesn't exist.")
+//            }
+//        }
+        nameLabel.text = currentUser.firstName + " " + currentUser.lastName
+        self.imageView.image = currentUser.profileImage
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -84,9 +87,8 @@ class SettingsTableViewController: UITableViewController {
 
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
-            vc.modalPresentationStyle = .fullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(vc)
+            //self.present(vc, animated: true, completion: nil)
         } catch {
             print("Something went wrong signing out the user")
         }

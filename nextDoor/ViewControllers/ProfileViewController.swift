@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     @IBOutlet weak var deleteProfilePictureButton: UIButton!
 
     let placeholderText = "Erzähl was über dich..."
-    var currentUser: AuthUser?
+    var currentUser: User?
     var db: Firestore!
     var storage: Storage!
 
@@ -55,10 +55,8 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
             radiusText.text = user.radius
             bioTextView.text = user.bio
             profilePictureImageView.image = user.profileImage
+            radiusChanged(radiusText!)
 
-            if user.radius != nil {
-                radiusChanged(radiusText!)
-            }
         }
     }
 
@@ -146,18 +144,18 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
 
     @IBAction func touchSave(_ sender: UIButton) {
         if let user = currentUser, let authUser = Auth.auth().currentUser {
-            user.firstName = firstNameText.text
-            user.lastName = lastNameText.text
-            user.address = addressText.text
-            user.radius = radiusText.text
+            user.firstName = firstNameText.text ?? ""
+            user.lastName = lastNameText.text ?? ""
+            user.address = addressText.text ?? ""
+            user.radius = radiusText.text ?? ""
             user.bio = bioTextView.text
 
             self.db.collection("users").document(authUser.uid).setData([
-                "givenName" : user.firstName ?? "",
-                "name" : user.lastName ?? "",
-                "address" : user.address ?? "",
-                "radius" : user.radius ?? "",
-                "bio" : user.bio ?? ""
+                "givenName" : user.firstName,
+                "name" : user.lastName,
+                "address" : user.address,
+                "radius" : user.radius,
+                "bio" : user.bio
             ]) { err in
                 if let err = err {
                     print("Error editing document: \(err.localizedDescription)")
