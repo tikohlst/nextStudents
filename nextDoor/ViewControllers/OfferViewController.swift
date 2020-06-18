@@ -43,12 +43,12 @@ class OfferViewController: UIViewController {
                     let detailViewController = segue.destination as! ChatViewController
                     
                     // Set the user ID at the ChatViewController
-                    detailViewController.user2UID = offer!.owner
+                    detailViewController.user2UID = offer!.ownerUID
                     
                     var firstName = ""
                     var lastName = ""
                     let db = Firestore.firestore()
-                    let user = db.collection("users").document(offer!.owner)
+                    let user = db.collection("users").document(offer!.ownerUID)
                     user.getDocument { (document, error) in
                         if error != nil {
                             print("Error getting documents: \(error!.localizedDescription)")

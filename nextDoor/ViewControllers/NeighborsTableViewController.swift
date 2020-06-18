@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
@@ -40,7 +41,7 @@ class NeighborsTableViewController: UITableViewController {
                         // Don't show currentUser as its own neighbor
                         if (self.currentUserUID != (document.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
-                            var newUser = User(uid: document.documentID,
+                            let newUser = User(uid: document.documentID,
                                             firstName: document.data()["givenName"] as! String,
                                             lastName: document.data()["name"] as! String,
                                             address: document.data()["address"] as! String,
