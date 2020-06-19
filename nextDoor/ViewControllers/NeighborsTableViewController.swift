@@ -19,7 +19,8 @@ class NeighborTableViewCell: UITableViewCell {
 
 }
 
-class NeighborsTableViewController: UITableViewController {
+class NeighborsTableViewController: UITableViewController, UISearchResultsUpdating {
+    
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -27,6 +28,9 @@ class NeighborsTableViewController: UITableViewController {
 
     private let showNeighborDetailSegue = "showNeighborDetail"
     var usersInRangeArray: [User] = []
+    var searchedUsers : [User] = []
+    
+    private var searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +71,7 @@ class NeighborsTableViewController: UITableViewController {
                                 })
 
                                 // Update the table
+                                self.searchedUsers = self.usersInRangeArray.map({$0})
                                 self.tableView.reloadData()
                             }
                         }
@@ -74,9 +79,29 @@ class NeighborsTableViewController: UITableViewController {
                 }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setupSearch()
+    }
+    
+    func setupSearch() {
+        navigationItem.searchController = searchController
+        navigationItem.searchController?.obscuresBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
+        
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            searchedUsers = usersInRangeArray.filter({$0.firstName.localizedCaseInsensitiveContains(searchText) || $0.lastName.localizedCaseInsensitiveContains(searchText)})
+        } else {
+            searchedUsers = usersInRangeArray.map({$0})
+        }
+        tableView.reloadData()
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usersInRangeArray.count
+        return self.searchedUsers.count
     }
 
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -87,8 +112,8 @@ class NeighborsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
 
         // Show all existing users
-        if usersInRangeArray.count > 0 {
-            let currentUser = usersInRangeArray[indexPath.row]
+        if searchedUsers.count > 0 {
+            let currentUser = searchedUsers[indexPath.row]
 
             // Write first name of the neighbor in the cell
             cell.textLabel?.text = currentUser.firstName
@@ -110,7 +135,7 @@ class NeighborsTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
 
             // Retrieve the selected user
-            let currentUser = usersInRangeArray[indexPath.row]
+            let currentUser = searchedUsers[indexPath.row]
 
             // Get an instance of the NeighborViewController with asking the segue for it's destination.
             let detailViewController = segue.destination as! NeighborViewController
