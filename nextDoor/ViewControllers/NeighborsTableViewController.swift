@@ -103,6 +103,10 @@ class NeighborsTableViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if segue.identifier == showNeighborDetailSegue {
