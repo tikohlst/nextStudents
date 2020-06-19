@@ -20,7 +20,6 @@ class NeighborTableViewCell: UITableViewCell {
 }
 
 class NeighborsTableViewController: UITableViewController, UISearchResultsUpdating {
-    
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -141,18 +140,15 @@ class NeighborsTableViewController: UITableViewController, UISearchResultsUpdati
             // Retrieve the selected user
             let currentUser = searchedUsers[indexPath.row]
 
-            // Get an instance of the NeighborViewController with asking the segue for it's destination.
-            let detailViewController = segue.destination as! NeighborViewController
+            // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
+            let detailViewController = segue.destination as! NeighborTableViewController
 
-            // Set the currentUser at the NeighborViewController.
+            // Set the currentUser at the NeighborTableViewController.
             detailViewController.user = currentUser
 
-            // Set the title of the navigation item on the NeighborViewController
-            detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
+            // Set the title of the navigation item on the NeighborTableViewController
+            //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: showNeighborDetailSegue, sender: tableView.cellForRow(at: indexPath))
-    }
 }

@@ -18,7 +18,7 @@
 		2260844024700BDB00D30E81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2260843F24700BDB00D30E81 /* Assets.xcassets */; };
 		2260844324700BDB00D30E81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260844124700BDB00D30E81 /* LaunchScreen.storyboard */; };
 		226DC60024916A5600C30B4A /* ChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */; };
-		226F1C0B2490DA5F007F709D /* NeighborViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborViewController.swift */; };
+		226F1C0B2490DA5F007F709D /* NeighborTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */; };
 		22AAADC02491654300542F5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
 		22AAADC22491657C00542F5E /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
@@ -48,7 +48,7 @@
 		2260844224700BDB00D30E81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2260844424700BDB00D30E81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsTableViewController.swift; sourceTree = "<group>"; };
-		226F1C0A2490DA5F007F709D /* NeighborViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborViewController.swift; sourceTree = "<group>"; };
+		226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborTableViewController.swift; sourceTree = "<group>"; };
 		22AAADBF2491654300542F5E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		22AAADC12491657C00542F5E /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
 				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
 				221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */,
-				226F1C0A2490DA5F007F709D /* NeighborViewController.swift */,
+				226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */,
 				226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */,
 				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
 				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
@@ -143,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				8FCADB92249CC67000795221 /* SliderTextComponent.swift */,
-				8F250FCA24913EBB00A6CD39 /* AuthUser.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
 				22AAADBF2491654300542F5E /* Message.swift */,
@@ -324,14 +323,13 @@
 				8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */,
 				226DC60024916A5600C30B4A /* ChatsTableViewController.swift in Sources */,
 				8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */,
-				226F1C0B2490DA5F007F709D /* NeighborViewController.swift in Sources */,
+				226F1C0B2490DA5F007F709D /* NeighborTableViewController.swift in Sources */,
 				22AAADC22491657C00542F5E /* Chat.swift in Sources */,
 				221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */,
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,
 				2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */,
 				8FCADB93249CC67000795221 /* SliderTextComponent.swift in Sources */,
-				8F250FCB24913EBB00A6CD39 /* AuthUser.swift in Sources */,
 				8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

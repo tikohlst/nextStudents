@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '13.5'
+platform :ios, '13.5'
 
 target 'nextDoor' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -7,6 +7,7 @@ target 'nextDoor' do
 
   # Pods for nextDoor
   pod 'MessageKit'
+
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'

@@ -1,5 +1,5 @@
 //
-//  NeighborViewController.swift
+//  NeighborTableViewController.swift
 //  nextDoor
 //
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-class NeighborViewController: UIViewController {
+class NeighborTableViewController: UITableViewController {
 
     var db = Firestore.firestore()
     let currentUserUID = Auth.auth().currentUser?.uid
@@ -20,9 +20,11 @@ class NeighborViewController: UIViewController {
 
     var user: User!
 
+    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var bioTextView: UITextView!
-
+    @IBOutlet weak var address: UILabel!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -32,11 +34,22 @@ class NeighborViewController: UIViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
+        userNameLabel.text = "\(user.firstName) \(user.lastName)"
+        
         // show user profile Image
         profileImage.image = user.profileImage
+        // show profile image rounded
+        profileImage.layer.cornerRadius = profileImage.frame.height/2
 
         // show user bio
         bioTextView.text = user.bio
+        
+        // show user address
+        address.text = user.address
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
