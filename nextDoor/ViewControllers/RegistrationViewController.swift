@@ -30,6 +30,7 @@ class RegistrationViewController: UIViewController {
     var varHeaderLabel = "Registrierung"
     var varRegisterButton = "Registrieren"
     var hideMailAndPassword = false
+    let radiusComponent = SliderTextComponent()
 
     override func viewWillAppear(_ animated: Bool) {
         headerLabel.text = varHeaderLabel
@@ -43,6 +44,9 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        radiusComponent.slider = radiusSlider
+        radiusComponent.textField = radiusTextField
+        
         db = Firestore.firestore()
 
         // Looks for single or multiple taps.
@@ -55,6 +59,10 @@ class RegistrationViewController: UIViewController {
         @objc func dismissKeyboard() {
             // Causes the view (or one of its embedded text fields) to resign the first responder status.
             view.endEditing(true)
+    }
+    
+    @IBAction func radiusChanged(_ sender: Any) {
+        radiusComponent.radiusChanged(sender)
     }
     
     @IBAction func touchRegister(_ sender: Any) {

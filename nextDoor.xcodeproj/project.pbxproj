@@ -31,6 +31,7 @@
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
 		8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E82488E7A700572566 /* ProfileViewController.swift */; };
 		8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */; };
+		8FCADB93249CC67000795221 /* SliderTextComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCADB92249CC67000795221 /* SliderTextComponent.swift */; };
 		B2CD5FE42AA25E873AEFED15 /* Pods_nextDoor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C791AABF570E612F23821CB2 /* Pods_nextDoor.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,8 +61,9 @@
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		8FC6C4E82488E7A700572566 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		8FC6C4E82488E7A700572566 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
+		8FCADB92249CC67000795221 /* SliderTextComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTextComponent.swift; sourceTree = "<group>"; };
 		C791AABF570E612F23821CB2 /* Pods_nextDoor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nextDoor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1AD591835EEDBD3E21E4E14 /* Pods-nextDoor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.release.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,6 +144,7 @@
 		22CB9D61248E70F200D87E3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8FCADB92249CC67000795221 /* SliderTextComponent.swift */,
 				8F250FCA24913EBB00A6CD39 /* AuthUser.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
@@ -329,6 +332,7 @@
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,
 				2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */,
+				8FCADB93249CC67000795221 /* SliderTextComponent.swift in Sources */,
 				8F250FCB24913EBB00A6CD39 /* AuthUser.swift in Sources */,
 				8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */,
 			);

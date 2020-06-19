@@ -27,9 +27,14 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     var currentUser: User?
     var db: Firestore!
     var storage: Storage!
+    let radiusComponent = SliderTextComponent()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        radiusComponent.slider = radiusSlider
+        radiusComponent.textField = radiusText
+        
         db = Firestore.firestore()
         storage = Storage.storage()
         // prepare placeholder
@@ -188,18 +193,7 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
     }
 
     @IBAction func radiusChanged(_ sender: Any) {
-        if type(of: sender) == type(of: radiusSlider!) {
-            let oldValue = Int(round(radiusSlider.value))
-            let newValue = oldValue/50 * 50
-
-            radiusText.text = String(newValue)
-            radiusSlider.value = Float(newValue)
-        } else {
-            let oldValue = Int(radiusText.text!) ?? 0
-            let newValue = oldValue / 50 * 50 + (oldValue < 50 ? 50 : 0)
-            radiusSlider.value = Float(newValue)
-            radiusText.text = String(newValue)
-        }
+        radiusComponent.radiusChanged(sender)
     }
 
     @IBAction func presentDeletionFailsafe(_ sender: Any) {
@@ -223,13 +217,13 @@ class ProfileViewController: UIViewController, UITextViewDelegate, UITextFieldDe
         db.collection("users").document(user!.uid).delete { error in
             if let error = error {
                 // An error happened.
-                print(error)
+                print(error.localizedDescription)
             } else {
                 // Delete user from the firebase authentication
                 user!.delete { error in
                     if let error = error {
                         // An error happened.
-                        print(error)
+                        print(error.localizedDescription)
                     } else {
                         // Account was deleted. Go to login screen
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
