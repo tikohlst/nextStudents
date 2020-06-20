@@ -26,10 +26,17 @@ class ChatsTableViewController: UITableViewController {
     let currentUserUID = Auth.auth().currentUser?.uid
 
     private let showChatDetailSegue = "showChatDetail"
-    var chatsArray: [Chat] = []
+    var chatsArray: [Chat] = [] {
+        didSet {
+            searchedChats = chatsArray.map({$0})
+        }
+    }
+    var searchedChats: [Chat] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.searchController = UISearchController(searchResultsController: nil)
 
         // Get all chats from the current user
         db.collection("Chats")
@@ -117,9 +124,22 @@ class ChatsTableViewController: UITableViewController {
                 }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setupSearch()
+    }
+    
+    override func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            searchedChats = chatsArray.filter({$0.chatPartnerFirstName.localizedCaseInsensitiveContains(searchText) || $0.chatPartnerLastName.localizedCaseInsensitiveContains(searchText)})
+        } else {
+            searchedChats = chatsArray.map({$0})
+        }
+        tableView.reloadData()
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.chatsArray.count
+        return self.searchedChats.count
     }
 
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -131,8 +151,8 @@ class ChatsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath) as! ChatTableViewCell
 
         // Show all existing chats
-        if chatsArray.count > 0 {
-            let currentChat = chatsArray[indexPath.row]
+        if searchedChats.count > 0 {
+            let currentChat = searchedChats[indexPath.row]
 
             // Write first and last name of the chat partner in the cell
             cell.textLabel?.text = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
@@ -150,7 +170,7 @@ class ChatsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Retrieve the selected chat
-            let currentChat = chatsArray[indexPath.row]
+            let currentChat = searchedChats[indexPath.row]
 
             // Delete chat from the firebase database
             self.db.collection("Chats")
@@ -160,8 +180,11 @@ class ChatsTableViewController: UITableViewController {
                     // An error happened.
                     print(error)
                 } else {
-                    self.chatsArray.remove(at: indexPath.row)
+                    let removedChat = self.searchedChats.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
+                    self.chatsArray.remove(at: self.chatsArray.firstIndex(where: {
+                        return $0.chatUID  == removedChat.chatUID
+                    })!)
                     print("Chat deleted successfully")
                 }
             }
@@ -179,7 +202,7 @@ class ChatsTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow!
 
             // Retrieve the selected chat
-            let currentChat = chatsArray[indexPath.row]
+            let currentChat = searchedChats[indexPath.row]
 
             // Get an instance of the ChatViewController with asking the segue for it's destination.
             let detailViewController = segue.destination as! ChatViewController

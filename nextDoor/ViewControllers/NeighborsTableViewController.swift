@@ -19,20 +19,24 @@ class NeighborTableViewCell: UITableViewCell {
 
 }
 
-class NeighborsTableViewController: UITableViewController, UISearchResultsUpdating {
+class NeighborsTableViewController: UITableViewController {
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
     let currentUserUID = Auth.auth().currentUser?.uid
 
     private let showNeighborDetailSegue = "showNeighborDetail"
-    var usersInRangeArray: [User] = []
+    var usersInRangeArray: [User] = [] {
+        didSet {
+            searchedUsers = usersInRangeArray.map({$0})
+        }
+    }
     var searchedUsers : [User] = []
-    
-    private var searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.searchController = UISearchController(searchResultsController: nil)
 
         db.collection("users")
             .whereField("radius", isGreaterThan: "0")
@@ -68,9 +72,7 @@ class NeighborsTableViewController: UITableViewController, UISearchResultsUpdati
                                 self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
                                     firstUser.firstName < secondUser.firstName
                                 })
-
                                 // Update the table
-                                self.searchedUsers = self.usersInRangeArray.map({$0})
                                 self.tableView.reloadData()
                             }
                         }
@@ -83,14 +85,7 @@ class NeighborsTableViewController: UITableViewController, UISearchResultsUpdati
         setupSearch()
     }
     
-    func setupSearch() {
-        navigationItem.searchController = searchController
-        navigationItem.searchController?.obscuresBackgroundDuringPresentation = false
-        searchController.searchResultsUpdater = self
-        
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
+    override func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             searchedUsers = usersInRangeArray.filter({$0.firstName.localizedCaseInsensitiveContains(searchText) || $0.lastName.localizedCaseInsensitiveContains(searchText)})
         } else {
@@ -151,4 +146,16 @@ class NeighborsTableViewController: UITableViewController, UISearchResultsUpdati
         }
     }
 
+}
+
+extension UITableViewController: UISearchResultsUpdating {
+    func setupSearch() {
+        if let searchController = navigationItem.searchController {
+            searchController.obscuresBackgroundDuringPresentation = false
+            searchController.searchResultsUpdater = self
+        }
+        
+    }
+    
+    public func updateSearchResults(for searchController: UISearchController) {}
 }

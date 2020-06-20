@@ -27,10 +27,17 @@ class OffersTableViewController: UITableViewController {
 
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
-    var offersArray: [Offer] = []
+    var offersArray: [Offer] = [] {
+        didSet {
+            searchedOffers = offersArray.map({$0})
+        }
+    }
+    var searchedOffers: [Offer] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.searchController = UISearchController(searchResultsController: nil)
 
         // TODO: query all offers from users in range
         db.collection("offers")
@@ -64,9 +71,22 @@ class OffersTableViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setupSearch()
+    }
+    
+    override func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            searchedOffers = offersArray.filter({$0.title.localizedCaseInsensitiveContains(searchText) || $0.description.localizedCaseInsensitiveContains(searchText)})
+        } else {
+            searchedOffers = offersArray.map({$0})
+        }
+        tableView.reloadData()
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if offersArray.count > 0 {
-            let selectedOffer = offersArray[indexPath.row]
+        if searchedOffers.count > 0 {
+            let selectedOffer = searchedOffers[indexPath.row]
             if selectedOffer.ownerUID == currentUserUID {
                 // selected offer is owned by current user
                 performSegue(withIdentifier: editOfferSegue, sender: nil)
@@ -78,7 +98,7 @@ class OffersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return offersArray.count
+        return searchedOffers.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,9 +106,9 @@ class OffersTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "offerCell", for: indexPath) as! OfferTableViewCell
 
         // show all existing offers
-        if offersArray.count > 0 {
+        if searchedOffers.count > 0 {
             // TODO: only show offers that match range constraints set with radius
-            let currentOffer = offersArray[indexPath.row]
+            let currentOffer = searchedOffers[indexPath.row]
 
             // Write the title of the current offer in the cell
             cell.titleLabel.text = currentOffer.title
@@ -134,7 +154,7 @@ class OffersTableViewController: UITableViewController {
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == showOfferDetailSegue {
             let selectedIndex = self.tableView.indexPathForSelectedRow!
-            let selectedOffer = offersArray[selectedIndex.row]
+            let selectedOffer = searchedOffers[selectedIndex.row]
             if selectedOffer.ownerUID == currentUserUID {
                 return false
             }
@@ -148,13 +168,13 @@ class OffersTableViewController: UITableViewController {
                 case showOfferDetailSegue:
                     if let vc = segue.destination as? OfferViewController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = offersArray[selectedIndex.row]
+                        let selectedOffer = searchedOffers[selectedIndex.row]
                         vc.offer = selectedOffer
                     }
                 case editOfferSegue:
                     if let vc = segue.destination as? OfferEditController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = offersArray[selectedIndex.row]
+                        let selectedOffer = searchedOffers[selectedIndex.row]
                         vc.currentOffer = selectedOffer
                     }
                 default:
