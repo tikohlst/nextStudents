@@ -10,6 +10,9 @@ target 'nextDoor' do
   
   # Programmatically load custom fonts
   pod 'FontBlaster'
+  
+  # Elegant iOS form builder
+  pod 'Eureka'
 
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'

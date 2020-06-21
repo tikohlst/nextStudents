@@ -1,6 +1,7 @@
 ${PODS_ROOT}/Target Support Files/Pods-nextDoor/Pods-nextDoor-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework
 ${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework
+${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework
 ${BUILT_PRODUCTS_DIR}/FontBlaster/FontBlaster.framework
 ${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework
 ${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework
