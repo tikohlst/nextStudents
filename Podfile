@@ -7,6 +7,9 @@ target 'nextDoor' do
 
   # Pods for nextDoor
   pod 'MessageKit'
+  
+  # Programmatically load custom fonts
+  pod 'FontBlaster'
 
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'

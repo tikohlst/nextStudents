@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import FontBlaster
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,6 +30,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.makeKeyAndVisible()
 
         return true
+    }
+    
+    override init() {
+        super.init()
+        FontBlaster.blast()
+        UIFont.overrideInitialize()
     }
 
     // MARK: - UISceneSession Lifecycle
