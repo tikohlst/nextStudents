@@ -38,6 +38,10 @@ class OffersTableViewController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.searchController = UISearchController(searchResultsController: nil)
+        // Change placeholder for search field
+        navigationItem.searchController?.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [NSAttributedString.Key.foregroundColor: UIColor.label])
+        // Change the title of the Cancel button on the search bar
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
         // TODO: query all offers from users in range
         db.collection("offers")

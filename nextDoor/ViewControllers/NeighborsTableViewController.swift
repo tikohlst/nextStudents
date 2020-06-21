@@ -63,6 +63,10 @@ class NeighborsTableViewController: UITableViewController {
         tableView.separatorStyle = .none
 
         navigationItem.searchController = UISearchController(searchResultsController: nil)
+        // Change placeholder for search field
+        navigationItem.searchController?.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [NSAttributedString.Key.foregroundColor: UIColor.label])
+        // Change the title of the Cancel button on the search bar
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
         db.collection("users")
             .whereField("radius", isGreaterThan: "0")
