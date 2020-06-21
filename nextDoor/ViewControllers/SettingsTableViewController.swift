@@ -73,6 +73,7 @@ class SettingsTableViewController: UITableViewController {
 //        }
         nameLabel.text = currentUser.firstName + " " + currentUser.lastName
         self.imageView.image = currentUser.profileImage
+        self.imageView.layer.cornerRadius = self.imageView.frame.width/2
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -98,12 +99,17 @@ class SettingsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 4
+        if section == 0 {
+            return 1
+        }
+        else {
+            return 3
+        }
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
