@@ -16,6 +16,29 @@ class NeighborTableViewCell: UITableViewCell {
     @IBOutlet weak var neighborNameLabel: UILabel!
     @IBOutlet weak var neighborRangeLabel: UILabel!
     @IBOutlet weak var neighborImageView: UIImageView!
+    @IBOutlet weak var neighborView: UIView!
+
+    // Inside UITableViewCell subclass
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // show profile image rounded
+        neighborImageView.layer.cornerRadius = neighborImageView.frame.width/2
+
+        neighborView.backgroundColor = UIColor.white
+        neighborView.layer.cornerRadius = 10
+        neighborView.layer.masksToBounds = false
+        neighborView.layer.shouldRasterize = true
+        neighborView.layer.rasterizationScale = UIScreen.main.scale
+
+        neighborView.layer.borderWidth = 0.5
+        neighborView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
+
+        neighborView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        neighborView.layer.shadowRadius  = 3
+        neighborView.layer.shadowOpacity = 0.2
+        neighborView.layer.shadowColor   = UIColor.black.cgColor
+    }
 
 }
 
@@ -35,7 +58,10 @@ class NeighborsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Don't view the lines betwwen the cells
+        tableView.separatorStyle = .none
+
         navigationItem.searchController = UISearchController(searchResultsController: nil)
 
         db.collection("users")
@@ -110,13 +136,16 @@ class NeighborsTableViewController: UITableViewController {
             let currentUser = searchedUsers[indexPath.row]
 
             // Write first name of the neighbor in the cell
-            cell.textLabel?.text = currentUser.firstName
+            cell.neighborNameLabel.text = currentUser.firstName
+            cell.neighborNameLabel.textColor = UIColor.init(displayP3Red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0)
 
             // Write radius to actual user in cell
-            cell.detailTextLabel?.text = currentUser.radius
+            cell.neighborRangeLabel.text = currentUser.radius
 
             // Write profil image in cell
-            cell.imageView?.image = currentUser.profileImage
+            cell.neighborImageView.image = currentUser.profileImage
+            // Set profile image rounded
+            cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height/2
         }
 
         return cell

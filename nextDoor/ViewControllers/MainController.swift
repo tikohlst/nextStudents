@@ -32,7 +32,6 @@ class MainController: UITabBarController {
                 print("Error getting document: \(error!.localizedDescription)")
             } else {
                 let data = querySnapshot!.data()
-                print("\ntest\n")
                 self.currentUser = User(uid: querySnapshot!.documentID, firstName: data?["givenName"] as? String ?? "", lastName: data?["name"] as? String ?? "", address: data?["address"] as? String ?? "", radius: data?["radius"] as? String ?? "", bio: data?["bio"] as? String ?? "")
                 let storageRef = Storage.storage().reference(withPath: "profilePictures/\(self.currentUser.uid)/profilePicture.jpg")
                 storageRef.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
