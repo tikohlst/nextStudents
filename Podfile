@@ -13,6 +13,7 @@ target 'nextDoor' do
   
   # Elegant iOS form builder
   pod 'Eureka'
+  pod 'ImageRow'
 
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'

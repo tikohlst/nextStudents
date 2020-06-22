@@ -7,76 +7,6 @@
 
 import Eureka
 
-public struct RuleMinLength: RuleType {
-
-    let min: UInt
-
-    public var id: String?
-    public var validationError: ValidationError
-
-    public init(minLength: UInt, msg: String? = nil, id: String? = nil) {
-        let ruleMsg = msg ?? "Das Passwort muss mindestens \(minLength) Zeichen enthalten"
-        min = minLength
-        validationError = ValidationError(msg: ruleMsg)
-        self.id = id
-    }
-
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value, !value.isEmpty else { return nil }
-        return value.count < Int(min) ? validationError : nil
-    }
-}
-
-public struct RuleMaxLength: RuleType {
-
-    let max: UInt
-
-    public var id: String?
-    public var validationError: ValidationError
-
-    public init(maxLength: UInt, msg: String? = nil, id: String? = nil) {
-        let ruleMsg = msg ?? "Das Passwort darf maximal \(maxLength) Zeichen enthalten"
-        max = maxLength
-        validationError = ValidationError(msg: ruleMsg)
-        self.id = id
-    }
-
-    public func isValid(value: String?) -> ValidationError? {
-        guard let value = value, !value.isEmpty else { return nil }
-        return value.count > Int(max) ? validationError : nil
-    }
-}
-
-public struct RuleEqualsToRow<T: Equatable>: RuleType {
-
-    public init(form: Form, tag: String, msg: String = "Die Passwörter stimmen nicht überein!", id: String? = nil) {
-        self.validationError = ValidationError(msg: msg)
-        self.form = form
-        self.tag = tag
-        self.row = nil
-        self.id = id
-    }
-
-    public init(row: RowOf<T>, msg: String = "Die Passwörter stimmen nicht überein!", id: String? = nil) {
-        self.validationError = ValidationError(msg: msg)
-        self.form = nil
-        self.tag = nil
-        self.row = row
-        self.id = id
-    }
-
-    public var id: String?
-    public var validationError: ValidationError
-    public weak var form: Form?
-    public var tag: String?
-    public weak var row: RowOf<T>?
-
-    public func isValid(value: T?) -> ValidationError? {
-        let rowAux: RowOf<T> = row ?? form!.rowBy(tag: tag!)!
-        return rowAux.value == value ? nil : validationError
-    }
-}
-
 class PasswordViewController: FormViewController {
 
     override func viewDidLoad() {
@@ -119,14 +49,14 @@ class PasswordViewController: FormViewController {
         form
             +++ Section()
 
-            <<< PasswordRow("password") {
+                <<< PasswordRow("password") {
                     $0.title = "Neues Password"
                     $0.add(rule: RuleRequired(msg: "Du musst erst ein neues Passwort eingeben."))
                     $0.add(rule: RuleMinLength(minLength: 8, msg:  "Das Passwort muss mindestens 8 Zeichen enthalten"))
                     $0.add(rule: RuleMaxLength(maxLength: 16, msg: "Das Passwort darf maximal 16 Zeichen enthalten"))
                 }
 
-            <<< PasswordRow() {
+                <<< PasswordRow() {
                     $0.title = "Password bestätigen"
                     $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein"))
                 }
@@ -134,8 +64,7 @@ class PasswordViewController: FormViewController {
             +++ Section()
                 <<< ButtonRow() {
                     $0.title = "Passwort ändern"
-                }
-                .onCellSelection { cell, row in
+                }.onCellSelection { cell, row in
                     if row.section?.form?.validate().isEmpty ?? false {
                         // TODO: Save the new password
                         self.navigationController?.popViewController(animated: true)

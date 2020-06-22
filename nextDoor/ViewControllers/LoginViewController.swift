@@ -97,16 +97,21 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                     } else {
                         for user in querySnapshot!.documents {
                             if auth.currentUser?.uid == user.documentID {
-                                let givenName = user.data()["givenName"] as! String
-                                let name = user.data()["name"] as! String
-                                let address = user.data()["address"] as! String
-                                let radius = user.data()["radius"] as! String
+                                let firstName = user.data()["firstName"] as! String
+                                let lastName = user.data()["lastName"] as! String
+                                let street = user.data()["street"] as! String
+                                let housenumber = user.data()["housenumber"] as! String
+                                let plz = user.data()["plz"] as! String
+                                let radius = user.data()["radius"] as! Int
 
                                 // If a user is logged in but user data is still missing (Example: Login via Google Account)
-                                if (givenName.isEmpty ||
-                                    name.isEmpty ||
-                                    address.isEmpty ||
-                                    radius.isEmpty) {
+                                if (firstName.isEmpty ||
+                                    lastName.isEmpty ||
+                                    street.isEmpty ||
+                                    housenumber.isEmpty ||
+                                    plz.isEmpty ||
+                                    radius == 0
+                                    ) {
                                     // Show registration screen to enter the missing data
                                     let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
                                     vc.modalPresentationStyle = .fullScreen

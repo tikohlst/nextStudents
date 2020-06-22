@@ -27,19 +27,31 @@ class MainController: UITabBarController {
 
     override func viewDidLoad() {
         let db = Firestore.firestore()
-        db.collection("users").document(Auth.auth().currentUser!.uid).addSnapshotListener { (querySnapshot, error) in
+        db.collection("users")
+            .document(Auth.auth().currentUser!.uid)
+            .addSnapshotListener { (querySnapshot, error) in
             if error != nil {
                 print("Error getting document: \(error!.localizedDescription)")
             } else {
                 let data = querySnapshot!.data()
-                self.currentUser = User(uid: querySnapshot!.documentID, firstName: data?["givenName"] as? String ?? "", lastName: data?["name"] as? String ?? "", address: data?["address"] as? String ?? "", radius: data?["radius"] as? String ?? "", bio: data?["bio"] as? String ?? "")
+                self.currentUser = User(uid: querySnapshot!.documentID,
+                                        firstName: data?["firstName"] as? String ?? "",
+                                        lastName: data?["lastName"] as? String ?? "",
+                                        street: data?["street"] as? String ?? "",
+                                        housenumber: data?["housenumber"] as? String ?? "",
+                                        plz: data?["plz"] as? String ?? "",
+                                        radius: data?["radius"] as? Int ?? 0,
+                                        bio: data?["bio"] as? String ?? "",
+                                        skills: data?["skills"] as? String ?? ""
+                )
+
                 let storageRef = Storage.storage().reference(withPath: "profilePictures/\(self.currentUser.uid)/profilePicture.jpg")
                 storageRef.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
                     if let error = error {
                         print("Error while downloading profile image: \(error.localizedDescription)")
-                        self.currentUser.profileImage = UIImage(named: "defaultProfilePicture")
+                        self.currentUser.profileImage = UIImage(named: "defaultProfilePicture")!
                     } else {
-                        self.currentUser.profileImage = UIImage(data: data!)
+                        self.currentUser.profileImage = UIImage(data: data!)!
                     }
                 }
                 // check if userdata is complete
@@ -52,8 +64,8 @@ class MainController: UITabBarController {
     }
 
     func checkMissingUserData() {
-        if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty || self.currentUser.address.isEmpty ||
-            self.currentUser.radius.isEmpty {
+        if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty || self.currentUser.street.isEmpty ||
+        self.currentUser.housenumber.isEmpty || self.currentUser.plz.isEmpty || self.currentUser.radius == 0 {
             // prompt the registration screen
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController

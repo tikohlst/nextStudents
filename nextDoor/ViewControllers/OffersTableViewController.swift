@@ -126,7 +126,7 @@ class OffersTableViewController: UITableViewController {
                 if error != nil {
                     print("error getting document: \(error!.localizedDescription)")
                 } else {
-                    if let ownerData = document?.data(), let ownerGivenName = ownerData["givenName"] as? String, let ownerName = ownerData["name"] as? String {
+                    if let ownerData = document?.data(), let ownerGivenName = ownerData["firstName"] as? String, let ownerName = ownerData["lastName"] as? String {
                         cell.ownerLabel.text = ownerGivenName + " " +  ownerName
                     }
                 }

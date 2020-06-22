@@ -35,42 +35,38 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        let user = db.collection("users")
-//            .document("\(String(describing: Auth.auth().currentUser!.uid))")
-//
-//        user.getDocument{(document, error) in
-//            if let document = document, document.exists {
-//                let data = document.data()
-//
-//                self.currentUser.address = data?["address"] as? String
-//                self.currentUser.firstName = data?["givenName"] as? String
-//                self.currentUser.lastName = data?["name"] as? String
-//                self.currentUser.radius = data?["radius"] as? String
-//                self.currentUser.bio = data?["bio"] as? String
-//
-//                // get profile image if it exists
-//                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
-//
-//                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
-//                    if let error = error {
-//                        print("Error while downloading profile image: \(error.localizedDescription)")
-//                        self.imageView.image = nil
-//                    } else {
-//                        // Data for "profilePicture.jpg" is returned
-//                        let image = UIImage(data: data!)
-//                        self.currentUser.profileImage = image
-//                        self.imageView.image = image
-//                    }
-//                }
-//
-//                if self.currentUser.firstName != nil && self.currentUser.lastName != nil {
-//                    self.nameLabel.text = self.currentUser.firstName! + " " + self.currentUser.lastName!
-//                }
-//
-//            } else {
-//                print("Document doesn't exist.")
-//            }
-//        }
+        let user = db.collection("users")
+            .document("\(String(describing: Auth.auth().currentUser!.uid))")
+
+        user.getDocument{(document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+
+                self.currentUser.firstName = data?["firstName"] as! String
+                self.currentUser.lastName = data?["lastName"] as! String
+
+                // get profile image if it exists
+                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
+
+                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print("Error while downloading profile image: \(error.localizedDescription)")
+                        self.imageView.image = nil
+                    } else {
+                        // Data for "profilePicture.jpg" is returned
+                        let image = UIImage(data: data!)
+                        self.currentUser.profileImage = image!
+                        self.imageView.image = image
+                    }
+                }
+
+                self.nameLabel.text = self.currentUser.firstName + " " + self.currentUser.lastName
+
+            } else {
+                print("Document doesn't exist.")
+            }
+        }
+
         nameLabel.text = currentUser.firstName + " " + currentUser.lastName
         self.imageView.image = currentUser.profileImage
         self.imageView.layer.cornerRadius = self.imageView.frame.width/2
@@ -99,16 +95,16 @@ class SettingsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 0 {
-            return 1
-        }
-        else {
-            return 3
+        switch section {
+            case 0: return 1
+            case 1: return 2
+            case 2: return 1
+            default: return 1
         }
     }
 

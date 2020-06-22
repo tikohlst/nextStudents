@@ -14,7 +14,9 @@ class RegistrationViewController: UIViewController {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var givennameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var streetTextField: UITextField!
+    @IBOutlet weak var housenumberTextField: UITextField!
+    @IBOutlet weak var plzTextField: UITextField!
     @IBOutlet weak var radiusSlider: UISlider!
     @IBOutlet weak var radiusTextField: UITextField!
     @IBOutlet weak var newPasswordTextField: UITextField!
@@ -137,18 +139,22 @@ class RegistrationViewController: UIViewController {
                         self.present(alert, animated: true, completion: nil)
                         // Write userdata to firestore
                     } else if authResult != nil {
-                        if let givenName = self.givennameTextField.text,
+                        if let firstName = self.givennameTextField.text,
                             let name = self.nameTextField.text,
-                            let address = self.addressTextField.text,
+                            let street = self.streetTextField.text,
+                            let housenumber = self.housenumberTextField.text,
+                            let plz = self.plzTextField.text,
                             let radius = self.radiusTextField.text,
                             let user = Auth.auth().currentUser {
                             self.db.collection("users")
                                 .document(user.uid)
                                 .setData([
                                     "uid" : user.uid,
-                                    "givenName" : givenName,
-                                    "name" : name,
-                                    "address" : address,
+                                    "firstName" : firstName,
+                                    "lastName" : name,
+                                    "street" : street,
+                                    "housenumber" : housenumber,
+                                    "plz" : plz,
                                     "radius" : radius
                                 ]) { err in
                                     if let err = err {
@@ -167,18 +173,22 @@ class RegistrationViewController: UIViewController {
         }
         // If the registration is via Google Account and the missing user data must be set
         else {
-            if let givenName = self.givennameTextField.text,
+            if let firstName = self.givennameTextField.text,
                 let name = self.nameTextField.text,
-                let address = self.addressTextField.text,
+                let street = self.streetTextField.text,
+                let housenumber = self.housenumberTextField.text,
+                let plz = self.plzTextField.text,
                 let radius = self.radiusTextField.text,
                 let user = Auth.auth().currentUser {
                 self.db.collection("users")
                     .document(user.uid)
                     .setData([
                         "uid" : user.uid,
-                        "givenName" : givenName,
-                        "name" : name,
-                        "address" : address,
+                        "firstName" : firstName,
+                        "lastName" : name,
+                        "street" : street,
+                        "housenumber" : housenumber,
+                        "plz" : plz,
                         "radius" : radius
                     ]) { err in
                         if let err = err {

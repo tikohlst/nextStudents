@@ -55,8 +55,8 @@ class OfferViewController: UIViewController {
                         } else if let document = document, document.exists {
                             let data = document.data()
                             // Get first and last name of the chat partner
-                            firstName = data?["givenName"] as! String
-                            lastName = data?["name"] as! String
+                            firstName = data?["firstName"] as! String
+                            lastName = data?["lastName"] as! String
                             
                             // Get first and last name of the chat partner and write it in the correct label
                             detailViewController.user2Name = "\(firstName) \(lastName)"

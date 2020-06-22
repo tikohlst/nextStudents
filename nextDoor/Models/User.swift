@@ -13,19 +13,26 @@ class User {
     let uid: String
     var firstName: String
     var lastName: String
-    var address: String
-    var radius: String
+    var street: String
+    var housenumber: String
+    var plz: String
+    var radius: Int
     var bio: String
-    var profileImage: UIImage? = nil
+    var skills: String
+    var profileImage: UIImage
 
-    init(uid: String, firstName: String, lastName: String, address: String,
-         radius: String, bio: String) { //image: UIImage
+    init(uid: String, firstName: String, lastName: String, street: String,
+         housenumber: String, plz: String, radius: Int, bio: String, skills: String) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
-        self.address = address
+        self.street = street
+        self.housenumber = housenumber
+        self.plz = plz
         self.radius = radius
         self.bio = bio
+        self.skills = skills
+        self.profileImage = UIImage(named: "defaultProfilePicture")!
     }
 
 }

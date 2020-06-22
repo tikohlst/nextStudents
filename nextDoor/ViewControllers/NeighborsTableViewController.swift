@@ -69,7 +69,7 @@ class NeighborsTableViewController: UITableViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
         db.collection("users")
-            .whereField("radius", isGreaterThan: "0")
+            .whereField("radius", isGreaterThan: 0)
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
@@ -79,21 +79,25 @@ class NeighborsTableViewController: UITableViewController {
                         if (self.currentUserUID != (document.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
                             let newUser = User(uid: document.documentID,
-                                            firstName: document.data()["givenName"] as! String,
-                                            lastName: document.data()["name"] as! String,
-                                            address: document.data()["address"] as! String,
-                                            radius: document.data()["radius"] as! String,
-                                            bio: document.data()["bio"] as? String ?? "")
+                                               firstName: document.data()["firstName"] as! String,
+                                               lastName: document.data()["lastName"] as! String,
+                                               street: document.data()["street"] as! String,
+                                               housenumber: document.data()["housenumber"] as! String,
+                                               plz: document.data()["plz"] as! String,
+                                               radius: document.data()["radius"] as! Int,
+                                               bio: document.data()["bio"] as? String ?? "",
+                                               skills: document.data()["skills"] as? String ?? ""
+                            )
 
                             // Get profile image of the neighbor
                             let storageRef = self.storage.reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
                             storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
                                 if let error = error {
                                     print("Error while downloading profile image: \(error.localizedDescription)")
-                                    newUser.profileImage = UIImage(named: "defaultProfilePicture")
+                                    newUser.profileImage = UIImage(named: "defaultProfilePicture")!
                                 } else {
                                     // Data for "profilePicture.jpg" is returned
-                                    newUser.profileImage = UIImage(data: data!)
+                                    newUser.profileImage = UIImage(data: data!)!
                                 }
 
                                 self.usersInRangeArray.append(newUser)
@@ -144,7 +148,7 @@ class NeighborsTableViewController: UITableViewController {
             cell.neighborNameLabel.textColor = UIColor.init(displayP3Red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0)
 
             // Write radius to actual user in cell
-            cell.neighborRangeLabel.text = currentUser.radius
+            cell.neighborRangeLabel.text = "\(currentUser.street) \(currentUser.housenumber)"
 
             // Write profil image in cell
             cell.neighborImageView.image = currentUser.profileImage

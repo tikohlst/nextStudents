@@ -97,8 +97,8 @@ class ChatsTableViewController: UITableViewController {
                                             return
                                         }
 
-                                        newChat!.chatPartnerFirstName = data["givenName"] as! String
-                                        newChat!.chatPartnerLastName = data["name"] as! String
+                                        newChat!.chatPartnerFirstName = data["firstName"] as! String
+                                        newChat!.chatPartnerLastName = data["lastName"] as! String
                                     }
 
                                     // Get profile image of the chat partner
