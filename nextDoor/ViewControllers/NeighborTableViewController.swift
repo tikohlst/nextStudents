@@ -20,11 +20,11 @@ class NeighborTableViewController: UITableViewController {
 
     var user: User!
 
-    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var bioTextView: UITextView!
+    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var address: UILabel!
-    @IBOutlet weak var skills: UILabel!
+    @IBOutlet weak var bioTextView: UITextView!
+    @IBOutlet weak var skillsTextView: UITextView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,7 +49,7 @@ class NeighborTableViewController: UITableViewController {
         address.text = "\(user.street) \(user.housenumber), \(user.plz)"
 
         // show user skills
-        skills.text = user.skills
+        skillsTextView.text = user.skills
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
