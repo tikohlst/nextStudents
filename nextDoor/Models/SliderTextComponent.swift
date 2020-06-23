@@ -2,23 +2,24 @@
 //  SliderTextComponent.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 19.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 class SliderTextComponent {
+
+    // MARK: - Variables
+
     var slider : UISlider?
     var textField : UITextField?
-    
-    
+
+    // MARK: - Methods
+
     func radiusChanged(_ sender: Any) {
-        
         if let slider = slider, let textField = textField {
             if type(of: sender) == type(of: slider) {
-                
                 let oldValue = Int(round(slider.value))
                 let newValue = oldValue / 50 * 50
                 

@@ -11,6 +11,8 @@ import MessageKit
 
 struct Message {
 
+    // MARK: - Variables
+
     var id: String
     var content: String
     var created: Timestamp
@@ -29,6 +31,8 @@ struct Message {
 }
 
 extension Message {
+
+    // MARK: - Methods
 
     init?(dictionary: [String: Any]) {
         guard let id = dictionary["id"] as? String,

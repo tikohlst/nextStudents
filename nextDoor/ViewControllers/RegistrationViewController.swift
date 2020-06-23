@@ -11,6 +11,19 @@ import Firebase
 class RegistrationViewController: UIViewController {
 
     // MARK: - Variables
+
+    var db = Firestore.firestore()
+    var varHeaderLabel = "Registrierung"
+    var varRegisterButton = "Registrieren"
+    var hideMailAndPassword = false
+    let radiusComponent = SliderTextComponent()
+    
+    private var passwordsMatch: Bool {
+        return newPasswordTextField.text == repeatPasswordTextField.text
+    }
+
+    // MARK: - IBOutlets
+
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var givennameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -24,15 +37,7 @@ class RegistrationViewController: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
 
-    private var passwordsMatch: Bool {
-        return newPasswordTextField.text == repeatPasswordTextField.text
-    }
-
-    var db: Firestore!
-    var varHeaderLabel = "Registrierung"
-    var varRegisterButton = "Registrieren"
-    var hideMailAndPassword = false
-    let radiusComponent = SliderTextComponent()
+    // MARK: - Methods
 
     override func viewWillAppear(_ animated: Bool) {
         headerLabel.text = varHeaderLabel
@@ -42,18 +47,14 @@ class RegistrationViewController: UIViewController {
         repeatPasswordTextField.isHidden = hideMailAndPassword
     }
 
-    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         radiusComponent.slider = radiusSlider
         radiusComponent.textField = radiusTextField
-        
-        db = Firestore.firestore()
 
         // Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-
             view.addGestureRecognizer(tap)
         }
 
@@ -203,15 +204,5 @@ class RegistrationViewController: UIViewController {
             }
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

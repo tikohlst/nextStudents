@@ -13,15 +13,16 @@ import FirebaseFirestore
 
 class ProfileViewController: FormViewController {
 
+    // MARK: - Variables
+
+    var db = Firestore.firestore()
+    var storage = Storage.storage()
     var currentUser: User?
-    var db: Firestore!
-    var storage: Storage!
+
+    // MARK: - Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        db = Firestore.firestore()
-        storage = Storage.storage()
 
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red

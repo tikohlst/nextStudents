@@ -10,7 +10,9 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 struct Offer {
-    
+
+    // MARK: - Variables
+
     var id: String
     var title: String
     var description: String
@@ -19,7 +21,9 @@ struct Offer {
     var type: String
     var ownerUID: String
     var offerImage: UIImage
-    
+
+    // MARK: - Methods
+
     init(from dictionary: [String:Any], with id: String, ownerUID: String) {
         self.title = dictionary["title"] as! String
         self.description = dictionary["description"] as! String

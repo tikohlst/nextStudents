@@ -13,6 +13,8 @@ import FirebaseStorage
 
 class ChatTableViewCell: UITableViewCell {
 
+    // MARK: - IBOutlets
+
     @IBOutlet weak var chatPartnerNameLabel: UILabel?
     @IBOutlet weak var lastMessageLabel: UILabel?
     @IBOutlet weak var chatPartnerImageView: UIImageView?
@@ -20,6 +22,8 @@ class ChatTableViewCell: UITableViewCell {
 }
 
 class ChatsTableViewController: UITableViewController {
+
+    // MARK: - Variables
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -32,6 +36,8 @@ class ChatsTableViewController: UITableViewController {
         }
     }
     var searchedChats: [Chat] = []
+
+    // MARK: - Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()

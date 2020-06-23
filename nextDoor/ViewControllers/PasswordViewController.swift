@@ -9,6 +9,8 @@ import Eureka
 
 class PasswordViewController: FormViewController {
 
+    // MARK: - Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

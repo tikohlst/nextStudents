@@ -15,6 +15,8 @@ import FirebaseStorage
 
 class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
 
+    // MARK: - Variables
+
     var db = Firestore.firestore()
     var storage = Storage.storage()
     let currentUserUID = Auth.auth().currentUser!.uid
@@ -30,6 +32,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     private var docReference: DocumentReference?
 
     var messages: [Message] = []
+
+    // MARK: - Methods
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -61,6 +65,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - Custom messages handlers
+
     func createNewChat() {
         let users = [self.currentUserUID, self.user2UID]
         let data: [String: Any] = [
@@ -158,6 +163,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - InputBarAccessoryViewDelegate
+
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = Message(id: UUID().uuidString, content: text, created: Timestamp(), senderID: currentUserUID, senderName: "sender")
 
@@ -170,6 +176,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - MessagesDataSource
+
     func currentSender() -> SenderType {
         return Sender(id: currentUserUID, displayName: Auth.auth().currentUser?.displayName ?? "Name not found")
     }
@@ -194,6 +201,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     // MARK: - MessagesDisplayDelegate
+
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return isFromCurrentSender(message: message) ? .blue: .lightGray
     }

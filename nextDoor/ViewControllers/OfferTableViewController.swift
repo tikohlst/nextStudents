@@ -13,13 +13,6 @@ import FirebaseStorage
 class OfferTableViewController: UITableViewController {
 
     // MARK: - Variables
-    @IBOutlet weak var offerImageView: UIImageView!
-    @IBOutlet weak var offerNameLabel: UILabel!
-    @IBOutlet weak var offerCreatorLabel: UILabel!
-    @IBOutlet weak var offerDescriptionTextView: UITextView!
-    @IBOutlet weak var offerDurationLabel: UILabel!
-    @IBOutlet weak var offerCreationDateLabel: UILabel!
-    @IBOutlet weak var offerContactNeighborButton: UIButton!
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -31,7 +24,18 @@ class OfferTableViewController: UITableViewController {
 
     private let showChatFromOfferSegue = "showChatFromOffer"
 
+    // MARK: - IBOutlets
+
+    @IBOutlet weak var offerImageView: UIImageView!
+    @IBOutlet weak var offerNameLabel: UILabel!
+    @IBOutlet weak var offerCreatorLabel: UILabel!
+    @IBOutlet weak var offerDescriptionTextView: UITextView!
+    @IBOutlet weak var offerDurationLabel: UILabel!
+    @IBOutlet weak var offerCreationDateLabel: UILabel!
+    @IBOutlet weak var offerContactNeighborButton: UIButton!
+
     // MARK: - Methods
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 

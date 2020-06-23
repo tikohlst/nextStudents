@@ -10,6 +10,8 @@ import UIKit
 
 class User {
 
+    // MARK: - Variables
+
     let uid: String
     var firstName: String
     var lastName: String
@@ -20,6 +22,8 @@ class User {
     var bio: String
     var skills: String
     var profileImage: UIImage
+
+    // MARK: - Methods
 
     init(uid: String, firstName: String, lastName: String, street: String,
          housenumber: String, plz: String, radius: Int, bio: String, skills: String) {

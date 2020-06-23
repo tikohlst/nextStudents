@@ -11,6 +11,8 @@ import FirebaseFirestore
 
 struct Chat {
 
+    // MARK: - Variables
+
     var users: [String]
     var dictionary: [String:Any] {
         return [
@@ -28,6 +30,8 @@ struct Chat {
 }
 
 extension Chat {
+
+    // MARK: - Methods
 
     init?(dictionary: [String:Any]) {
         guard let chatUsers = dictionary["users"] as? [String] else {return nil}

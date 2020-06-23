@@ -12,13 +12,18 @@ import GoogleSignIn
 class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDelegate {
 
     // MARK: - Variables
-    @IBOutlet weak var emailText: UITextField!
-    @IBOutlet weak var passwordText: UITextField!
-    @IBOutlet weak var loginButton: UIButton!
+
     var handle: AuthStateDidChangeListenerHandle?
     var db = Firestore.firestore()
 
+    // MARK: - IBOutlets
+
+    @IBOutlet weak var emailText: UITextField!
+    @IBOutlet weak var passwordText: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+
     // MARK: - Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -139,15 +144,5 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         textField.resignFirstResponder()
         return true
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

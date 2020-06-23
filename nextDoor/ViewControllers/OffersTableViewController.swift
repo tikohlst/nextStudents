@@ -13,11 +13,15 @@ import FirebaseAuth
 
 class OfferTableViewCell: UITableViewCell {
 
+    // MARK: - IBOutlets
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var ownerLabel: UILabel!
     @IBOutlet weak var offerImageView: UIImageView!
     @IBOutlet weak var offerView: UIView!
+
+    // MARK: - Methods
 
     // Inside UITableViewCell subclass
     override func layoutSubviews() {
@@ -44,6 +48,8 @@ class OfferTableViewCell: UITableViewCell {
 
 class OffersTableViewController: UITableViewController {
 
+    // MARK: - Variables
+
     var db = Firestore.firestore()
     let currentUserUID = Auth.auth().currentUser?.uid
 
@@ -55,6 +61,8 @@ class OffersTableViewController: UITableViewController {
         }
     }
     var searchedOffers: [Offer] = []
+
+    // MARK: - Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()

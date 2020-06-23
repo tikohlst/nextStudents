@@ -12,8 +12,13 @@ import FirebaseStorage
 
 class MainController: UITabBarController {
 
+    // MARK: - Variables
+
+    let db = Firestore.firestore()
     var currentUser : User!
-    
+
+    // MARK: - Methods
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if currentUser != nil {
@@ -21,12 +26,7 @@ class MainController: UITabBarController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
     override func viewDidLoad() {
-        let db = Firestore.firestore()
         db.collection("users")
             .document(Auth.auth().currentUser!.uid)
             .addSnapshotListener { (querySnapshot, error) in
@@ -60,7 +60,6 @@ class MainController: UITabBarController {
         }
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
 
     func checkMissingUserData() {
@@ -77,14 +76,5 @@ class MainController: UITabBarController {
             self.present(vc, animated: true, completion: nil)
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

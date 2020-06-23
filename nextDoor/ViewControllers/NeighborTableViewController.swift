@@ -7,10 +7,12 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestoreSwift
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class NeighborTableViewController: UITableViewController {
+
+    // MARK: - Variables
 
     var db = Firestore.firestore()
     let currentUserUID = Auth.auth().currentUser?.uid
@@ -20,20 +22,18 @@ class NeighborTableViewController: UITableViewController {
 
     var user: User!
 
+    // MARK: - IBOutlets
+
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var skillsTextView: UITextView!
     
+    // MARK: - Methods
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
         userNameLabel.text = "\(user.firstName) \(user.lastName)"
         

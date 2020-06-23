@@ -13,16 +13,20 @@ import FirebaseStorage
 
 class NeighborTableViewCell: UITableViewCell {
 
+    // MARK: - IBOutlets
+
     @IBOutlet weak var neighborNameLabel: UILabel!
     @IBOutlet weak var neighborRangeLabel: UILabel!
     @IBOutlet weak var neighborImageView: UIImageView!
     @IBOutlet weak var neighborView: UIView!
 
+    // MARK: - Methods
+
     // Inside UITableViewCell subclass
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // show profile image rounded
+        // Show profile image rounded
         neighborImageView.layer.cornerRadius = neighborImageView.frame.width/2
 
         neighborView.backgroundColor = UIColor.white
