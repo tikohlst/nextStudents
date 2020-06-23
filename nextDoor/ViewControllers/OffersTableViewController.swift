@@ -17,7 +17,29 @@ class OfferTableViewCell: UITableViewCell {
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var ownerLabel: UILabel!
     @IBOutlet weak var offerImageView: UIImageView!
+    @IBOutlet weak var offerView: UIView!
 
+    // Inside UITableViewCell subclass
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // show profile image rounded
+        offerImageView.layer.cornerRadius = offerImageView.frame.width/2
+
+        offerView.backgroundColor = UIColor.white
+        offerView.layer.cornerRadius = 10
+        offerView.layer.masksToBounds = false
+        offerView.layer.shouldRasterize = true
+        offerView.layer.rasterizationScale = UIScreen.main.scale
+
+        offerView.layer.borderWidth = 0.5
+        offerView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
+
+        offerView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        offerView.layer.shadowRadius  = 3
+        offerView.layer.shadowOpacity = 0.2
+        offerView.layer.shadowColor   = UIColor.black.cgColor
+    }
 }
 
 class OffersTableViewController: UITableViewController {
@@ -37,6 +59,9 @@ class OffersTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Don't view the lines betwwen the cells
+        tableView.separatorStyle = .none
+
         navigationItem.searchController = UISearchController(searchResultsController: nil)
         // Change placeholder for search field
         navigationItem.searchController?.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [NSAttributedString.Key.foregroundColor: UIColor.label])
@@ -107,7 +132,7 @@ class OffersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
-        let cell = tableView.dequeueReusableCell(withIdentifier: "offerCell", for: indexPath) as! OfferTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
 
         // show all existing offers
         if searchedOffers.count > 0 {
@@ -131,6 +156,11 @@ class OffersTableViewController: UITableViewController {
                     }
                 }
             }
+
+            // Write profil image in cell
+            cell.offerImageView.image = currentOffer.offerImage
+            // Set profile image rounded
+            cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height/2
         }
         return cell
     }

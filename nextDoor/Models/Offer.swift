@@ -18,7 +18,7 @@ struct Offer {
     var date: Date
     var type: String
     var ownerUID: String
-    
+    var offerImage: UIImage
     
     init(from dictionary: [String:Any], with id: String, ownerUID: String) {
         self.title = dictionary["title"] as! String
@@ -28,6 +28,7 @@ struct Offer {
         self.type = dictionary["type"] as! String
         self.id = id
         self.ownerUID = ownerUID
+        self.offerImage = UIImage(named: "defaultOfferImage")!
     }
 
 }
