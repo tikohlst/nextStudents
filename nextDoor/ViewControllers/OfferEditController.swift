@@ -1,9 +1,8 @@
 //
-//  OfferEditController.swift
+//  OfferEditTableViewController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 13.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-class OfferEditController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var offerNeedControl: UISegmentedControl!
     @IBOutlet weak var titleTextField: UITextField!

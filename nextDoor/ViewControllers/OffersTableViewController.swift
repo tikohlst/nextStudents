@@ -197,20 +197,20 @@ class OffersTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let backItem = UIBarButtonItem()
-        backItem.title = "Angebote"
-        navigationItem.backBarButtonItem = backItem
-
         if let identifier = segue.identifier {
+            let backItem = UIBarButtonItem()
+            backItem.title = "Angebote"
+            navigationItem.backBarButtonItem = backItem
+
             switch identifier {
                 case showOfferDetailSegue:
-                    if let vc = segue.destination as? OfferViewController {
+                    if let vc = segue.destination as? OfferTableViewController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
                         let selectedOffer = searchedOffers[selectedIndex.row]
                         vc.offer = selectedOffer
                     }
                 case editOfferSegue:
-                    if let vc = segue.destination as? OfferEditController {
+                    if let vc = segue.destination as? OfferEditTableViewController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
                         let selectedOffer = searchedOffers[selectedIndex.row]
                         vc.currentOffer = selectedOffer

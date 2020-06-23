@@ -27,18 +27,14 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
         currentUser = (parent?.parent as! MainController).currentUser
         storage = Storage.storage()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let user = db.collection("users")
-            .document("\(String(describing: Auth.auth().currentUser!.uid))")
 
-        user.getDocument{(document, error) in
+        db.collection("users")
+            .document("\(String(describing: Auth.auth().currentUser!.uid))")
+            .getDocument{(document, error) in
             if let document = document, document.exists {
                 let data = document.data()
 

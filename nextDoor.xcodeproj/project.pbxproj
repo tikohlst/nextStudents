@@ -11,7 +11,7 @@
 		221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */; };
 		221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */; };
 		221B08922487A54C00CE8A9B /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B08912487A54C00CE8A9B /* Offer.swift */; };
-		2253260924753B1E00B35802 /* OfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253260824753B1E00B35802 /* OfferViewController.swift */; };
+		2253260924753B1E00B35802 /* OfferTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253260824753B1E00B35802 /* OfferTableViewController.swift */; };
 		2260843524700BD700D30E81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260843424700BD700D30E81 /* AppDelegate.swift */; };
 		2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260843624700BD700D30E81 /* SceneDelegate.swift */; };
 		2260843E24700BD700D30E81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2260843C24700BD700D30E81 /* Main.storyboard */; };
@@ -50,7 +50,7 @@
 		221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborsTableViewController.swift; sourceTree = "<group>"; };
 		221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersTableViewController.swift; sourceTree = "<group>"; };
 		221B08912487A54C00CE8A9B /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
-		2253260824753B1E00B35802 /* OfferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferViewController.swift; sourceTree = "<group>"; };
+		2253260824753B1E00B35802 /* OfferTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTableViewController.swift; sourceTree = "<group>"; };
 		2260843124700BD700D30E81 /* nextDoor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nextDoor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2260843424700BD700D30E81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2260843624700BD700D30E81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 				226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */,
 				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
 				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
-				2253260824753B1E00B35802 /* OfferViewController.swift */,
+				2253260824753B1E00B35802 /* OfferTableViewController.swift */,
 				8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */,
 				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
 				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
@@ -365,7 +365,7 @@
 				8F250FCD2494D33B00A6CD39 /* OfferEditController.swift in Sources */,
 				221A0CD524781BF700A46E1E /* User.swift in Sources */,
 				8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */,
-				2253260924753B1E00B35802 /* OfferViewController.swift in Sources */,
+				2253260924753B1E00B35802 /* OfferTableViewController.swift in Sources */,
 				221B08922487A54C00CE8A9B /* Offer.swift in Sources */,
 				221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */,
 				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
