@@ -73,6 +73,10 @@ class NeighborTableViewController: UITableViewController {
 
             // Set the user image
             detailViewController.user2Img = user.profileImage
+
+            let backItem = UIBarButtonItem()
+            backItem.title = "Zurück"
+            navigationItem.backBarButtonItem = backItem
         }
     }
 

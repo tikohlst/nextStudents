@@ -167,6 +167,10 @@ class OffersTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let backItem = UIBarButtonItem()
+        backItem.title = "Angebote"
+        navigationItem.backBarButtonItem = backItem
+
         if let identifier = segue.identifier {
             switch identifier {
                 case showOfferDetailSegue:
