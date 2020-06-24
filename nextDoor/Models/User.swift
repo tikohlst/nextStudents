@@ -17,7 +17,7 @@ class User {
     var lastName: String
     var street: String
     var housenumber: String
-    var plz: String
+    var zipcode: String
     var radius: Int
     var bio: String
     var skills: String
@@ -26,13 +26,13 @@ class User {
     // MARK: - Methods
 
     init(uid: String, firstName: String, lastName: String, street: String,
-         housenumber: String, plz: String, radius: Int, bio: String, skills: String) {
+         housenumber: String, zipcode: String, radius: Int, bio: String, skills: String) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.street = street
         self.housenumber = housenumber
-        self.plz = plz
+        self.zipcode = zipcode
         self.radius = radius
         self.bio = bio
         self.skills = skills

@@ -46,7 +46,7 @@ class NeighborTableViewController: UITableViewController {
         bioTextView.text = user.bio
         
         // show user address
-        address.text = "\(user.street) \(user.housenumber), \(user.plz)"
+        address.text = "\(user.street) \(user.housenumber), \(user.zipcode)"
 
         // show user skills
         skillsTextView.text = user.skills

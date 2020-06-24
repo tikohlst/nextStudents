@@ -87,7 +87,7 @@ class NeighborsTableViewController: UITableViewController {
                                                lastName: document.data()["lastName"] as! String,
                                                street: document.data()["street"] as! String,
                                                housenumber: document.data()["housenumber"] as! String,
-                                               plz: document.data()["plz"] as! String,
+                                               zipcode: document.data()["zipcode"] as! String,
                                                radius: document.data()["radius"] as! Int,
                                                bio: document.data()["bio"] as? String ?? "",
                                                skills: document.data()["skills"] as? String ?? ""

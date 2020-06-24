@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     var handle: AuthStateDidChangeListenerHandle?
     var db = Firestore.firestore()
+    var showRegistrationSegue = "showRegistrationSegue"
 
     // MARK: - IBOutlets
 
@@ -38,14 +39,12 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     override func viewWillAppear(_ animated: Bool) {
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            //self.checkMissingUserData()
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
-        //self.checkMissingUserData()
     }
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -60,7 +59,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                 print(error.localizedDescription)
             }
         }
-        self.checkMissingUserData()
     }
 
     @IBAction func googleSignInPressed(_ sender: Any) {
@@ -92,57 +90,20 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         }
     }
 
-    func checkMissingUserData() {
-        handle = Auth.auth().addStateDidChangeListener({ (auth, user) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            self.db.collection("users")
-                .getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        for user in querySnapshot!.documents {
-                            if auth.currentUser?.uid == user.documentID {
-                                let firstName = user.data()["firstName"] as! String
-                                let lastName = user.data()["lastName"] as! String
-                                let street = user.data()["street"] as! String
-                                let housenumber = user.data()["housenumber"] as! String
-                                let plz = user.data()["plz"] as! String
-                                let radius = user.data()["radius"] as! Int
-
-                                // If a user is logged in but user data is still missing (Example: Login via Google Account)
-                                if (firstName.isEmpty ||
-                                    lastName.isEmpty ||
-                                    street.isEmpty ||
-                                    housenumber.isEmpty ||
-                                    plz.isEmpty ||
-                                    radius == 0
-                                    ) {
-                                    // Show registration screen to enter the missing data
-                                    let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
-                                    vc.modalPresentationStyle = .fullScreen
-                                    vc.modalTransitionStyle = .crossDissolve
-                                    vc.varHeaderLabel = "Account vervollständigen"
-                                    vc.varRegisterButton = "Speichern"
-                                    vc.hideMailAndPassword = true
-                                    self.present(vc, animated: true, completion: nil)
-                                } else {
-                                    let vc = storyboard.instantiateViewController(identifier: "tabbarvc") as MainController
-                                    vc.modalPresentationStyle = .fullScreen
-                                    vc.modalTransitionStyle = .crossDissolve
-                                    self.present(vc, animated: true, completion: nil)
-                                }
-                            }
-                        }
-                    }
-            }
-        })
-    }
-
     // This function is called when you click return key in the text field.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Resign the first responder from textField to close the keyboard.
         textField.resignFirstResponder()
         return true
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Implement a switch over the segue identifiers to distinct which segue get's called.
+        if segue.identifier == showRegistrationSegue {
+            let backItem = UIBarButtonItem()
+            backItem.title = "Zurück"
+            navigationItem.backBarButtonItem = backItem
+        }
     }
 
 }

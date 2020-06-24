@@ -87,9 +87,9 @@ class ProfileViewController: FormViewController {
                 }
                 
                 <<< TextRow() {
-                    $0.tag = "plz"
-                    $0.title = "PLZ"
-                    $0.value = self.currentUser?.plz ?? ""
+                    $0.tag = "zipcode"
+                    $0.title = "zipcode"
+                    $0.value = self.currentUser?.zipcode ?? ""
                     $0.add(rule: RuleRequired())
                     $0.validationOptions = .validatesOnChange
                 }
@@ -107,7 +107,7 @@ class ProfileViewController: FormViewController {
                     cell.valueLabel.text = String(self.currentUser!.radius)
                 }.cellUpdate { cell, row in
                     // Show radius as numeric number
-                    cell.valueLabel.text = String(Int(row.value!))
+                    cell.valueLabel.text = String(Int(row.value!)) + "m"
                 }
             
             +++ Section("Biografie")
@@ -158,7 +158,7 @@ class ProfileViewController: FormViewController {
             user.lastName = dict["lastName"] as! String
             user.street = dict["street"] as! String
             user.housenumber = dict["housenumber"] as! String
-            user.plz = dict["plz"] as! String
+            user.zipcode = dict["zipcode"] as! String
             user.radius = Int(dict["radius"] as! Float)
             user.bio = dict["bio"] as! String
             user.skills = dict["skills"] as! String
@@ -168,7 +168,7 @@ class ProfileViewController: FormViewController {
                 "lastName" : user.lastName,
                 "street" : user.street,
                 "housenumber" : user.housenumber,
-                "plz" : user.plz,
+                "zipcode" : user.zipcode,
                 "radius" : user.radius,
                 "bio" : user.bio,
                 "skills" : user.skills
@@ -235,7 +235,7 @@ class ProfileViewController: FormViewController {
                     } else {
                         // Account was deleted. Go to login screen
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
+                        let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as LoginViewController
                         vc.modalPresentationStyle = .fullScreen
                         vc.modalTransitionStyle = .crossDissolve
                         self.present(vc, animated: true, completion: nil)

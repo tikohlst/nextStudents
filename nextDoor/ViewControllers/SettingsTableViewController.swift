@@ -84,7 +84,7 @@ class SettingsTableViewController: UITableViewController {
             try Auth.auth().signOut()
 
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(identifier: "loginVC") as LoginViewController
+            let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as UINavigationController
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(vc)
             //self.present(vc, animated: true, completion: nil)
         } catch {

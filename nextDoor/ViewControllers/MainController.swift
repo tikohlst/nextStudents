@@ -39,7 +39,7 @@ class MainController: UITabBarController {
                                         lastName: data?["lastName"] as? String ?? "",
                                         street: data?["street"] as? String ?? "",
                                         housenumber: data?["housenumber"] as? String ?? "",
-                                        plz: data?["plz"] as? String ?? "",
+                                        zipcode: data?["zipcode"] as? String ?? "",
                                         radius: data?["radius"] as? Int ?? 0,
                                         bio: data?["bio"] as? String ?? "",
                                         skills: data?["skills"] as? String ?? ""
@@ -63,16 +63,16 @@ class MainController: UITabBarController {
     }
 
     func checkMissingUserData() {
-        if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty || self.currentUser.street.isEmpty ||
-        self.currentUser.housenumber.isEmpty || self.currentUser.plz.isEmpty || self.currentUser.radius == 0 {
+        if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty ||
+            self.currentUser.street.isEmpty || self.currentUser.housenumber.isEmpty ||
+            self.currentUser.zipcode.isEmpty || self.currentUser.radius == 0 {
             // prompt the registration screen
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
-            vc.varHeaderLabel = "Account vervollständigen"
-            vc.varRegisterButton = "Speichern"
-            vc.hideMailAndPassword = true
+            vc.accountInfoMissing = true
+            vc.user = currentUser
             self.present(vc, animated: true, completion: nil)
         }
     }
