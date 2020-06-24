@@ -17,6 +17,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     var pickerData = [String]()
     var db = Firestore.firestore()
     var currentOffer: Offer?
+    let currentUser = Auth.auth().currentUser
 
     // MARK: - IBOutlets
 
@@ -89,33 +90,36 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     private func create() {
-        if let user = Auth.auth().currentUser {
-            self.db.collection("offers").document(user.uid).setData([:])
-            self.db.collection("offers").document(user.uid).collection("offer").document(UUID.init().uuidString).setData([
-                "date" : FieldValue.serverTimestamp(),
-                "title" : titleTextField.text ?? "",
-                "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
-                "description" : descriptionTextField.text ?? "",
-                "duration" : pickerData[timePickerView.selectedRow(inComponent: 0)]
-            ]) { err in
-                if let err = err {
-                    print("Error creating document: \(err.localizedDescription)")
-                }
+        self.db.collection("offers")
+            .document(currentUser!.uid)
+            .collection("offer")
+            .document(UUID.init().uuidString)
+            .setData([
+            "date": Timestamp.init(),
+            "title": titleTextField.text ?? "",
+            "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+            "description": descriptionTextField.text ?? "",
+            "duration": pickerData[timePickerView.selectedRow(inComponent: 0)]
+        ]) { err in
+            if let err = err {
+                print("Error creating document: \(err.localizedDescription)")
             }
         }
     }
     
     private func save() {
-        if let user = Auth.auth().currentUser {
-            self.db.collection("offers").document(user.uid).collection("offer").document(currentOffer!.id).updateData([
-                "title" : titleTextField.text ?? "",
-                "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
-                "description" : descriptionTextField.text ?? "",
-                "duration" : pickerData[timePickerView.selectedRow(inComponent: 0)]
-            ]) { err in
-                if let err = err {
-                    print("Error editing document: \(err.localizedDescription)")
-                }
+        self.db.collection("offers")
+            .document(currentUser!.uid)
+            .collection("offer")
+            .document(currentOffer!.id)
+            .updateData([
+            "title" : titleTextField.text ?? "",
+            "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+            "description" : descriptionTextField.text ?? "",
+            "duration" : pickerData[timePickerView.selectedRow(inComponent: 0)]
+        ]) { err in
+            if let err = err {
+                print("Error editing document: \(err.localizedDescription)")
             }
         }
     }

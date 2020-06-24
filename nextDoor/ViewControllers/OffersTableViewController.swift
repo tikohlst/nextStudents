@@ -66,8 +66,8 @@ class OffersTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Don't view the lines betwwen the cells
+
+        // Don't view the lines between the cells
         tableView.separatorStyle = .none
 
         navigationItem.searchController = UISearchController(searchResultsController: nil)
@@ -78,26 +78,29 @@ class OffersTableViewController: UITableViewController {
 
         // TODO: query all offers from users in range
         db.collection("offers")
-            .getDocuments { (querySnapshot, error) in
+            .addSnapshotListener() { (querySnapshot, error) in
             if error != nil {
                 print("Error getting documents: \(error!.localizedDescription)")
             } else {
-                for document in querySnapshot!.documents {
+                for neighbor in querySnapshot!.documents {
                     // TODO: extract offers from every user
                     self.db.collection("offers")
-                        .document(document.documentID)
+                        .document(neighbor.documentID)
                         .collection("offer")
                         .addSnapshotListener() { (querySnapshot, error) in
                             guard let documents = querySnapshot?.documents else {
                                 print("Error fetching documents: \(error!)")
                                 return
                             }
-
                             for offer in documents {
-                                let newOffer = Offer(from: offer.data(),
-                                                      with: offer.documentID,
-                                                      ownerUID: document.documentID)
-                                self.offersArray.append(newOffer)
+                                // Skip already existing offers of this user
+                                if self.offersArray.firstIndex(where: { $0.id == offer.documentID }) == nil
+                                {
+                                    let newOffer = Offer(from: offer.data(),
+                                                          with: offer.documentID,
+                                                          ownerUID: neighbor.documentID)
+                                    self.offersArray.append(newOffer)
+                                }
                             }
 
                             // Update the table
@@ -107,11 +110,11 @@ class OffersTableViewController: UITableViewController {
             }
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
     }
-    
+
     override func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             searchedOffers = offersArray.filter({$0.title.localizedCaseInsensitiveContains(searchText) || $0.description.localizedCaseInsensitiveContains(searchText)})
@@ -120,7 +123,7 @@ class OffersTableViewController: UITableViewController {
         }
         tableView.reloadData()
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if searchedOffers.count > 0 {
             let selectedOffer = searchedOffers[indexPath.row]
@@ -130,7 +133,6 @@ class OffersTableViewController: UITableViewController {
             } else {
                 performSegue(withIdentifier: showOfferDetailSegue, sender: nil)
             }
-            
         }
     }
 
@@ -228,7 +230,7 @@ class OffersTableViewController: UITableViewController {
             }
         }
     }
-    
+
     // unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
     }
