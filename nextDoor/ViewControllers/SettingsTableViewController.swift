@@ -75,11 +75,11 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath == self.tableView.indexPath(for: signOutTableViewCell) {
-            signOut()
+            SettingsTableViewController.signOut()
         }
     }
 
-    private func signOut() {
+    static func signOut() {
         do {
             try Auth.auth().signOut()
 

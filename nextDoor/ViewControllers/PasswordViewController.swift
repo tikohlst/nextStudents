@@ -6,8 +6,13 @@
 //
 
 import Eureka
+import Firebase
 
 class PasswordViewController: FormViewController {
+
+    // MARK: - Variables
+
+    let currentUser = Auth.auth().currentUser
 
     // MARK: - Methods
 
@@ -49,8 +54,8 @@ class PasswordViewController: FormViewController {
         }
 
         form
-            +++ Section()
 
+            +++ Section()
                 <<< PasswordRow("password") {
                     $0.title = "Neues Password"
                     $0.add(rule: RuleRequired(msg: "Du musst erst ein neues Passwort eingeben."))
@@ -59,6 +64,7 @@ class PasswordViewController: FormViewController {
                 }
 
                 <<< PasswordRow() {
+                    $0.tag = "confirmedPassword"
                     $0.title = "Password bestätigen"
                     $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein"))
                 }
@@ -68,9 +74,16 @@ class PasswordViewController: FormViewController {
                     $0.title = "Passwort ändern"
                 }.onCellSelection { cell, row in
                     if row.section?.form?.validate().isEmpty ?? false {
-                        // TODO: Save the new password
-                        self.navigationController?.popViewController(animated: true)
-                        self.dismiss(animated: true, completion: nil)
+                        let dict = self.form.values(includeHidden: true)
+                        let newPassword = dict["confirmedPassword"] as! String
+                        self.currentUser!.updatePassword(to: newPassword) { (error) in
+                            if let error = error {
+                                // An error happened.
+                                print(error.localizedDescription)
+                            } else {
+                                SettingsTableViewController.signOut()
+                            }
+                        }
                     }
                 }
     }
