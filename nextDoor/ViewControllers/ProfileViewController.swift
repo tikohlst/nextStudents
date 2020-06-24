@@ -134,8 +134,6 @@ class ProfileViewController: FormViewController {
                 }.onCellSelection { cell, row in
                     if row.section?.form?.validate().isEmpty ?? false {
                         self.saveProfil()
-                        self.navigationController?.popViewController(animated: true)
-                        self.dismiss(animated: true, completion: nil)
                     }
                 }
         
@@ -152,6 +150,12 @@ class ProfileViewController: FormViewController {
     }
     
     func saveProfil() {
+        // Show an animated waiting circle
+        let indicatorView = self.activityIndicator(style: .medium,
+                                                   center: self.view.center)
+        self.view.addSubview(indicatorView)
+        indicatorView.startAnimating()
+
         let dict = form.values(includeHidden: true)
         if let user = currentUser {
             user.firstName = dict["firstName"] as! String
@@ -189,6 +193,9 @@ class ProfileViewController: FormViewController {
                         return
                     }
                     print("upload complete with metadata: \(String(describing: storageMetadata))")
+                    // Don't go back until the new image has been completely uploaded
+                    self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: true, completion: nil)
                 }
             } else {
                 if profileImage == nil {
@@ -202,6 +209,19 @@ class ProfileViewController: FormViewController {
                 }
             }
         }
+    }
+
+    private func activityIndicator(style: UIActivityIndicatorView.Style = .medium,
+                                       frame: CGRect? = nil,
+                                       center: CGPoint? = nil) -> UIActivityIndicatorView {
+        let activityIndicatorView = UIActivityIndicatorView(style: style)
+        if let frame = frame {
+            activityIndicatorView.frame = frame
+        }
+        if let center = center {
+            activityIndicatorView.center = center
+        }
+        return activityIndicatorView
     }
 
     func presentDeletionFailsafe() {

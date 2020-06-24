@@ -38,8 +38,8 @@ class SettingsTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         db.collection("users")
-            .document("\(String(describing: Auth.auth().currentUser!.uid))")
-            .getDocument{(document, error) in
+            .document(Auth.auth().currentUser!.uid)
+            .addSnapshotListener() { (document, error) in
             if let document = document, document.exists {
                 let data = document.data()
 
