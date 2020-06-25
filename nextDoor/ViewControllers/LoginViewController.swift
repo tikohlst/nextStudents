@@ -21,7 +21,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
-    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var emailView: UIView!
+    @IBOutlet weak var passwordView: UIView!
 
     // MARK: - Methods
 
@@ -35,9 +36,24 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         // Must be set for func textFieldShouldReturn()
         emailText.delegate = self
         passwordText.delegate = self
+
+        // Shadow for email view
+        emailView.layer.shadowColor = UIColor.black.cgColor
+        emailView.layer.shadowRadius = 10
+        emailView.layer.shadowOpacity = 0.1
+        emailView.layer.shadowOffset.height = -3
+
+        // Shadow for password view
+        passwordView.layer.shadowColor = UIColor.black.cgColor
+        passwordView.layer.shadowRadius = 10
+        passwordView.layer.shadowOpacity = 0.1
+        passwordView.layer.shadowOffset.height = -3
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        // Hide navigation bar
+        navigationController?.setNavigationBarHidden(true, animated: true)
+
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
         }
     }
@@ -54,10 +70,24 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         }
         guard let auth = user.authentication else { return }
         let credentials = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
-        Auth.auth().signIn(with: credentials) { (authResult, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
+        Auth.auth().signIn(with: credentials) { [weak self] authResult, error in
+        guard let strongSelf = self else { return }
+        if error != nil {
+            let alert = UIAlertController(
+                title: nil, message: error!.localizedDescription,
+                preferredStyle: .alert)
+            alert.addAction(
+                UIAlertAction(
+                    title: NSLocalizedString("OK", comment: "Default Action"),
+                    style: .default)
+            )
+            strongSelf.present(alert, animated: true, completion: nil)
+        }
+        else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
+        }
         }
     }
 
@@ -81,7 +111,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                     strongSelf.present(alert, animated: true, completion: nil)
                 }
                 else {
-                    //self?.checkMissingUserData()
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
