@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
         if let _ = Auth.auth().currentUser {
-            let tabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+            let tabBarController = storyboard.instantiateViewController(identifier: "containervc")
             window?.rootViewController = tabBarController
         } else {
             let loginViewController = storyboard.instantiateViewController(identifier: "loginNavigationVC")

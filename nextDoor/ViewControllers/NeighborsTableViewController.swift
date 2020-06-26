@@ -205,6 +205,12 @@ class NeighborsTableViewController: UITableViewController {
         }
     }
 
+    @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
+        if let vc = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+            vc.toggleSortMenu(from: self)
+        }
+    }
+    
 }
 
 extension UITableViewController: UISearchResultsUpdating {

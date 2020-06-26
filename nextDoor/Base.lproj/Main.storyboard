@@ -583,7 +583,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
-                                                    <rect key="frame" x="113" y="0.0" width="80" height="44"/>
+                                                    <rect key="frame" x="111" y="0.0" width="80" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-wO-GgM">
@@ -634,9 +634,9 @@
         <!--Sortierung-->
         <scene sceneID="9Jj-4t-0sQ">
             <objects>
-                <tableViewController title="Sortierung" id="J8o-0Z-Evw" sceneMemberID="viewController">
+                <tableViewController title="Sortierung" id="J8o-0Z-Evw" customClass="SortTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="tkg-K3-DTh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <sections>
@@ -706,7 +706,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xTL-Mg-fj7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2221" y="1375"/>
+            <point key="canvasLocation" x="-2442" y="-226"/>
         </scene>
         <!--Nachbarn-->
         <scene sceneID="Nld-Cw-p50">
@@ -769,7 +769,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="Jnm-GY-vip"/>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="list.bullet" catalog="system" id="gzg-L6-fM8">
                             <connections>
-                                <segue destination="J8o-0Z-Evw" kind="presentation" identifier="sortingOptionsSegue" id="Kc6-QM-OBI"/>
+                                <action selector="touchSortButton:" destination="gXO-v8-gJI" id="u6R-RU-Ue2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -971,6 +971,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y78-zP-j2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-317" y="2092"/>
+        </scene>
+        <!--Container View Controller-->
+        <scene sceneID="YMe-wp-tOn">
+            <objects>
+                <viewController storyboardIdentifier="containervc" id="Gaq-6a-Qnd" customClass="ContainerViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hjT-cT-Osb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRI-Aa-qMa" userLabel="SortingView">
+                                <rect key="frame" x="0.0" y="877" width="414" height="269"/>
+                                <connections>
+                                    <segue destination="J8o-0Z-Evw" kind="embed" id="Eoi-fL-NCA"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wrv-eM-QMa" userLabel="ContentView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <connections>
+                                    <segue destination="49e-Tb-3d3" kind="embed" id="5Qr-ds-xiq"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="VRI-Aa-qMa" firstAttribute="leading" secondItem="hjT-cT-Osb" secondAttribute="leading" id="Hhl-cv-j2y"/>
+                            <constraint firstItem="VRI-Aa-qMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" multiplier="0.3" id="I7s-20-Pcj"/>
+                            <constraint firstItem="VRI-Aa-qMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" id="Wdg-MW-Yb4"/>
+                            <constraint firstItem="wrv-eM-QMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" multiplier="0.142857" constant="768" id="dQa-is-ftx"/>
+                            <constraint firstItem="wrv-eM-QMa" firstAttribute="leading" secondItem="eJ3-hK-g6e" secondAttribute="leading" id="deA-9O-vQ7"/>
+                            <constraint firstItem="VRI-Aa-qMa" firstAttribute="bottom" secondItem="hjT-cT-Osb" secondAttribute="bottom" constant="250" id="eMp-G8-3vQ"/>
+                            <constraint firstItem="wrv-eM-QMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" multiplier="0.57971" constant="174" id="ibP-JI-BIv"/>
+                            <constraint firstAttribute="top" secondItem="wrv-eM-QMa" secondAttribute="top" id="pP3-hS-RA2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eJ3-hK-g6e"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomConstraint" destination="eMp-G8-3vQ" id="w0l-l8-dC8"/>
+                        <outlet property="contentView" destination="wrv-eM-QMa" id="eSw-cz-kGG"/>
+                        <outlet property="sortingContainer" destination="VRI-Aa-qMa" id="LiG-FB-5YH"/>
+                        <outlet property="topConstraint" destination="pP3-hS-RA2" id="kHp-aN-e2c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tLO-kh-HUr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1110.144927536232" y="-232.36607142857142"/>
         </scene>
         <!--Main Controller-->
         <scene sceneID="yl2-sM-qoP">
