@@ -28,7 +28,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBOutlet weak var createBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -88,7 +88,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBAction func touchCancel(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "backToOffers", sender: nil)
     }
-    
+
+    // MARK: - Methods
+
     private func create() {
         self.db.collection("offers")
             .document(currentUser!.uid)

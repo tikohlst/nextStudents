@@ -34,7 +34,7 @@ class OfferTableViewController: UITableViewController {
     @IBOutlet weak var offerCreationDateLabel: UILabel!
     @IBOutlet weak var offerContactNeighborButton: UIButton!
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

@@ -14,7 +14,7 @@ class PasswordViewController: FormViewController {
 
     let currentUser = Auth.auth().currentUser
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,35 +56,37 @@ class PasswordViewController: FormViewController {
         form
 
             +++ Section()
-                <<< PasswordRow("password") {
-                    $0.title = "Neues Password"
-                    $0.add(rule: RuleRequired(msg: "Du musst erst ein neues Passwort eingeben."))
-                    $0.add(rule: RuleMinLength(minLength: 8, msg:  "Das Passwort muss mindestens 8 Zeichen enthalten"))
-                    $0.add(rule: RuleMaxLength(maxLength: 16, msg: "Das Passwort darf maximal 16 Zeichen enthalten"))
-                }
 
-                <<< PasswordRow() {
-                    $0.tag = "confirmedPassword"
-                    $0.title = "Password bestätigen"
-                    $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein"))
-                }
+            <<< PasswordRow("password") {
+                $0.title = "Neues Password"
+                $0.add(rule: RuleRequired(msg: "Du musst erst ein neues Passwort eingeben."))
+                $0.add(rule: RuleMinLength(minLength: 8, msg:  "Das Passwort muss mindestens 8 Zeichen enthalten"))
+                $0.add(rule: RuleMaxLength(maxLength: 16, msg: "Das Passwort darf maximal 16 Zeichen enthalten"))
+            }
+
+            <<< PasswordRow() {
+                $0.tag = "confirmedPassword"
+                $0.title = "Password bestätigen"
+                $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein"))
+            }
 
             +++ Section()
-                <<< ButtonRow() {
-                    $0.title = "Passwort ändern"
-                }.onCellSelection { cell, row in
-                    if row.section?.form?.validate().isEmpty ?? false {
-                        let dict = self.form.values(includeHidden: true)
-                        let newPassword = dict["confirmedPassword"] as! String
-                        self.currentUser!.updatePassword(to: newPassword) { (error) in
-                            if let error = error {
-                                // An error happened.
-                                print(error.localizedDescription)
-                            } else {
-                                SettingsTableViewController.signOut()
-                            }
+
+            <<< ButtonRow() {
+                $0.title = "Passwort ändern"
+            }.onCellSelection { cell, row in
+                if row.section?.form?.validate().isEmpty ?? false {
+                    let dict = self.form.values(includeHidden: true)
+                    let newPassword = dict["confirmedPassword"] as! String
+                    self.currentUser!.updatePassword(to: newPassword) { (error) in
+                        if let error = error {
+                            // An error happened.
+                            print(error.localizedDescription)
+                        } else {
+                            SettingsTableViewController.signOut()
                         }
                     }
                 }
+            }
     }
 }

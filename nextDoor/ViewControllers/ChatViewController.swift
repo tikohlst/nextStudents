@@ -33,7 +33,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     var messages: [Message] = []
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

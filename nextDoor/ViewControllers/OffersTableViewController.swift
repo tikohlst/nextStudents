@@ -62,7 +62,7 @@ class OffersTableViewController: UITableViewController {
     }
     var searchedOffers: [Offer] = []
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,22 +179,6 @@ class OffersTableViewController: UITableViewController {
         return UIView()
     }
 
-    func getCoordinate( addressString : String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
-            if error == nil {
-                if let placemark = placemarks?[0] {
-                    let location = placemark.location!
-                        
-                    completionHandler(location.coordinate, nil)
-                    return
-                }
-            }
-                
-            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
-        }
-    }
-
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == showOfferDetailSegue {
             let selectedIndex = self.tableView.indexPathForSelectedRow!
@@ -228,6 +212,24 @@ class OffersTableViewController: UITableViewController {
                 default:
                     break
             }
+        }
+    }
+
+    // MARK: - Methods
+
+    func getCoordinate( addressString : String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?[0] {
+                    let location = placemark.location!
+                        
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+                
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
 

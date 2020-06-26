@@ -27,7 +27,7 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var userBioLabel: UILabel!
     @IBOutlet weak var signOutTableViewCell: UITableViewCell!
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,19 +79,6 @@ class SettingsTableViewController: UITableViewController {
         }
     }
 
-    static func signOut() {
-        do {
-            try Auth.auth().signOut()
-
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as UINavigationController
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(vc)
-            //self.present(vc, animated: true, completion: nil)
-        } catch {
-            print("Something went wrong signing out the user")
-        }
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,6 +119,19 @@ class SettingsTableViewController: UITableViewController {
             default:
                 break
             }
+        }
+    }
+
+    // MARK: - Methods
+
+    static func signOut() {
+        do {
+            try Auth.auth().signOut()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as UINavigationController
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(vc)
+        } catch {
+            print("Something went wrong signing out the user")
         }
     }
 

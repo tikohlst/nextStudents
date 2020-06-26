@@ -24,7 +24,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     @IBOutlet weak var emailView: UIView!
     @IBOutlet weak var passwordView: UIView!
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +63,17 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         Auth.auth().removeStateDidChangeListener(handle!)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Implement a switch over the segue identifiers to distinct which segue get's called.
+        if segue.identifier == showRegistrationSegue {
+            let backItem = UIBarButtonItem()
+            backItem.title = "Zurück"
+            navigationItem.backBarButtonItem = backItem
+        }
+    }
+
+    // MARK: - Methods
+
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
             print(error.localizedDescription)
@@ -71,23 +82,23 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         guard let auth = user.authentication else { return }
         let credentials = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
         Auth.auth().signIn(with: credentials) { [weak self] authResult, error in
-        guard let strongSelf = self else { return }
-        if error != nil {
-            let alert = UIAlertController(
-                title: nil, message: error!.localizedDescription,
-                preferredStyle: .alert)
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("OK", comment: "Default Action"),
-                    style: .default)
-            )
-            strongSelf.present(alert, animated: true, completion: nil)
-        }
-        else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
-        }
+            guard let strongSelf = self else { return }
+            if error != nil {
+                let alert = UIAlertController(
+                    title: nil, message: error!.localizedDescription,
+                    preferredStyle: .alert)
+                alert.addAction(
+                    UIAlertAction(
+                        title: NSLocalizedString("OK", comment: "Default Action"),
+                        style: .default)
+                )
+                strongSelf.present(alert, animated: true, completion: nil)
+            }
+            else {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
+            }
         }
     }
 
@@ -124,15 +135,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         // Resign the first responder from textField to close the keyboard.
         textField.resignFirstResponder()
         return true
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Implement a switch over the segue identifiers to distinct which segue get's called.
-        if segue.identifier == showRegistrationSegue {
-            let backItem = UIBarButtonItem()
-            backItem.title = "Zurück"
-            navigationItem.backBarButtonItem = backItem
-        }
     }
 
 }

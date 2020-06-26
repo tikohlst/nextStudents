@@ -37,7 +37,7 @@ class ChatsTableViewController: UITableViewController {
     }
     var searchedChats: [Chat] = []
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()

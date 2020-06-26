@@ -17,7 +17,7 @@ class MainController: UITabBarController {
     let db = Firestore.firestore()
     var currentUser : User!
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -61,6 +61,8 @@ class MainController: UITabBarController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+
+    // MARK: - Methods
 
     func checkMissingUserData() {
         if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty ||

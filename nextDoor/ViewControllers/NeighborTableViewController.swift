@@ -29,8 +29,8 @@ class NeighborTableViewController: UITableViewController {
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var skillsTextView: UITextView!
-    
-    // MARK: - Methods
+
+    // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

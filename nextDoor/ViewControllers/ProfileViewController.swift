@@ -19,7 +19,7 @@ class ProfileViewController: FormViewController {
     var storage = Storage.storage()
     var currentUser: User?
 
-    // MARK: - Methods
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,117 +38,123 @@ class ProfileViewController: FormViewController {
         }
 
         form
-            +++ Section()
-                <<< ImageRow() {
-                    $0.tag = "profileImage"
-                    $0.title = "Profilbild"
-                    $0.placeholderImage = UIImage(named: "defaultProfilePicture")
-                    $0.value = self.currentUser?.profileImage
-                    $0.sourceTypes = .PhotoLibrary
-                    $0.clearAction = .no
-                }.cellUpdate { cell, row in
-                    cell.accessoryView?.layer.cornerRadius = 17
-                }
 
             +++ Section()
 
-                <<< TextRow() {
-                    $0.tag = "firstName"
-                    $0.title = "Vorname"
-                    $0.value = self.currentUser?.firstName
-                    $0.add(rule: RuleRequired())
-                    $0.validationOptions = .validatesOnChange
-                }
-                
-                <<< TextRow() {
-                    $0.tag = "lastName"
-                    $0.title = "Nachname"
-                    $0.value = self.currentUser?.lastName
-                    $0.add(rule: RuleRequired())
-                    $0.validationOptions = .validatesOnChange
-                }
-            
-            +++ Section()
-            
-                <<< TextRow() {
-                    $0.tag = "street"
-                    $0.title = "Straße"
-                    $0.value = self.currentUser?.street
-                    $0.add(rule: RuleRequired())
-                    $0.validationOptions = .validatesOnChange
-                }
-
-                <<< TextRow() {
-                    $0.tag = "housenumber"
-                    $0.title = "Hausnummer"
-                    $0.value = self.currentUser?.housenumber ?? ""
-                    $0.add(rule: RuleRequired())
-                    $0.validationOptions = .validatesOnChange
-                }
-                
-                <<< TextRow() {
-                    $0.tag = "zipcode"
-                    $0.title = "zipcode"
-                    $0.value = self.currentUser?.zipcode ?? ""
-                    $0.add(rule: RuleRequired())
-                    $0.validationOptions = .validatesOnChange
-                }
+            <<< ImageRow() {
+                $0.tag = "profileImage"
+                $0.title = "Profilbild"
+                $0.placeholderImage = UIImage(named: "defaultProfilePicture")
+                $0.value = self.currentUser?.profileImage
+                $0.sourceTypes = .PhotoLibrary
+                $0.clearAction = .no
+            }.cellUpdate { cell, row in
+                cell.accessoryView?.layer.cornerRadius = 17
+            }
 
             +++ Section()
 
-                <<< SliderRow() {
-                    $0.tag = "radius"
-                    $0.title = "Radius"
-                    $0.steps = 8
-                    $0.value = Float(self.currentUser!.radius)
-                }.cellSetup { cell, row in
-                    cell.slider.minimumValue = 100
-                    cell.slider.maximumValue = 500
-                    cell.valueLabel.text = String(self.currentUser!.radius)
-                }.cellUpdate { cell, row in
-                    // Show radius as numeric number
-                    cell.valueLabel.text = String(Int(row.value!)) + "m"
-                }
-            
+            <<< TextRow() {
+                $0.tag = "firstName"
+                $0.title = "Vorname"
+                $0.value = self.currentUser?.firstName
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+
+            <<< TextRow() {
+                $0.tag = "lastName"
+                $0.title = "Nachname"
+                $0.value = self.currentUser?.lastName
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+
+            +++ Section()
+
+            <<< TextRow() {
+                $0.tag = "street"
+                $0.title = "Straße"
+                $0.value = self.currentUser?.street
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+
+            <<< TextRow() {
+                $0.tag = "housenumber"
+                $0.title = "Hausnummer"
+                $0.value = self.currentUser?.housenumber ?? ""
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+
+            <<< TextRow() {
+                $0.tag = "zipcode"
+                $0.title = "zipcode"
+                $0.value = self.currentUser?.zipcode ?? ""
+                $0.add(rule: RuleRequired())
+                $0.validationOptions = .validatesOnChange
+            }
+
+            +++ Section()
+
+            <<< SliderRow() {
+                $0.tag = "radius"
+                $0.title = "Radius"
+                $0.steps = 8
+                $0.value = Float(self.currentUser!.radius)
+            }.cellSetup { cell, row in
+                cell.slider.minimumValue = 100
+                cell.slider.maximumValue = 500
+                cell.valueLabel.text = String(self.currentUser!.radius)
+            }.cellUpdate { cell, row in
+                // Show radius as numeric number
+                cell.valueLabel.text = String(Int(row.value!)) + "m"
+            }
+
             +++ Section("Biografie")
 
-                <<< TextAreaRow() {
-                    $0.tag = "bio"
-                    $0.placeholder = "Erzähle etwas über dich selbst..."
-                    $0.value = self.currentUser?.bio
-                    $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
-                }
-            
+            <<< TextAreaRow() {
+                $0.tag = "bio"
+                $0.placeholder = "Erzähle etwas über dich selbst..."
+                $0.value = self.currentUser?.bio
+                $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
+            }
+
             +++ Section("Fähigkeiten")
 
-                <<< TextAreaRow() {
-                    $0.tag = "skills"
-                    $0.placeholder = "Deine Fähigkeiten..."
-                    $0.value = self.currentUser?.skills
-                    $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
-                }
+            <<< TextAreaRow() {
+                $0.tag = "skills"
+                $0.placeholder = "Deine Fähigkeiten..."
+                $0.value = self.currentUser?.skills
+                $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
+            }
 
             +++ Section()
-                <<< ButtonRow() {
-                    $0.title = "Änderungen speichern"
-                }.onCellSelection { cell, row in
-                    if row.section?.form?.validate().isEmpty ?? false {
-                        self.saveProfil()
-                    }
+
+            <<< ButtonRow() {
+                $0.title = "Änderungen speichern"
+            }.onCellSelection { cell, row in
+                if row.section?.form?.validate().isEmpty ?? false {
+                    self.saveProfil()
                 }
-        
+            }
+
             +++ Section()
-                <<< ButtonRow() {
-                    $0.title = "Profil löschen"
-                }.cellUpdate { cell, row in
-                    cell.textLabel!.textColor = .red
-                }.onCellSelection { cell, row in
-                    if row.section?.form?.validate().isEmpty ?? false {
-                        self.presentDeletionFailsafe()
-                    }
+
+            <<< ButtonRow() {
+                $0.title = "Profil löschen"
+            }.cellUpdate { cell, row in
+                cell.textLabel!.textColor = .red
+            }.onCellSelection { cell, row in
+                if row.section?.form?.validate().isEmpty ?? false {
+                    self.presentDeletionFailsafe()
                 }
+            }
     }
-    
+
+    // MARK: - Methods
+
     func saveProfil() {
         // Show an animated waiting circle
         let indicatorView = self.activityIndicator(style: .medium,
