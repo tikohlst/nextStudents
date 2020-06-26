@@ -25,7 +25,7 @@ class NeighborTableViewCell: UITableViewCell {
     // Inside UITableViewCell subclass
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         // Show profile image rounded
         neighborImageView.layer.cornerRadius = neighborImageView.frame.width/2
 
@@ -48,17 +48,19 @@ class NeighborTableViewCell: UITableViewCell {
 
 class NeighborsTableViewController: UITableViewController {
 
+    // MARK: - Variables
+
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    let currentUserUID = Auth.auth().currentUser?.uid
 
+    let currentUserUID = Auth.auth().currentUser?.uid
     private let showNeighborDetailSegue = "showNeighborDetail"
-    var usersInRangeArray: [User] = [] {
-        didSet {
-            searchedUsers = usersInRangeArray.map({$0})
-        }
-    }
+    var usersInRangeArray: [User] = []
     var searchedUsers : [User] = []
+    
+    var sortingOption: String?
+
+    // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,16 +126,20 @@ class NeighborsTableViewController: UITableViewController {
     }
     
     override func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            searchedUsers = usersInRangeArray.filter({$0.firstName.localizedCaseInsensitiveContains(searchText) || $0.lastName.localizedCaseInsensitiveContains(searchText)})
-        } else {
-            searchedUsers = usersInRangeArray.map({$0})
+        let searchBar = searchController.searchBar
+        filterContentForSearchText(searchBar.text!)
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        searchedUsers = usersInRangeArray.filter { (user: User) -> Bool in
+            return user.firstName.localizedCaseInsensitiveContains(searchText) ||
+                user.lastName.localizedCaseInsensitiveContains(searchText)
         }
         tableView.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.searchedUsers.count
+        return isFiltering ? searchedUsers.count : usersInRangeArray.count
     }
 
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -142,10 +148,11 @@ class NeighborsTableViewController: UITableViewController {
                              cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
-
+        let usersToDisplay = isFiltering ? searchedUsers : usersInRangeArray
+        
         // Show all existing users
-        if searchedUsers.count > 0 {
-            let currentUser = searchedUsers[indexPath.row]
+        if usersToDisplay.count > 0 {
+            let currentUser = usersToDisplay[indexPath.row]
 
             // Write first name of the neighbor in the cell
             cell.neighborNameLabel.text = currentUser.firstName
@@ -169,34 +176,57 @@ class NeighborsTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
-        if segue.identifier == showNeighborDetailSegue {
-            // Show the selected User on the Detail view
-            let indexPath = self.tableView.indexPathForSelectedRow!
+        if let identifier = segue.identifier {
+            switch identifier {
+                case showNeighborDetailSegue:
+                    // Show the selected User on the Detail view
+                    let indexPath = self.tableView.indexPathForSelectedRow!
 
-            // Retrieve the selected user
-            let currentUser = searchedUsers[indexPath.row]
+                    // Retrieve the selected user
+                    let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
+                    let currentUser = displayedUsers[indexPath.row]
 
-            // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
-            let detailViewController = segue.destination as! NeighborTableViewController
+                    // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
+                    let detailViewController = segue.destination as! NeighborTableViewController
 
-            // Set the currentUser at the NeighborTableViewController.
-            detailViewController.user = currentUser
+                    // Set the currentUser at the NeighborTableViewController.
+                    detailViewController.user = currentUser
 
-            // Set the title of the navigation item on the NeighborTableViewController
-            //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
+                    // Set the title of the navigation item on the NeighborTableViewController
+                    //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
+                case "sortingOptionsSegue":
+                    let vc = segue.destination as! SortTableViewController
+                    vc.delegate = self
+                    vc.selectedSorting = sortingOption
+                    break
+                default:
+                    break
+            }
         }
     }
 
 }
 
 extension UITableViewController: UISearchResultsUpdating {
+    var isFiltering: Bool {
+        return (navigationItem.searchController?.isActive ?? false) && !isSearchbarEmpty
+    }
+    var isSearchbarEmpty: Bool {
+        return navigationItem.searchController?.searchBar.text?.isEmpty ?? true
+    }
     func setupSearch() {
         if let searchController = navigationItem.searchController {
             searchController.obscuresBackgroundDuringPresentation = false
             searchController.searchResultsUpdater = self
         }
-        
     }
-    
+
     public func updateSearchResults(for searchController: UISearchController) {}
+
+}
+
+extension NeighborsTableViewController: SortTableViewControllerDelegate {
+    func forward(data: String?) {
+        sortingOption = data
+    }
 }
