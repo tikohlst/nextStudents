@@ -583,7 +583,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
-                                                    <rect key="frame" x="114" y="0.0" width="80" height="44"/>
+                                                    <rect key="frame" x="113" y="0.0" width="80" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-wO-GgM">
@@ -634,7 +634,7 @@
         <!--Sortierung-->
         <scene sceneID="9Jj-4t-0sQ">
             <objects>
-                <tableViewController title="Sortierung" id="J8o-0Z-Evw" customClass="SortTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Sortierung" id="J8o-0Z-Evw" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="tkg-K3-DTh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
