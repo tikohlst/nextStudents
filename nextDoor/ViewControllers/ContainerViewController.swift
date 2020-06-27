@@ -15,6 +15,9 @@ class ContainerViewController: UIViewController {
     @IBOutlet weak var sortingContainer: UIView!
     @IBOutlet weak var contentView: UIView!
     
+    var sortViewController: SortTableViewController?
+    var tabViewController: UITableViewController?
+    
     
     var sortMenuVisible = false
     
@@ -40,6 +43,12 @@ class ContainerViewController: UIViewController {
             })
         }
         sortMenuVisible = !sortMenuVisible
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let sortController = sortViewController, let tabViewController = tabViewController as! NeighborsTableViewController? {
+            sortController.delegate = tabViewController
+        }
     }
     
 

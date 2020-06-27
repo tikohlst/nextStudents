@@ -96,7 +96,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             }
             else {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+                let mainTabBarController = storyboard.instantiateViewController(identifier: "containervc")
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
             }
         }
@@ -123,7 +123,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                 }
                 else {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
+                    let mainTabBarController = storyboard.instantiateViewController(identifier: "containervc")
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
                 }
             }

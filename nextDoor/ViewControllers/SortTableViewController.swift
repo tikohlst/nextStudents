@@ -18,6 +18,8 @@ class SortTableViewController: UITableViewController {
     weak var delegate: SortTableViewControllerDelegate?
     var selectedSorting: String?
     
+    var containerController: ContainerViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -25,6 +27,13 @@ class SortTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let container = self.parent as? ContainerViewController {
+            containerController = container
+            containerController?.sortViewController = self
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

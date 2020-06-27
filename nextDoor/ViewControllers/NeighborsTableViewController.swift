@@ -58,7 +58,48 @@ class NeighborsTableViewController: UITableViewController {
     var usersInRangeArray: [User] = []
     var searchedUsers : [User] = []
     
-    var sortingOption: String?
+    var containerController: ContainerViewController?
+    
+    var sortingOption: String? {
+        didSet {
+            if let sortingOption = sortingOption {
+                let option = SortOption(rawValue: sortingOption)
+                if isFiltering {
+                    searchedUsers = sort(searchedUsers, by: option)
+                } else {
+                    usersInRangeArray = sort(usersInRangeArray, by: option)
+                }
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func sort(_ users: [User], by option : SortOption?) -> [User] {
+        var result = users
+        switch option {
+            case .firstName:
+                result = users.sorted(by: { (u1, u2) -> Bool in
+                    let name1 = u1.firstName
+                    let name2 = u2.firstName
+                    return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
+                })
+            case .lastName:
+                result = users.sorted(by: { (u1, u2) -> Bool in
+                    let name1 = u1.lastName
+                    let name2 = u2.lastName
+                    return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
+                })
+            case .distance:
+                break
+            case .title:
+                break
+            case .type:
+                break
+            case nil:
+                break
+        }
+        return result
+    }
 
     // MARK: - UIViewController events
 
@@ -123,6 +164,10 @@ class NeighborsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
+        if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+            containerController = container
+            containerController?.tabViewController = self
+        }
     }
     
     override func updateSearchResults(for searchController: UISearchController) {
@@ -179,6 +224,9 @@ class NeighborsTableViewController: UITableViewController {
         if let identifier = segue.identifier {
             switch identifier {
                 case showNeighborDetailSegue:
+                    if let vc = containerController, vc.sortMenuVisible {
+                        vc.toggleSortMenu(from: self)
+                    }
                     // Show the selected User on the Detail view
                     let indexPath = self.tableView.indexPathForSelectedRow!
 
@@ -235,4 +283,11 @@ extension NeighborsTableViewController: SortTableViewControllerDelegate {
     func forward(data: String?) {
         sortingOption = data
     }
+}
+enum SortOption: String {
+    case firstName = "Vorname"
+    case lastName = "Nachname"
+    case distance = "Entfernung"
+    case title = "Titel"
+    case type = "Typ"
 }
