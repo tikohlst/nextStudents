@@ -52,7 +52,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Nachrichten" id="upP-3z-qhW">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="OSw-So-p7w"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="list.bullet" catalog="system" id="1MS-0U-dfl"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="list.bullet" catalog="system" id="1MS-0U-dfl">
+                            <connections>
+                                <action selector="touchSortButton:" destination="yyK-9g-SXt" id="XSB-i1-xlN"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oh4-0B-fN4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -142,11 +146,18 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Angebote" id="B39-5W-llW">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="Mie-4S-WMj"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="tnT-4Z-JUT">
-                            <connections>
-                                <segue destination="FfJ-Ih-jnY" kind="show" identifier="createNewOffer" id="4Zl-ks-Q0N"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="tnT-4Z-JUT">
+                                <connections>
+                                    <segue destination="FfJ-Ih-jnY" kind="show" identifier="createNewOffer" id="4Zl-ks-Q0N"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="list.bullet" catalog="system" id="3nq-Ya-asR">
+                                <connections>
+                                    <action selector="touchSortButton:" destination="dkS-1f-0BS" id="7oB-EL-dhx"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <segue destination="FfJ-Ih-jnY" kind="show" identifier="editOffer" id="GkJ-ve-uKj"/>
@@ -583,7 +594,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
-                                                    <rect key="frame" x="111" y="0.0" width="80" height="44"/>
+                                                    <rect key="frame" x="110" y="0.0" width="79" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-wO-GgM">

@@ -21,7 +21,7 @@ class ChatTableViewCell: UITableViewCell {
 
 }
 
-class ChatsTableViewController: UITableViewController {
+class ChatsTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
@@ -36,6 +36,19 @@ class ChatsTableViewController: UITableViewController {
         }
     }
     var searchedChats: [Chat] = []
+    
+    override var sortingOption: SortOption? {
+        didSet {
+            if let sortingOption = sortingOption {
+                if isFiltering {
+                    searchedChats = super.sort(searchedChats, by: sortingOption)
+                } else {
+                    chatsArray = super.sort(chatsArray, by: sortingOption)
+                }
+                self.tableView.reloadData()
+            }
+        }
+    }
 
     // MARK: - UIViewController events
 
@@ -137,6 +150,11 @@ class ChatsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
+        if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+            containerController = container
+            containerController!.tabViewController = self
+            containerController!.setupSortingCellsAndDelegate()
+        }
     }
     
     override func updateSearchResults(for searchController: UISearchController) {
@@ -208,6 +226,10 @@ class ChatsTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if segue.identifier == showChatDetailSegue {
+            
+            if let vc = containerController, vc.sortMenuVisible {
+                vc.toggleSortMenu(from: self)
+            }
             // Show the selected Chat on the Detail view
             let indexPath = self.tableView.indexPathForSelectedRow!
 
@@ -227,5 +249,17 @@ class ChatsTableViewController: UITableViewController {
             detailViewController.user2Img = currentChat.chatPartnerProfileImage
         }
     }
+    
+    @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
+        if let vc = containerController {
+            vc.toggleSortMenu(from: self)
+        }
+    }
 
+}
+
+extension ChatsTableViewController: SortTableViewControllerDelegate {
+    func forward(data: SortOption?) {
+        sortingOption = data
+    }
 }

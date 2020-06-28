@@ -45,9 +45,31 @@ class ContainerViewController: UIViewController {
         sortMenuVisible = !sortMenuVisible
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if let sortController = sortViewController, let tabViewController = tabViewController as! NeighborsTableViewController? {
-            sortController.delegate = tabViewController
+    // TODO: refactor copy pasted code
+    func setupSortingCellsAndDelegate() {
+        if let sortController = sortViewController, let tabViewController = tabViewController {
+            if tabViewController is NeighborsTableViewController {
+                sortController.delegate = tabViewController as! NeighborsTableViewController
+                let cells = sortController.tableView.visibleCells
+                let options = [SortOption.firstName, SortOption.lastName, SortOption.distance]
+                for i in 0..<cells.count {
+                    cells[i].textLabel?.text = options[i].rawValue
+                }
+            } else if tabViewController is ChatsTableViewController {
+                sortController.delegate = tabViewController as! ChatsTableViewController
+                let cells = sortController.tableView.visibleCells
+                let options = [SortOption.firstName, SortOption.lastName, SortOption.time]
+                for i in 0..<cells.count {
+                    cells[i].textLabel?.text = options[i].rawValue
+                }
+            } else if tabViewController is OffersTableViewController {
+                sortController.delegate = tabViewController as! OffersTableViewController
+                let cells = sortController.tableView.visibleCells
+                let options = [SortOption.title, SortOption.date, SortOption.duration]
+                for i in 0..<cells.count {
+                    cells[i].textLabel?.text = options[i].rawValue
+                }
+            }
         }
     }
     

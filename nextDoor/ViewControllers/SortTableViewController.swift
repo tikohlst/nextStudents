@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SortTableViewControllerDelegate: NSObjectProtocol {
-    func forward(data: String?)
+    func forward(data: SortOption?)
 }
 
 class SortTableViewController: UITableViewController {
@@ -83,7 +83,8 @@ class SortTableViewController: UITableViewController {
 
     private func setDelegate(_ tableView: UITableView, _ indexPath: IndexPath) {
         if let delegate = delegate {
-            delegate.forward(data: tableView.cellForRow(at: indexPath)?.textLabel?.text)
+            let option = SortOption(rawValue: tableView.cellForRow(at: indexPath)?.textLabel?.text ?? "")
+            delegate.forward(data: option)
         }
     }
     /*

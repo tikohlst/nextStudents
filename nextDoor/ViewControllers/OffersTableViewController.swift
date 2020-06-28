@@ -46,7 +46,7 @@ class OfferTableViewCell: UITableViewCell {
     }
 }
 
-class OffersTableViewController: UITableViewController {
+class OffersTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
@@ -61,7 +61,18 @@ class OffersTableViewController: UITableViewController {
         }
     }
     var searchedOffers: [Offer] = []
-
+    override var sortingOption: SortOption? {
+        didSet {
+            if let sortingOption = sortingOption {
+                if isFiltering {
+                    searchedOffers = super.sort(searchedOffers, by: sortingOption)
+                } else {
+                    offersArray = super.sort(offersArray, by: sortingOption)
+                }
+                self.tableView.reloadData()
+            }
+        }
+    }
     // MARK: - UIViewController events
 
     override func viewDidLoad() {
@@ -113,6 +124,11 @@ class OffersTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
+        if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+            containerController = container
+            containerController!.tabViewController = self
+            containerController!.setupSortingCellsAndDelegate()
+        }
     }
 
     override func updateSearchResults(for searchController: UISearchController) {
@@ -195,7 +211,9 @@ class OffersTableViewController: UITableViewController {
             let backItem = UIBarButtonItem()
             backItem.title = "Angebote"
             navigationItem.backBarButtonItem = backItem
-
+            if let vc = containerController, vc.sortMenuVisible {
+                vc.toggleSortMenu(from: self)
+            }
             switch identifier {
                 case showOfferDetailSegue:
                     if let vc = segue.destination as? OfferTableViewController {
@@ -232,9 +250,21 @@ class OffersTableViewController: UITableViewController {
             completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
+    
+    @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
+        if let vc = containerController {
+            vc.toggleSortMenu(from: self)
+        }
+    }
 
     // unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
     }
 
+}
+
+extension OffersTableViewController: SortTableViewControllerDelegate {
+    func forward(data: SortOption?) {
+        sortingOption = data
+    }
 }

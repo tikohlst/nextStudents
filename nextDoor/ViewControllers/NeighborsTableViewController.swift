@@ -46,7 +46,7 @@ class NeighborTableViewCell: UITableViewCell {
 
 }
 
-class NeighborsTableViewController: UITableViewController {
+class NeighborsTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
@@ -58,47 +58,17 @@ class NeighborsTableViewController: UITableViewController {
     var usersInRangeArray: [User] = []
     var searchedUsers : [User] = []
     
-    var containerController: ContainerViewController?
-    
-    var sortingOption: String? {
+    override var sortingOption: SortOption? {
         didSet {
             if let sortingOption = sortingOption {
-                let option = SortOption(rawValue: sortingOption)
                 if isFiltering {
-                    searchedUsers = sort(searchedUsers, by: option)
+                    searchedUsers = super.sort(searchedUsers, by: sortingOption)
                 } else {
-                    usersInRangeArray = sort(usersInRangeArray, by: option)
+                    usersInRangeArray = super.sort(usersInRangeArray, by: sortingOption)
                 }
                 self.tableView.reloadData()
             }
         }
-    }
-    
-    private func sort(_ users: [User], by option : SortOption?) -> [User] {
-        var result = users
-        switch option {
-            case .firstName:
-                result = users.sorted(by: { (u1, u2) -> Bool in
-                    let name1 = u1.firstName
-                    let name2 = u2.firstName
-                    return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
-                })
-            case .lastName:
-                result = users.sorted(by: { (u1, u2) -> Bool in
-                    let name1 = u1.lastName
-                    let name2 = u2.lastName
-                    return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
-                })
-            case .distance:
-                break
-            case .title:
-                break
-            case .type:
-                break
-            case nil:
-                break
-        }
-        return result
     }
 
     // MARK: - UIViewController events
@@ -166,7 +136,8 @@ class NeighborsTableViewController: UITableViewController {
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
             containerController = container
-            containerController?.tabViewController = self
+            containerController!.tabViewController = self
+            containerController!.setupSortingCellsAndDelegate()
         }
     }
     
@@ -242,11 +213,6 @@ class NeighborsTableViewController: UITableViewController {
 
                     // Set the title of the navigation item on the NeighborTableViewController
                     //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
-                case "sortingOptionsSegue":
-                    let vc = segue.destination as! SortTableViewController
-                    vc.delegate = self
-                    vc.selectedSorting = sortingOption
-                    break
                 default:
                     break
             }
@@ -254,7 +220,7 @@ class NeighborsTableViewController: UITableViewController {
     }
 
     @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
-        if let vc = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+        if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
     }
@@ -280,7 +246,7 @@ extension UITableViewController: UISearchResultsUpdating {
 }
 
 extension NeighborsTableViewController: SortTableViewControllerDelegate {
-    func forward(data: String?) {
+    func forward(data: SortOption?) {
         sortingOption = data
     }
 }
@@ -290,4 +256,7 @@ enum SortOption: String {
     case distance = "Entfernung"
     case title = "Titel"
     case type = "Typ"
+    case time = "Zeit"
+    case duration = "Dauer"
+    case date = "Datum"
 }
