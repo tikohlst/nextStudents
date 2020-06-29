@@ -201,7 +201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCM-Md-Dep" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2057" y="-226"/>
+            <point key="canvasLocation" x="194" y="-989"/>
         </scene>
         <!--Registrierung-->
         <scene sceneID="bMV-bf-YuT">
@@ -231,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edN-v1-Mwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2880" y="-226"/>
+            <point key="canvasLocation" x="1017" y="-989"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2tC-FZ-eCc">
@@ -247,7 +247,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wsb-oq-jhD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1257" y="-226"/>
+            <point key="canvasLocation" x="-606" y="-989"/>
         </scene>
         <!--Settings-->
         <scene sceneID="7eS-UL-tU4">
@@ -257,7 +257,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mH1-23-FH9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1122" y="311"/>
+            <point key="canvasLocation" x="895" y="311"/>
         </scene>
         <!--containervc-->
         <scene sceneID="VnT-XT-teU">
@@ -311,7 +311,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1fw-NV-TE4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="654" y="722"/>
+            <point key="canvasLocation" x="498" y="311"/>
         </scene>
         <!--chatviewvc3-->
         <scene sceneID="XMw-CC-o2Y">
