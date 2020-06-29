@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Nachrichten-->
+        <scene sceneID="d9T-gi-6xL">
+            <objects>
+                <tableViewController id="yyK-9g-SXt" customClass="ChatsTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="36c-pr-ubI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ChatCell" textLabel="zow-kp-oe0" detailTextLabel="Mh3-E7-gH2" rowHeight="90" style="IBUITableViewCellStyleSubtitle" id="Zvv-xO-VVZ" customClass="ChatTableViewCell" customModule="nextDoor" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zvv-xO-VVZ" id="TtB-V5-40b">
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="90"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zow-kp-oe0">
+                                            <rect key="frame" x="20" y="25" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mh3-E7-gH2">
+                                            <rect key="frame" x="20" y="48.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="vYH-13-Yvz" kind="show" identifier="showChatDetail" id="K0Y-c3-X42"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="yyK-9g-SXt" id="OYk-1g-Gz8"/>
+                            <outlet property="delegate" destination="yyK-9g-SXt" id="2qY-Xf-FIs"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Nachrichten" id="upP-3z-qhW">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="OSw-So-p7w"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="list.bullet" catalog="system" id="1MS-0U-dfl">
+                            <connections>
+                                <action selector="touchSortButton:" destination="yyK-9g-SXt" id="XSB-i1-xlN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oh4-0B-fN4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-491" y="725"/>
+        </scene>
+        <!--Nachrichten-->
+        <scene sceneID="DKO-gR-fby">
+            <objects>
+                <navigationController storyboardIdentifier="UINavigationController-KlZ-Ki-3zt" id="KlZ-Ki-3zt" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Nachrichten" image="bubble.left.and.bubble.right.fill" catalog="system" id="MyK-zf-IzD"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IPZ-6e-Znv">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="yyK-9g-SXt" kind="relationship" relationship="rootViewController" id="IZ8-IE-wZm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="THo-iU-wjf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1403" y="725"/>
+        </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="2Gr-VT-WRG">
+            <objects>
+                <viewController storyboardIdentifier="chatviewvc" id="vYH-13-Yvz" customClass="ChatViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="x19-Cj-BAB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="xzs-0r-9al"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6Cz-Ee-ScZ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y78-zP-j2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="417" y="725"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
+        <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
+        <image name="list.bullet" catalog="system" width="128" height="88"/>
+    </resources>
+</document>
