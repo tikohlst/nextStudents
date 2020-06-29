@@ -138,25 +138,73 @@
 			path = nextDoor;
 			sourceTree = "<group>";
 		};
-		22CB9D5F248E70BB00D87E3F /* ViewControllers */ = {
+		229694A924AA3CCC0064FB75 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
+				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
+				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		229694AA24AA3CDE0064FB75 /* Offers */ = {
+			isa = PBXGroup;
+			children = (
+				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
+				2253260824753B1E00B35802 /* OfferTableViewController.swift */,
+				8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */,
+			);
+			path = Offers;
+			sourceTree = "<group>";
+		};
+		229694AB24AA3CF10064FB75 /* Chats */ = {
+			isa = PBXGroup;
+			children = (
+				226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */,
+				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
+			);
+			path = Chats;
+			sourceTree = "<group>";
+		};
+		229694AC24AA3D040064FB75 /* Neighbors */ = {
+			isa = PBXGroup;
+			children = (
+				221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */,
+				226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */,
+			);
+			path = Neighbors;
+			sourceTree = "<group>";
+		};
+		229694AD24AA3D140064FB75 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
+				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		229694AE24AA3D2F0064FB75 /* Sortable */ = {
 			isa = PBXGroup;
 			children = (
 				8F22337F24A8A03B003EC2D4 /* SortableTableViewController.swift */,
 				8F22337B24A62148003EC2D4 /* SortTableViewController.swift */,
 				8F22337D24A63057003EC2D4 /* ContainerViewController.swift */,
+			);
+			path = Sortable;
+			sourceTree = "<group>";
+		};
+		22CB9D5F248E70BB00D87E3F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
 				8F0B560D248FA60B00703F0A /* MainController.swift */,
-				8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */,
-				8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */,
-				221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */,
-				226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */,
-				226DC5FF24916A5600C30B4A /* ChatsTableViewController.swift */,
-				8F031AC4248A967A00EC0F02 /* ChatViewController.swift */,
-				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
-				2253260824753B1E00B35802 /* OfferTableViewController.swift */,
-				8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */,
-				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
-				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
-				8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */,
+				229694AD24AA3D140064FB75 /* Authentication */,
+				229694AC24AA3D040064FB75 /* Neighbors */,
+				229694AB24AA3CF10064FB75 /* Chats */,
+				229694AA24AA3CDE0064FB75 /* Offers */,
+				229694A924AA3CCC0064FB75 /* Settings */,
+				229694AE24AA3D2F0064FB75 /* Sortable */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
