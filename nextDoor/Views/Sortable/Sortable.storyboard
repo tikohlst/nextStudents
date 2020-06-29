@@ -110,10 +110,10 @@
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="leading" secondItem="hjT-cT-Osb" secondAttribute="leading" id="Hhl-cv-j2y"/>
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" multiplier="0.3" id="I7s-20-Pcj"/>
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" id="Wdg-MW-Yb4"/>
-                            <constraint firstItem="wrv-eM-QMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" multiplier="0.142857" constant="768" id="dQa-is-ftx"/>
+                            <constraint firstItem="wrv-eM-QMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" id="dQa-is-ftx"/>
                             <constraint firstItem="wrv-eM-QMa" firstAttribute="leading" secondItem="eJ3-hK-g6e" secondAttribute="leading" id="deA-9O-vQ7"/>
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="bottom" secondItem="hjT-cT-Osb" secondAttribute="bottom" constant="250" id="eMp-G8-3vQ"/>
-                            <constraint firstItem="wrv-eM-QMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" multiplier="0.57971" constant="174" id="ibP-JI-BIv"/>
+                            <constraint firstItem="wrv-eM-QMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" id="ibP-JI-BIv"/>
                             <constraint firstAttribute="top" secondItem="wrv-eM-QMa" secondAttribute="top" id="pP3-hS-RA2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="eJ3-hK-g6e"/>
