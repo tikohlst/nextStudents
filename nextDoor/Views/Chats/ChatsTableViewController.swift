@@ -15,9 +15,25 @@ class ChatTableViewCell: UITableViewCell {
 
     // MARK: - IBOutlets
 
-    @IBOutlet weak var chatPartnerNameLabel: UILabel?
-    @IBOutlet weak var lastMessageLabel: UILabel?
-    @IBOutlet weak var chatPartnerImageView: UIImageView?
+    @IBOutlet weak var chatPartnerNameLabel: UILabel!
+    @IBOutlet weak var lastMessageLabel: UILabel!
+    @IBOutlet weak var chatPartnerImageView: UIImageView!
+
+    // MARK: - Methods
+
+    // Inside UITableViewCell subclass
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Customize profile image
+        chatPartnerImageView.frame = CGRect(x: 20, y: 10, width: 80, height: 80)
+        // Show profile image rounded
+        chatPartnerImageView.layer.cornerRadius = chatPartnerImageView.frame.width/2
+
+        // Customize labels
+        chatPartnerNameLabel.frame = CGRect(x: 120, y: 10, width: self.frame.width - 20, height: 34)
+        lastMessageLabel.frame = CGRect(x: 120, y: 44, width: self.frame.width - 20, height: 34)
+    }
 
 }
 
@@ -183,13 +199,13 @@ class ChatsTableViewController: SortableTableViewController {
             let currentChat = searchedChats[indexPath.row]
 
             // Write first and last name of the chat partner in the cell
-            cell.textLabel?.text = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
+            cell.chatPartnerNameLabel.text = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
 
             // Write latest message in cell
-            cell.detailTextLabel?.text = currentChat.latestMessage
+            cell.lastMessageLabel.text = currentChat.latestMessage
 
             // Write profil image in cell
-            cell.imageView?.image = currentChat.chatPartnerProfileImage
+            cell.chatPartnerImageView.image = currentChat.chatPartnerProfileImage
         }
 
         return cell
