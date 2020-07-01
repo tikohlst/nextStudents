@@ -40,7 +40,7 @@ nextDoor is licensed under the MIT license. See [LICENSE-file](./LICENSE) for de
 
 ## Copyright
 
-Copyright (c) 2020 [Tim Kohlstadt](mailto:tim.kohlstadt@blun.org) and [Benedict Zendel](mailto:benedict.zendel@student.hs-rm.de).
+Copyright (c) 2020 [Tim Kohlstadt](mailto:info@tikohlst.de) and [Benedict Zendel](mailto:benedict.zendel@student.hs-rm.de).
 
 
 [swift-image]:https://img.shields.io/badge/swift-5.2-orange.svg
