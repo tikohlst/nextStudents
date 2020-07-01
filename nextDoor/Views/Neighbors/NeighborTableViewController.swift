@@ -24,7 +24,7 @@ class NeighborTableViewController: UITableViewController {
 
     // MARK: - IBOutlets
 
-    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
@@ -38,9 +38,17 @@ class NeighborTableViewController: UITableViewController {
         userNameLabel.text = "\(user.firstName) \(user.lastName)"
         
         // show user profile Image
-        profileImage.image = user.profileImage
-        // show profile image rounded
-        profileImage.layer.cornerRadius = profileImage.frame.height/2
+        profileImageView.image = user.profileImage
+
+        // Show the profile image without whitespace
+        if profileImageView.frame.width > profileImageView.frame.height {
+            profileImageView.contentMode = .scaleAspectFit
+        } else {
+            profileImageView.contentMode = .scaleAspectFill
+        }
+
+        // Show profile image rounded
+        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
 
         // show user bio
         bioTextView.text = user.bio

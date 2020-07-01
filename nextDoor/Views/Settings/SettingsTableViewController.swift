@@ -70,6 +70,15 @@ class SettingsTableViewController: UITableViewController {
 
         userNameLabel.text = currentUser.firstName + " " + currentUser.lastName
         self.userImageView.image = currentUser.profileImage
+
+        // Show the profile image without whitespace
+        if userImageView.frame.width > userImageView.frame.height {
+            userImageView.contentMode = .scaleAspectFit
+        } else {
+            userImageView.contentMode = .scaleAspectFill
+        }
+
+        // Show profile image rounded
         self.userImageView.layer.cornerRadius = self.userImageView.frame.width/2
     }
 

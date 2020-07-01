@@ -283,7 +283,7 @@
                     <connections>
                         <outlet property="address" destination="RDm-wW-Ysh" id="wfj-PS-dvG"/>
                         <outlet property="bioTextView" destination="6Do-zh-uFQ" id="R9o-cD-oBC"/>
-                        <outlet property="profileImage" destination="LrN-eh-T7E" id="yDI-FI-xMY"/>
+                        <outlet property="profileImageView" destination="LrN-eh-T7E" id="ECm-qE-mqn"/>
                         <outlet property="skillsTextView" destination="fnm-pm-WBf" id="VJR-6H-1d8"/>
                         <outlet property="userNameLabel" destination="CJ6-WC-UbY" id="Jei-WT-6gW"/>
                     </connections>

@@ -26,6 +26,13 @@ class NeighborTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
+        // Show the profile image without whitespace
+        if neighborImageView.frame.width > neighborImageView.frame.height {
+            neighborImageView.contentMode = .scaleAspectFit
+        } else {
+            neighborImageView.contentMode = .scaleAspectFill
+        }
+
         // Show profile image rounded
         neighborImageView.layer.cornerRadius = neighborImageView.frame.width/2
 

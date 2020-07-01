@@ -27,6 +27,14 @@ class ChatTableViewCell: UITableViewCell {
 
         // Customize profile image
         chatPartnerImageView.frame = CGRect(x: 20, y: 10, width: 80, height: 80)
+
+        // Show the profile image without whitespace
+        if chatPartnerImageView.frame.width > chatPartnerImageView.frame.height {
+            chatPartnerImageView.contentMode = .scaleAspectFit
+        } else {
+            chatPartnerImageView.contentMode = .scaleAspectFill
+        }
+
         // Show profile image rounded
         chatPartnerImageView.layer.cornerRadius = chatPartnerImageView.frame.width/2
 
