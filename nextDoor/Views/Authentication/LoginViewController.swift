@@ -74,6 +74,11 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     // MARK: - Methods
 
+    @IBAction func googleSignInPressed(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
+    }
+
+    // Sign in with Google account
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
             print(error.localizedDescription)
@@ -83,50 +88,40 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         let credentials = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
         Auth.auth().signIn(with: credentials) { [weak self] authResult, error in
             guard let strongSelf = self else { return }
-            if error != nil {
-                let alert = UIAlertController(
-                    title: nil, message: error!.localizedDescription,
-                    preferredStyle: .alert)
-                alert.addAction(
-                    UIAlertAction(
-                        title: NSLocalizedString("OK", comment: "Default Action"),
-                        style: .default)
-                )
-                strongSelf.present(alert, animated: true, completion: nil)
-            }
-            else {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainTabBarController = storyboard.instantiateViewController(identifier: "containervc")
-                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
-            }
+            self!.switchScreens(authResult, error, strongSelf)
         }
     }
 
-    @IBAction func googleSignInPressed(_ sender: Any) {
-        GIDSignIn.sharedInstance().signIn()
-    }
-
+    // Sign in with nextDoor account
     @IBAction func touchLogin(_ sender: UIButton) {
         if let email = emailText.text, let password = passwordText.text {
             Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
                 guard let strongSelf = self else { return }
-                if error != nil {
-                    let alert = UIAlertController(
-                        title: nil, message: error!.localizedDescription,
-                        preferredStyle: .alert)
-                    alert.addAction(
-                        UIAlertAction(
-                            title: NSLocalizedString("OK", comment: "Default Action"),
-                            style: .default)
-                    )
-                    strongSelf.present(alert, animated: true, completion: nil)
-                }
-                else {
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let mainTabBarController = storyboard.instantiateViewController(identifier: "containervc")
-                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
-                }
+                self!.switchScreens(authResult, error, strongSelf)
             }
+        }
+    }
+
+    //
+    func switchScreens(_ authResult: AuthDataResult?, _ error: Error?, _ strongSelf: LoginViewController) {
+        if error != nil {
+            let alert = UIAlertController(
+                title: nil, message: error!.localizedDescription,
+                preferredStyle: .alert)
+            alert.addAction(
+                UIAlertAction(
+                    title: NSLocalizedString("OK", comment: "Default Action"),
+                    style: .default)
+            )
+            strongSelf.present(alert, animated: true, completion: nil)
+        }
+        else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc") as! UITabBarController
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
+
+            // show the offers screen after login
+            mainTabBarController.selectedIndex = 1
         }
     }
 
