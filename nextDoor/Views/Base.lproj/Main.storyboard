@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <userGuides>
-                            <userLayoutGuide location="16" affinity="minX"/>
+                            <userLayoutGuide location="17" affinity="minX"/>
                             <userLayoutGuide location="398" affinity="minX"/>
                         </userGuides>
                         <subviews>
@@ -96,7 +96,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="dXQ-My-VqO"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                         <state key="normal" title="Anmelden">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
@@ -115,21 +115,25 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gXy-TV-JTn" customClass="GIDSignInButton">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S74-VX-zZa">
                                                         <rect key="frame" x="0.0" y="100.5" width="382" height="50"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="50" id="22u-Qe-hRk"/>
+                                                            <constraint firstAttribute="height" constant="50" id="zGM-su-v8o"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                        <state key="normal" title="Mit Google anmelden">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <integer key="value" value="25"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="googleSignInPressed:" destination="5Ie-A5-f1d" eventType="valueChanged" id="JHz-1p-Jl2"/>
+                                                            <action selector="googleSignInPressed:" destination="5Ie-A5-f1d" eventType="touchUpInside" id="PX0-fJ-6x1"/>
                                                         </connections>
-                                                    </view>
+                                                    </button>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -176,6 +180,7 @@
                         <outlet property="emailView" destination="fDf-RF-3As" id="ub3-RE-hvN"/>
                         <outlet property="passwordText" destination="Syn-SI-mro" id="PvC-b8-msh"/>
                         <outlet property="passwordView" destination="6HU-WK-XsB" id="2L3-Zp-bbn"/>
+                        <outlet property="signInButton" destination="S74-VX-zZa" id="7ZJ-U1-agW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JCM-Md-Dep" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

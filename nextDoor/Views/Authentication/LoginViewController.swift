@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 import GoogleSignIn
 
 class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDelegate {
@@ -23,6 +25,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var emailView: UIView!
     @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var signInButton: UIButton!
 
     // MARK: - UIViewController events
 
@@ -48,6 +51,20 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         passwordView.layer.shadowRadius = 10
         passwordView.layer.shadowOpacity = 0.1
         passwordView.layer.shadowOffset.height = -3
+
+        signInButton.setImage(UIImage(named: "Google Logo"), for: .normal)
+        signInButton.imageEdgeInsets = UIEdgeInsets(
+            top: 10,
+            left: 10,
+            bottom: 10,
+            right: 20
+        )
+        signInButton.titleEdgeInsets = UIEdgeInsets(
+            top: 0,
+            left: 10,
+            bottom: 0,
+            right: -10
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
