@@ -19,7 +19,7 @@ class SettingsTableViewController: UITableViewController {
     var storage = Storage.storage()
 
     var currentUser : User!
-
+    
     // MARK: - IBOutlets
 
     @IBOutlet weak var userNameLabel: UILabel!
@@ -36,6 +36,12 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
+            if container.sortMenuVisible {
+                container.toggleSortMenu(from: self)
+            }
+        }
 
         db.collection("users")
             .document(Auth.auth().currentUser!.uid)

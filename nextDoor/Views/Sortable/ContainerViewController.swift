@@ -17,6 +17,7 @@ class ContainerViewController: UIViewController {
     
     var sortViewController: SortTableViewController?
     var tabViewController: UITableViewController?
+    var mainController: MainController?
     
     
     var sortMenuVisible = false
@@ -37,7 +38,7 @@ class ContainerViewController: UIViewController {
             self.view.bringSubviewToFront(sortingContainer)
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.5, animations: {
-                self.bottomConstraint.constant = 0
+                self.bottomConstraint.constant = 0 - (self.tabViewController?.navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
                 //self.topConstraint.constant = self.sortingContainer.frame.size.height
                 self.view.layoutIfNeeded()
             })

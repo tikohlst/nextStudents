@@ -22,6 +22,13 @@ class SortTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .clear
+//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = view.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        tableView.backgroundColor = .clear
+//        tableView.backgroundView = blurEffectView
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -51,6 +58,11 @@ class SortTableViewController: UITableViewController {
                 }
             }
         }
+    }
+    
+    func tableViewHeight() -> CGFloat {
+        tableView.layoutIfNeeded()
+        return tableView.contentSize.height
     }
 
     // MARK: - Table view data source
