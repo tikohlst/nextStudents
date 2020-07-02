@@ -5,7 +5,6 @@
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
-import UIKit
 import Firebase
 import MessageKit
 

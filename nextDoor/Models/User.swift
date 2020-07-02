@@ -5,7 +5,6 @@
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
-import Foundation
 import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift

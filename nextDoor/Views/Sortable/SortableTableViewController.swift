@@ -2,27 +2,20 @@
 //  SortableTableViewController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 28.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
 
 class SortableTableViewController: UITableViewController {
-    
+
+    // MARK: - Variables
+
     var containerController: ContainerViewController?
     
     var sortingOption: SortOption?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
+    // MARK: - Helper methods
     
     func sort<T>(_ entities: T, by option : SortOption?) -> T {
         var result = entities

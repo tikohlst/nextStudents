@@ -231,7 +231,7 @@ class NeighborsTableViewController: SortableTableViewController {
         }
     }
 
-    // MARK: Helper methods
+    // MARK: - Helper methods
 
     fileprivate func displayAlert(_ msg: String) {
         let alert = UIAlertController(

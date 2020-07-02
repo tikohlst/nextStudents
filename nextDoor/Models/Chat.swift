@@ -5,7 +5,6 @@
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
-import UIKit
 import Firebase
 import FirebaseFirestore
 
@@ -13,6 +12,8 @@ struct Chat {
 
     // MARK: - Variables
 
+    var chatUID: String = ""
+    var chatPartnerUID: String = ""
     var users: [String]
     var dictionary: [String:Any] {
         return [
@@ -21,8 +22,6 @@ struct Chat {
     }
     var timestamp: Timestamp?
     var latestMessage: String = ""
-    var chatUID: String = ""
-    var chatPartnerUID: String = ""
     var chatPartnerProfileImage: UIImage? = nil
     var chatPartnerFirstName = "Gelöschter"
     var chatPartnerLastName = "Account"

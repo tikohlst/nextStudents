@@ -2,13 +2,14 @@
 //  ContainerViewController.swift
 //  nextDoor
 //
-//  Created by Benedict Zendel on 26.06.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
 
 class ContainerViewController: UIViewController {
+
+    // MARK: - Variables
 
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
@@ -21,12 +22,16 @@ class ContainerViewController: UIViewController {
     
     
     var sortMenuVisible = false
-    
+
+    // MARK: - UIViewController events
+
     override func viewDidLoad() {
         super.viewDidLoad()
         bottomConstraint.constant = self.sortingContainer.frame.size.height
     }
-    
+
+    // MARK: - Helper methods
+
     func toggleSortMenu(from viewController: UIViewController) {
         if sortMenuVisible {
             UIView.animate(withDuration: 0.5, animations: {
@@ -73,16 +78,5 @@ class ContainerViewController: UIViewController {
             }
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
