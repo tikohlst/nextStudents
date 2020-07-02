@@ -103,14 +103,21 @@ class OffersTableViewController: SortableTableViewController {
                                 print("Error fetching documents: \(error!)")
                                 return
                             }
+                            // Create Offer object for every offer in the radius and write it into an array
                             for offer in documents {
                                 // Skip already existing offers of this user
-                                if self.offersArray.firstIndex(where: { $0.id == offer.documentID }) == nil
+                                if self.offersArray.firstIndex(where: { $0.uid == offer.documentID }) == nil
                                 {
-                                    let newOffer = Offer(from: offer.data(),
-                                                          with: offer.documentID,
-                                                          ownerUID: neighbor.documentID)
-                                    self.offersArray.append(newOffer)
+                                    do {
+                                        let newOffer = try Offer.mapData(querySnapshot: offer,
+                                                                         ownerUID: neighbor.documentID)
+                                        self.offersArray.append(newOffer)
+                                    } catch OfferError.mapDataError {
+                                        return self.displayAlert("Error: Wrong action handler!")
+                                    } catch {
+                                        print("Unexpected error: \(error)")
+                                        return
+                                    }
                                 }
                             }
 
@@ -233,7 +240,7 @@ class OffersTableViewController: SortableTableViewController {
         }
     }
 
-    // MARK: - Methods
+    // MARK: - Helper methods
 
     func getCoordinate( addressString : String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
         let geocoder = CLGeocoder()
@@ -259,6 +266,26 @@ class OffersTableViewController: SortableTableViewController {
 
     // unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
+    }
+
+    fileprivate func displayAlert(_ msg: String) {
+        let alert = UIAlertController(
+            title: "Internal error", message: "Please contact support",
+            preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Ok", comment: ""),
+                style: .default,
+                handler: { action in
+                    switch action.style {
+                    case .default:
+                        SettingsTableViewController.signOut()
+                    default:
+                        print(msg)
+                    }
+            })
+        )
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

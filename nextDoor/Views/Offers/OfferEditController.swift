@@ -113,7 +113,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         self.db.collection("offers")
             .document(currentUser!.uid)
             .collection("offer")
-            .document(currentOffer!.id)
+            .document(currentOffer!.uid)
             .updateData([
             "title" : titleTextField.text ?? "",
             "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
