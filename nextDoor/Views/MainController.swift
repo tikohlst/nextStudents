@@ -33,26 +33,12 @@ class MainController: UITabBarController {
             if error != nil {
                 print("Error getting document: \(error!.localizedDescription)")
             } else {
-                let data = querySnapshot!.data()
-                self.currentUser = User(uid: querySnapshot!.documentID,
-                                        firstName: data?["firstName"] as? String ?? "",
-                                        lastName: data?["lastName"] as? String ?? "",
-                                        street: data?["street"] as? String ?? "",
-                                        housenumber: data?["housenumber"] as? String ?? "",
-                                        zipcode: data?["zipcode"] as? String ?? "",
-                                        radius: data?["radius"] as? Int ?? 0,
-                                        bio: data?["bio"] as? String ?? "",
-                                        skills: data?["skills"] as? String ?? ""
-                )
-
-                let storageRef = Storage.storage().reference(withPath: "profilePictures/\(self.currentUser.uid)/profilePicture.jpg")
-                storageRef.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                    if let error = error {
-                        print("Error while downloading profile image: \(error.localizedDescription)")
-                        self.currentUser.profileImage = UIImage(named: "defaultProfilePicture")!
-                    } else {
-                        self.currentUser.profileImage = UIImage(data: data!)!
-                    }
+                do {
+                    self.currentUser = try User.mapData(querySnapshot: querySnapshot!)
+                } catch UserError.mapDataError {
+                    return self.displaySignOutAlert("Error: Wrong action handler!")
+                } catch {
+                    print("Unexpected error: \(error)")
                 }
                 // check if userdata is complete
                 self.checkMissingUserData()
@@ -62,7 +48,7 @@ class MainController: UITabBarController {
         // Do any additional setup after loading the view.
     }
 
-    // MARK: - Methods
+    // MARK: - Helper methods
 
     func checkMissingUserData() {
         if self.currentUser.firstName.isEmpty || self.currentUser.lastName.isEmpty ||
@@ -77,6 +63,26 @@ class MainController: UITabBarController {
             vc.user = currentUser
             self.present(vc, animated: true, completion: nil)
         }
+    }
+
+    fileprivate func displaySignOutAlert(_ msg: String) {
+        let alert = UIAlertController(
+            title: "Internal error", message: "Please contact support",
+            preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Sign out", comment: ""),
+                style: .default,
+                handler: { action in
+                    switch action.style {
+                    case .default:
+                        SettingsTableViewController.signOut()
+                    default:
+                        print(msg)
+                    }
+            })
+        )
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

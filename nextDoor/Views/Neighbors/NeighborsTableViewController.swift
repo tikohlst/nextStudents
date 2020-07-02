@@ -83,7 +83,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Don't view the lines betwwen the cells
+        // Don't view the lines between the cells
         tableView.separatorStyle = .none
 
         navigationItem.searchController = UISearchController(searchResultsController: nil)
@@ -98,47 +98,46 @@ class NeighborsTableViewController: SortableTableViewController {
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    for document in querySnapshot!.documents {
+                    for currentNeighbor in querySnapshot!.documents {
                         // Don't show currentUser as its own neighbor
-                        if (self.currentUserUID != (document.documentID)) {
+                        if (self.currentUserUID != (currentNeighbor.documentID)) {
                             // Create User object for every neighbor in the radius and write it into an array
-                            let newUser = User(uid: document.documentID,
-                                               firstName: document.data()["firstName"] as! String,
-                                               lastName: document.data()["lastName"] as! String,
-                                               street: document.data()["street"] as! String,
-                                               housenumber: document.data()["housenumber"] as! String,
-                                               zipcode: document.data()["zipcode"] as! String,
-                                               radius: document.data()["radius"] as! Int,
-                                               bio: document.data()["bio"] as? String ?? "",
-                                               skills: document.data()["skills"] as? String ?? ""
-                            )
+                            do {
+                                let newUser = try User.mapData(querySnapshot: currentNeighbor)
+                                // Get profile image of the neighbor
+                                Storage.storage()
+                                    .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
+                                    .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
+                                        if let error = error {
+                                            print("Error while downloading profile image: \(error.localizedDescription)")
+                                            newUser.profileImage = UIImage(named: "defaultProfilePicture")!
+                                        } else {
+                                            // Data for "profilePicture.jpg" is returned
+                                            newUser.profileImage = UIImage(data: data!)!
+                                        }
 
-                            // Get profile image of the neighbor
-                            let storageRef = self.storage.reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
-                            storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
-                                if let error = error {
-                                    print("Error while downloading profile image: \(error.localizedDescription)")
-                                    newUser.profileImage = UIImage(named: "defaultProfilePicture")!
-                                } else {
-                                    // Data for "profilePicture.jpg" is returned
-                                    newUser.profileImage = UIImage(data: data!)!
+                                        self.usersInRangeArray.append(newUser)
+
+                                        // Sort the user by first name
+                                        self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
+                                            firstUser.firstName < secondUser.firstName
+                                        })
+
+                                        // Update the table
+                                        self.tableView.reloadData()
                                 }
-
-                                self.usersInRangeArray.append(newUser)
-
-                                // Sort the user by first name
-                                self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
-                                    firstUser.firstName < secondUser.firstName
-                                })
-                                // Update the table
-                                self.tableView.reloadData()
+                            } catch UserError.mapDataError {
+                                return self.displayAlert("Error: Wrong action handler!")
+                            } catch {
+                                print("Unexpected error: \(error)")
+                                return
                             }
                         }
                     }
                 }
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
@@ -147,12 +146,12 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController!.setupSortingCellsAndDelegate()
         }
     }
-    
+
     override func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         filterContentForSearchText(searchBar.text!)
     }
-    
+
     func filterContentForSearchText(_ searchText: String) {
         searchedUsers = usersInRangeArray.filter { (user: User) -> Bool in
             return user.firstName.localizedCaseInsensitiveContains(searchText) ||
@@ -168,7 +167,7 @@ class NeighborsTableViewController: SortableTableViewController {
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
     // for visible table cells.
     override func tableView(_ tableView: UITableView,
-                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
         let usersToDisplay = isFiltering ? searchedUsers : usersInRangeArray
@@ -201,27 +200,27 @@ class NeighborsTableViewController: SortableTableViewController {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if let identifier = segue.identifier {
             switch identifier {
-                case showNeighborDetailSegue:
-                    if let vc = containerController, vc.sortMenuVisible {
-                        vc.toggleSortMenu(from: self)
-                    }
-                    // Show the selected User on the Detail view
-                    let indexPath = self.tableView.indexPathForSelectedRow!
+            case showNeighborDetailSegue:
+                if let vc = containerController, vc.sortMenuVisible {
+                    vc.toggleSortMenu(from: self)
+                }
+                // Show the selected User on the Detail view
+                let indexPath = self.tableView.indexPathForSelectedRow!
 
-                    // Retrieve the selected user
-                    let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
-                    let currentUser = displayedUsers[indexPath.row]
+                // Retrieve the selected user
+                let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
+                let currentUser = displayedUsers[indexPath.row]
 
-                    // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
-                    let detailViewController = segue.destination as! NeighborTableViewController
+                // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
+                let detailViewController = segue.destination as! NeighborTableViewController
 
-                    // Set the currentUser at the NeighborTableViewController.
-                    detailViewController.user = currentUser
+                // Set the currentUser at the NeighborTableViewController.
+                detailViewController.user = currentUser
 
-                    // Set the title of the navigation item on the NeighborTableViewController
-                    //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
-                default:
-                    break
+                // Set the title of the navigation item on the NeighborTableViewController
+                //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
+            default:
+                break
             }
         }
     }
@@ -231,7 +230,29 @@ class NeighborsTableViewController: SortableTableViewController {
             vc.toggleSortMenu(from: self)
         }
     }
-    
+
+    // MARK: Helper methods
+
+    fileprivate func displayAlert(_ msg: String) {
+        let alert = UIAlertController(
+            title: "Internal error", message: "Please contact support",
+            preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Ok", comment: ""),
+                style: .default,
+                handler: { action in
+                    switch action.style {
+                    case .default:
+                        SettingsTableViewController.signOut()
+                    default:
+                        print(msg)
+                    }
+            })
+        )
+        self.present(alert, animated: true, completion: nil)
+    }
+
 }
 
 extension UITableViewController: UISearchResultsUpdating {
@@ -257,6 +278,7 @@ extension NeighborsTableViewController: SortTableViewControllerDelegate {
         sortingOption = data
     }
 }
+
 enum SortOption: String {
     case firstName = "Vorname"
     case lastName = "Nachname"
