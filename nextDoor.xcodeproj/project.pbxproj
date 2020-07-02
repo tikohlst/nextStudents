@@ -26,6 +26,7 @@
 		22739EE524AA673600D27D8A /* Offers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22739EE424AA673600D27D8A /* Offers.storyboard */; };
 		22AAADC02491654300542F5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
 		22AAADC22491657C00542F5E /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
+		22CE93EA24ADCF85001287C1 /* nextDoorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CE93E924ADCF85001287C1 /* nextDoorTests.swift */; };
 		22ECD957249F6FAD002B8F82 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ECD956249F6FAD002B8F82 /* Helper.swift */; };
 		22ECD965249F860A002B8F82 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */; };
 		22ECD966249F860A002B8F82 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95C249F85FC002B8F82 /* OpenSans-BoldItalic.ttf */; };
@@ -53,6 +54,16 @@
 		B2CD5FE42AA25E873AEFED15 /* Pods_nextDoor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C791AABF570E612F23821CB2 /* Pods_nextDoor.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		22CE93EC24ADCF85001287C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2260842924700BD700D30E81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2260843024700BD700D30E81;
+			remoteInfo = nextDoor;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		221A0CD424781BF700A46E1E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborsTableViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +86,9 @@
 		22739EE424AA673600D27D8A /* Offers.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Offers.storyboard; sourceTree = "<group>"; };
 		22AAADBF2491654300542F5E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		22AAADC12491657C00542F5E /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		22CE93E724ADCF85001287C1 /* nextDoorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nextDoorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		22CE93E924ADCF85001287C1 /* nextDoorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nextDoorTests.swift; sourceTree = "<group>"; };
+		22CE93EB24ADCF85001287C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22ECD956249F6FAD002B8F82 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		22ECD95C249F85FC002B8F82 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -113,6 +127,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22CE93E424ADCF85001287C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -120,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				2260843324700BD700D30E81 /* nextDoor */,
+				22CE93E824ADCF85001287C1 /* nextDoorTests */,
 				2260843224700BD700D30E81 /* Products */,
 				53562F4D59636B0F1396BE58 /* Pods */,
 				58AD1E828064DF0B29BF5BFF /* Frameworks */,
@@ -130,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				2260843124700BD700D30E81 /* nextDoor.app */,
+				22CE93E724ADCF85001287C1 /* nextDoorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -256,6 +279,15 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		22CE93E824ADCF85001287C1 /* nextDoorTests */ = {
+			isa = PBXGroup;
+			children = (
+				22CE93E924ADCF85001287C1 /* nextDoorTests.swift */,
+				22CE93EB24ADCF85001287C1 /* Info.plist */,
+			);
+			path = nextDoorTests;
+			sourceTree = "<group>";
+		};
 		22ECD95A249F85E0002B8F82 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,18 +345,40 @@
 			productReference = 2260843124700BD700D30E81 /* nextDoor.app */;
 			productType = "com.apple.product-type.application";
 		};
+		22CE93E624ADCF85001287C1 /* nextDoorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22CE93F024ADCF85001287C1 /* Build configuration list for PBXNativeTarget "nextDoorTests" */;
+			buildPhases = (
+				22CE93E324ADCF85001287C1 /* Sources */,
+				22CE93E424ADCF85001287C1 /* Frameworks */,
+				22CE93E524ADCF85001287C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22CE93ED24ADCF85001287C1 /* PBXTargetDependency */,
+			);
+			name = nextDoorTests;
+			productName = nextDoorTests;
+			productReference = 22CE93E724ADCF85001287C1 /* nextDoorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		2260842924700BD700D30E81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Tim Kohlstadt";
 				TargetAttributes = {
 					2260843024700BD700D30E81 = {
 						CreatedOnToolsVersion = 11.4.1;
+					};
+					22CE93E624ADCF85001287C1 = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = 2260843024700BD700D30E81;
 					};
 				};
 			};
@@ -342,6 +396,7 @@
 			projectRoot = "";
 			targets = (
 				2260843024700BD700D30E81 /* nextDoor */,
+				22CE93E624ADCF85001287C1 /* nextDoorTests */,
 			);
 		};
 /* End PBXProject section */
@@ -370,6 +425,13 @@
 				22ECD96B249F860A002B8F82 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				22ECD96E249F860A002B8F82 /* OpenSans-Semibold.ttf in Resources */,
 				22ECD96A249F860A002B8F82 /* OpenSans-ExtraBold.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22CE93E524ADCF85001287C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +528,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22CE93E324ADCF85001287C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22CE93EA24ADCF85001287C1 /* nextDoorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22CE93ED24ADCF85001287C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2260843024700BD700D30E81 /* nextDoor */;
+			targetProxy = 22CE93EC24ADCF85001287C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2260843C24700BD700D30E81 /* Main.storyboard */ = {
@@ -642,6 +720,48 @@
 			};
 			name = Release;
 		};
+		22CE93EE24ADCF85001287C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F2ZH5CX4BX;
+				INFOPLIST_FILE = nextDoorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tim.kohlstadt.nextDoorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/nextDoor.app/nextDoor";
+			};
+			name = Debug;
+		};
+		22CE93EF24ADCF85001287C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F2ZH5CX4BX;
+				INFOPLIST_FILE = nextDoorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tim.kohlstadt.nextDoorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/nextDoor.app/nextDoor";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -659,6 +779,15 @@
 			buildConfigurations = (
 				2260844824700BDB00D30E81 /* Debug */,
 				2260844924700BDB00D30E81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22CE93F024ADCF85001287C1 /* Build configuration list for PBXNativeTarget "nextDoorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22CE93EE24ADCF85001287C1 /* Debug */,
+				22CE93EF24ADCF85001287C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
