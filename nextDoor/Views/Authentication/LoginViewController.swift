@@ -134,11 +134,9 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         }
         else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc") as! UITabBarController
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
+            let containerController = storyboard.instantiateViewController(identifier: "containervc")
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
 
-            // show the offers screen after login
-            mainTabBarController.selectedIndex = 1
         }
     }
 
