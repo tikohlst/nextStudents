@@ -394,8 +394,8 @@ class RegistrationViewController: FormViewController {
 
     func presentTabBarViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainTabBarController = storyboard.instantiateViewController(identifier: "tabbarvc")
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(mainTabBarController)
+        let containerController = storyboard.instantiateViewController(identifier: "containervc")
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
     }
 
 }
