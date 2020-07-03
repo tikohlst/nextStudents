@@ -36,7 +36,7 @@ class MainController: UITabBarController {
                 do {
                     self.currentUser = try User.mapData(querySnapshot: querySnapshot!)
                 } catch UserError.mapDataError {
-                    return self.displaySignOutAlert("Error: Wrong action handler!")
+                    return self.displaySignOutAlert("Error while mapping User!")
                 } catch {
                     print("Unexpected error: \(error)")
                 }

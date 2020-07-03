@@ -19,15 +19,16 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     var db = Firestore.firestore()
     var storage = Storage.storage()
+
     let currentUserUID = Auth.auth().currentUser!.uid
     var currentUserProfileImage: UIImage? = nil
 
+    var chatPartnerUID: String?
+    var chatPartnerName: String?
+    var chatPartnerProfileImage: UIImage? = nil
+
     var chatsArray: [Chat] = []
     private let showChatDetailSegue = "showChatDetail"
-
-    var user2UID: String?
-    var user2Name: String?
-    var user2Img: UIImage? = nil
 
     private var docReference: DocumentReference?
 
@@ -38,8 +39,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.title = user2Name
-        navigationItem.title = user2Name
+        self.title = chatPartnerName
+        navigationItem.title = chatPartnerName
         navigationItem.largeTitleDisplayMode = .never
         maintainPositionOnKeyboardFrameChanged = true
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
@@ -67,7 +68,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - Custom messages handlers
 
     func createNewChat() {
-        let users = [self.currentUserUID, self.user2UID]
+        let users = [self.currentUserUID, self.chatPartnerUID]
         let data: [String: Any] = [
              "users":users
         ]
@@ -93,23 +94,22 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                 return
             } else {
                 // Count the no. of documents returned
-                let queryCount = chatQuerySnap!.documents.count
+                let numberOfChats = chatQuerySnap!.documents.count
 
-                if queryCount == 0 {
+                if numberOfChats == 0 {
                     // If documents count is zero that means there is no chat available and we need to create a new instance
                     self.createNewChat()
                 }
-                else if queryCount >= 1 {
+                else if numberOfChats >= 1 {
                     // Chat(s) found for currentUser
-                    for doc in chatQuerySnap!.documents {
-                        let chat = Chat(dictionary: doc.data())
-                        // Get the chat which has user2 id
-                        if chat!.users.contains(self.user2UID ?? "") {
-                            self.docReference = doc.reference
+                    for loadedChat in chatQuerySnap!.documents {
+                        // Get the chat with the chat partner
+                        if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
+                            self.docReference = loadedChat.reference
                             // fetch it's thread collection
-                             doc.reference.collection("thread")
-                                .order(by: "created", descending: false)
-                                .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
+                            loadedChat.reference.collection("thread")
+                            .order(by: "created", descending: false)
+                            .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
                                 if let error = error {
                                     print("Error: \(error)")
                                     return
@@ -118,15 +118,14 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                     for message in threadQuery!.documents {
                                         let msg = Message(dictionary: message.data())
                                         self.messages.append(msg!)
-                                        //print("Data: \(msg?.content ?? "No message found")")
                                     }
                                     self.messagesCollectionView.reloadData()
                                     self.messagesCollectionView.scrollToBottom(animated: true)
                                 }
                             })
                             return
-                        } //end of if
-                    } //end of for
+                        }
+                    }
                     self.createNewChat()
                 } else {
                     print("Let's hope this error never prints!")
@@ -149,8 +148,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             "content": message.content,
             "created": message.created,
             "id": message.id,
-            "senderID": message.senderID,
-            "senderName": message.senderName
+            "senderID": message.senderID
         ]
 
         docReference?.collection("thread").addDocument(data: data, completion: { (error) in
@@ -165,7 +163,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - InputBarAccessoryViewDelegate
 
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(id: UUID().uuidString, content: text, created: Timestamp(), senderID: currentUserUID, senderName: "sender")
+        let message = Message(id: UUID().uuidString, content: text, created: Timestamp(), senderID: currentUserUID)
 
         insertNewMessage(message)
         save(message)
@@ -186,12 +184,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
-        if messages.count == 0 {
-            print("No messages to display")
-            return 0
-        } else {
-            return messages.count
-        }
+        return messages.count
     }
 
     // MARK: - MessagesLayoutDelegate
@@ -211,7 +204,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         if message.sender.senderId == currentUserUID {
             avatarView.image = currentUserProfileImage
         } else {
-            avatarView.image = user2Img
+            avatarView.image = chatPartnerProfileImage
         }
     }
 

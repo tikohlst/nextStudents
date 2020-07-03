@@ -127,7 +127,7 @@ class NeighborsTableViewController: SortableTableViewController {
                                         self.tableView.reloadData()
                                 }
                             } catch UserError.mapDataError {
-                                return self.displayAlert("Error: Wrong action handler!")
+                                return self.displayAlert("Error while mapping User!")
                             } catch {
                                 print("Unexpected error: \(error)")
                                 return

@@ -113,7 +113,7 @@ class OffersTableViewController: SortableTableViewController {
                                                                          ownerUID: neighbor.documentID)
                                         self.offersArray.append(newOffer)
                                     } catch OfferError.mapDataError {
-                                        return self.displayAlert("Error: Wrong action handler!")
+                                        return self.displayAlert("Error while mapping Offer!")
                                     } catch {
                                         print("Unexpected error: \(error)")
                                         return

@@ -8,33 +8,45 @@
 import Firebase
 import FirebaseFirestore
 
+enum ChatError: Error {
+    case mapDataError
+}
+
 struct Chat {
 
     // MARK: - Variables
 
-    var chatUID: String = ""
-    var chatPartnerUID: String = ""
-    var users: [String]
-    var dictionary: [String:Any] {
-        return [
-            "users": users
-        ]
-    }
-    var timestamp: Timestamp?
-    var latestMessage: String = ""
-    var chatPartnerProfileImage: UIImage? = nil
-    var chatPartnerFirstName = "Gelöschter"
-    var chatPartnerLastName = "Account"
-
-}
-
-extension Chat {
+    var localChatID: String
+    var chatPartner: User
+    var latestMessage: String
+    var timestampOfTheLatestMessage: Timestamp
 
     // MARK: - Methods
 
-    init?(dictionary: [String:Any]) {
-        guard let chatUsers = dictionary["users"] as? [String] else {return nil}
-        self.init(users: chatUsers)
+    init(localChatID: String, chatPartner: User, latestMessage: String, timestampOfTheLatestMessage: Timestamp) {
+        self.localChatID = localChatID
+        self.chatPartner = chatPartner
+        self.latestMessage = latestMessage
+        self.timestampOfTheLatestMessage = timestampOfTheLatestMessage
+    }
+
+    static func mapData(querySnapshot: DocumentSnapshot, chatPartner: User) throws -> Chat? {
+
+        let data = querySnapshot.data()
+
+        // Data validation
+        guard let localChatID = data?["id"] as? String,
+            let latestMessage = data?["content"] as? String,
+            let timestampOfTheLatestMessage = data?["created"] as? Timestamp
+        else {
+            throw ChatError.mapDataError
+        }
+
+        return Chat(localChatID: localChatID,
+                    chatPartner: chatPartner,
+                    latestMessage: latestMessage,
+                    timestampOfTheLatestMessage: timestampOfTheLatestMessage
+        )
     }
 
 }

@@ -71,16 +71,16 @@ class NeighborTableViewController: UITableViewController {
             let detailViewController = segue.destination as! ChatViewController
 
             // Set the user ID at the ChatViewController
-            detailViewController.user2UID = user.uid
+            detailViewController.chatPartnerUID = user.uid
 
             // Get first and last name of the chat partner and write it in the correct label
-            detailViewController.user2Name = "\(user.firstName) \(user.lastName)"
+            detailViewController.chatPartnerName = "\(user.firstName) \(user.lastName)"
 
             // Set the title of the navigation item on the ChatViewController
             detailViewController.navigationItem.title = "\(user.firstName) \(user.lastName)"
 
             // Set the user image
-            detailViewController.user2Img = user.profileImage
+            detailViewController.chatPartnerProfileImage = user.profileImage
 
             let backItem = UIBarButtonItem()
             backItem.title = "Zurück"

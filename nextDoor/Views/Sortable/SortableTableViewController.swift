@@ -29,8 +29,8 @@ class SortableTableViewController: UITableViewController {
                     }) as! T
                 } else if entities is [Chat] {
                     result = (entities as! [Chat]).sorted(by: { (u1, u2) -> Bool in
-                        let name1 = u1.chatPartnerFirstName
-                        let name2 = u2.chatPartnerFirstName
+                        let name1 = u1.chatPartner.firstName
+                        let name2 = u2.chatPartner.firstName
                         return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
                     }) as! T
                 }
@@ -43,8 +43,8 @@ class SortableTableViewController: UITableViewController {
                     }) as! T
                 } else if entities is [Chat] {
                     result = (entities as! [Chat]).sorted(by: { (u1, u2) -> Bool in
-                        let name1 = u1.chatPartnerLastName
-                        let name2 = u2.chatPartnerLastName
+                        let name1 = u1.chatPartner.lastName
+                        let name2 = u2.chatPartner.lastName
                         return (name1.localizedCaseInsensitiveCompare(name2)) == .orderedAscending
                     }) as! T
                 }
@@ -69,12 +69,7 @@ class SortableTableViewController: UITableViewController {
             case .time:
                 if entities is [Chat] {
                     result = (entities as! [Chat]).sorted(by: { (c1, c2) -> Bool in
-                        if let time1 = c1.timestamp,
-                            let time2 = c2.timestamp {
-                        return time1.compare(time2) == .orderedAscending
-                        } else {
-                            return true
-                        }
+                        return c1.timestampOfTheLatestMessage.compare(c2.timestampOfTheLatestMessage) == .orderedAscending
                     }) as! T
                 }
             case .duration:

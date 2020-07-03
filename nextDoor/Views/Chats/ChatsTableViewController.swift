@@ -88,11 +88,17 @@ class ChatsTableViewController: SortableTableViewController {
         // Get all chats from the current user
         db.collection("Chats")
             .whereField("users", arrayContains: currentUserUID ?? 0)
-            .getDocuments() { (querySnapshot, err) in
+            .addSnapshotListener() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
                     for chat in querySnapshot!.documents {
+                        // Get both users of the chat
+                        let users = chat.data()["users"] as! Array<String>
+
+                        // Get uid from chat partner
+                        let chatPartnerUID = users.first(where: { $0 != self.currentUserUID})! as String
+
                         // Get newest message from the chat with the found chat id
                         self.db.collection("Chats")
                             .document(chat.documentID)
@@ -105,73 +111,69 @@ class ChatsTableViewController: SortableTableViewController {
                                     return
                                 }
 
-                                for newestMessage in documents {
+                                for latestMessage in documents {
                                     // Create Chat object with the uid of the currentUser and its chat partner
                                     // and the timestamp and the content from the latest message
-                                    var newChat = Chat(dictionary: chat.data())
 
                                     // Remove old chat object if exists
-                                    if let existingChat = self.chatsArray.firstIndex(where: { $0.users.sorted() == newChat?.users.sorted() })
-                                    {
+                                    if let existingChat = self.chatsArray.firstIndex(where: { $0.chatPartner.uid == chatPartnerUID }) {
                                         self.chatsArray.remove(at: existingChat)
                                     }
 
-                                    newChat!.timestamp = (newestMessage.data()["created"] as? Timestamp)!
-                                    newChat!.latestMessage = (newestMessage.data()["content"] as? String)!
-                                    newChat!.chatUID = chat.documentID
-
-                                    // Get both users of the chat
-                                    let users = newChat!.dictionary["users"] as! Array<String>
-
-                                    // Get uid from chat partner
-                                    let chatPartnerUID = users.first(where: { $0 != self.currentUserUID})! as String
-                                    newChat!.chatPartnerUID = chatPartnerUID
-
-                                    // Get first and last name of the chat partner
+                                    // Get information about the chat partner
                                     self.db.collection("users")
                                         .document(chatPartnerUID)
-                                        .addSnapshotListener { documentSnapshot, error in
-                                        guard let document = documentSnapshot else {
-                                            print("Error fetching document: \(error!)")
-                                            return
+                                        .getDocument { (querySnapshot, error) in
+                                            if error != nil {
+                                                print("Error occured")
+                                            }
+                                            else if querySnapshot!.exists == false {
+                                                print("Chat partner doesn't exist!")
+                                            }
+                                            else {
+                                                do {
+                                                    let chatPartner = try User.mapData(querySnapshot: querySnapshot!)
+                                                    let newChat = try Chat.mapData(querySnapshot: latestMessage, chatPartner: chatPartner)
+
+                                                    // Get profile image of the chat partner
+                                                    self.storage
+                                                        .reference(withPath: "profilePictures/\(chatPartnerUID)/profilePicture.jpg")
+                                                        .getData(maxSize: 4 * 1024 * 1024) { data, error in
+
+                                                            if let error = error {
+                                                                print("Error while downloading profile image: \(error.localizedDescription)")
+                                                                newChat!.chatPartner.profileImage = UIImage(named: "defaultProfilePicture")!
+                                                            } else {
+                                                                // Data for "profilePicture.jpg" is returned
+                                                                newChat!.chatPartner.profileImage = UIImage(data: data!)!
+                                                            }
+
+                                                            self.chatsArray.append(newChat!)
+
+                                                            // Sort the chats by time
+                                                            self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
+                                                                firstChat.timestampOfTheLatestMessage.seconds > secondChat.timestampOfTheLatestMessage.seconds
+                                                            })
+
+                                                            // Update the table
+                                                            self.tableView.reloadData()
+                                                    }
+                                                } catch UserError.mapDataError {
+                                                    return self.displayAlert("Error while mapping User!")
+                                                } catch ChatError.mapDataError {
+                                                    return self.displayAlert("Error while mapping Chat!")
+                                                } catch {
+                                                    print("Unexpected error: \(error)")
+                                                }
+                                            }
                                         }
-                                        guard let data = document.data() else {
-                                            print("Document data was empty.")
-                                            return
-                                        }
-
-                                        newChat!.chatPartnerFirstName = data["firstName"] as! String
-                                        newChat!.chatPartnerLastName = data["lastName"] as! String
-                                    }
-
-                                    // Get profile image of the chat partner
-                                    let storageRef = self.storage.reference(withPath: "profilePictures/\(chatPartnerUID)/profilePicture.jpg")
-                                    storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
-                                        if let error = error {
-                                            print("Error while downloading profile image: \(error.localizedDescription)")
-                                            newChat?.chatPartnerProfileImage = UIImage(named: "defaultProfilePicture")
-                                        } else {
-                                            // Data for "profilePicture.jpg" is returned
-                                            newChat?.chatPartnerProfileImage = UIImage(data: data!)
-                                        }
-
-                                        self.chatsArray.append(newChat!)
-
-                                        // Sort the chats by time
-                                        self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
-                                            firstChat.timestamp!.seconds > secondChat.timestamp!.seconds
-                                        })
-
-                                        // Update the table
-                                        self.tableView.reloadData()
-                                    }
                                 }
                             }
                     }
                 }
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
@@ -180,10 +182,10 @@ class ChatsTableViewController: SortableTableViewController {
             containerController!.setupSortingCellsAndDelegate()
         }
     }
-    
+
     override func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            searchedChats = chatsArray.filter({$0.chatPartnerFirstName.localizedCaseInsensitiveContains(searchText) || $0.chatPartnerLastName.localizedCaseInsensitiveContains(searchText)})
+            searchedChats = chatsArray.filter({$0.chatPartner.firstName.localizedCaseInsensitiveContains(searchText) || $0.chatPartner.lastName.localizedCaseInsensitiveContains(searchText)})
         } else {
             searchedChats = chatsArray.map({$0})
         }
@@ -207,13 +209,13 @@ class ChatsTableViewController: SortableTableViewController {
             let currentChat = searchedChats[indexPath.row]
 
             // Write first and last name of the chat partner in the cell
-            cell.chatPartnerNameLabel.text = currentChat.chatPartnerFirstName + " " + currentChat.chatPartnerLastName
+            cell.chatPartnerNameLabel.text = currentChat.chatPartner.firstName + " " + currentChat.chatPartner.lastName
 
             // Write latest message in cell
             cell.lastMessageLabel.text = currentChat.latestMessage
 
             // Write profil image in cell
-            cell.chatPartnerImageView.image = currentChat.chatPartnerProfileImage
+            cell.chatPartnerImageView.image = currentChat.chatPartner.profileImage
         }
 
         return cell
@@ -226,7 +228,7 @@ class ChatsTableViewController: SortableTableViewController {
 
             // Delete chat from the firebase database
             self.db.collection("Chats")
-                .document(currentChat.chatUID)
+                .document(currentChat.localChatID)
                 .delete() { error in
                 if let error = error {
                     // An error happened.
@@ -235,7 +237,7 @@ class ChatsTableViewController: SortableTableViewController {
                     let removedChat = self.searchedChats.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                     self.chatsArray.remove(at: self.chatsArray.firstIndex(where: {
-                        return $0.chatUID  == removedChat.chatUID
+                        return $0.localChatID  == removedChat.localChatID
                     })!)
                     print("Chat deleted successfully")
                 }
@@ -264,13 +266,13 @@ class ChatsTableViewController: SortableTableViewController {
             let detailViewController = segue.destination as! ChatViewController
 
             // Set the user ID at the ChatViewController
-            detailViewController.user2UID = currentChat.chatPartnerUID
+            detailViewController.chatPartnerUID = currentChat.chatPartner.uid
 
             // Set the label on the ChatViewController
-            detailViewController.user2Name = "\(currentChat.chatPartnerFirstName) \(currentChat.chatPartnerLastName)"
+            detailViewController.chatPartnerName = "\(currentChat.chatPartner.firstName) \(currentChat.chatPartner.lastName)"
 
             // Set the user image
-            detailViewController.user2Img = currentChat.chatPartnerProfileImage
+            detailViewController.chatPartnerProfileImage = currentChat.chatPartner.profileImage
         }
     }
     
@@ -278,6 +280,27 @@ class ChatsTableViewController: SortableTableViewController {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
+    }
+
+    fileprivate func displayAlert(_ msg: String) {
+        let alert = UIAlertController(
+            title: "Internal error", message: "Please contact support",
+            preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Ok", comment: ""),
+                style: .default,
+                handler: { action in
+                    switch action.style {
+                    case .default:
+                        print(msg)
+                        SettingsTableViewController.signOut()
+                    default:
+                        print(msg)
+                    }
+            })
+        )
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

@@ -99,13 +99,13 @@ class OfferTableViewController: UITableViewController {
             detailViewController.navigationItem.title = "\(neighborFirstName) \(neighborLastName)"
 
             // Set the user ID at the ChatViewController
-            detailViewController.user2UID = offer!.ownerUID
+            detailViewController.chatPartnerUID = offer!.ownerUID
 
             // Get first and last name of the chat partner and write it in the correct label
-            detailViewController.user2Name = "\(neighborFirstName) \(neighborLastName)"
+            detailViewController.chatPartnerName = "\(neighborFirstName) \(neighborLastName)"
 
             // Get the user image
-            detailViewController.user2Img = neighborImage
+            detailViewController.chatPartnerProfileImage = neighborImage
         }
     }
 
