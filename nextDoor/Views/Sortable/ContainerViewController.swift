@@ -60,10 +60,13 @@ class ContainerViewController: UIViewController {
         if let sortController = sortViewController, let tabViewController = tabViewController {
             if tabViewController is NeighborsTableViewController {
                 sortController.delegate = tabViewController as! NeighborsTableViewController
-                let cells = sortController.tableView.visibleCells
                 let options = [SortOption.firstName, SortOption.lastName, SortOption.distance]
-                for i in 0..<cells.count {
-                    cells[i].textLabel?.text = options[i].rawValue
+                if let indexPaths = sortController.tableView.indexPathsForRows(in: sortController.tableView.frame){
+                    for i in 0..<indexPaths.count {
+                        if let cell = sortController.tableView.cellForRow(at: indexPaths[i]) {
+                            cell.textLabel?.text = options[i].rawValue
+                        }
+                    }
                 }
             } else if tabViewController is ChatsTableViewController {
                 sortController.delegate = tabViewController as! ChatsTableViewController

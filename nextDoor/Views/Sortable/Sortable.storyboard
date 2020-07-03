@@ -95,6 +95,9 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRI-Aa-qMa" userLabel="SortingView">
                                 <rect key="frame" x="0.0" y="973" width="414" height="173"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="173" id="9W1-4x-osE"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="J8o-0Z-Evw" kind="embed" id="Eoi-fL-NCA"/>
                                 </connections>
@@ -109,7 +112,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="leading" secondItem="hjT-cT-Osb" secondAttribute="leading" id="Hhl-cv-j2y"/>
-                            <constraint firstItem="VRI-Aa-qMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" multiplier="0.193" id="I7s-20-Pcj"/>
                             <constraint firstItem="VRI-Aa-qMa" firstAttribute="width" secondItem="hjT-cT-Osb" secondAttribute="width" id="Wdg-MW-Yb4"/>
                             <constraint firstItem="wrv-eM-QMa" firstAttribute="height" secondItem="hjT-cT-Osb" secondAttribute="height" id="dQa-is-ftx"/>
                             <constraint firstItem="wrv-eM-QMa" firstAttribute="leading" secondItem="eJ3-hK-g6e" secondAttribute="leading" id="deA-9O-vQ7"/>
