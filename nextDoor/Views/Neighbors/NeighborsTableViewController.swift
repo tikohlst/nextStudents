@@ -7,9 +7,6 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import FirebaseStorage
 
 class NeighborTableViewCell: UITableViewCell {
 
@@ -57,13 +54,9 @@ class NeighborsTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
-    var storage = Storage.storage()
-
-    let currentUserUID = Auth.auth().currentUser?.uid
     private let showNeighborDetailSegue = "showNeighborDetail"
     var usersInRangeArray: [User] = []
-    var searchedUsers : [User] = []
+    var searchedUsers: [User] = []
     
     override var sortingOption: SortOption? {
         didSet {
@@ -92,7 +85,7 @@ class NeighborsTableViewController: SortableTableViewController {
         // Change the title of the Cancel button on the search bar
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
-        db.collection("users")
+        MainController.database.collection("users")
             .whereField("radius", isGreaterThan: 0)
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -100,12 +93,12 @@ class NeighborsTableViewController: SortableTableViewController {
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
                         // Don't show currentUser as its own neighbor
-                        if (self.currentUserUID != (currentNeighbor.documentID)) {
+                        if currentNeighbor.documentID != MainController.currentUser.uid {
                             // Create User object for every neighbor in the radius and write it into an array
                             do {
                                 let newUser = try User.mapData(querySnapshot: currentNeighbor)
                                 // Get profile image of the neighbor
-                                Storage.storage()
+                                MainController.storage
                                     .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
                                     .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
                                         if let error = error {
@@ -127,10 +120,10 @@ class NeighborsTableViewController: SortableTableViewController {
                                         self.tableView.reloadData()
                                 }
                             } catch UserError.mapDataError {
-                                return self.displayAlert("Error while mapping User!")
+                                let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                self.present(alert, animated: true, completion: nil)
                             } catch {
                                 print("Unexpected error: \(error)")
-                                return
                             }
                         }
                     }
@@ -216,9 +209,6 @@ class NeighborsTableViewController: SortableTableViewController {
 
                 // Set the currentUser at the NeighborTableViewController.
                 detailViewController.user = currentUser
-
-                // Set the title of the navigation item on the NeighborTableViewController
-                //detailViewController.navigationItem.title = "\(currentUser.firstName ), \(currentUser.radius )"
             default:
                 break
             }
@@ -229,28 +219,6 @@ class NeighborsTableViewController: SortableTableViewController {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
-    }
-
-    // MARK: - Helper methods
-
-    fileprivate func displayAlert(_ msg: String) {
-        let alert = UIAlertController(
-            title: "Internal error", message: "Please contact support",
-            preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Ok", comment: ""),
-                style: .default,
-                handler: { action in
-                    switch action.style {
-                    case .default:
-                        SettingsTableViewController.signOut()
-                    default:
-                        print(msg)
-                    }
-            })
-        )
-        self.present(alert, animated: true, completion: nil)
     }
 
 }

@@ -7,20 +7,14 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestoreSwift
 import MessageKit
 import InputBarAccessoryView
 import SDWebImage
-import FirebaseStorage
 
 class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
-    var storage = Storage.storage()
-
-    let currentUserUID = Auth.auth().currentUser!.uid
     var currentUserProfileImage: UIImage? = nil
 
     var chatPartnerUID: String?
@@ -52,8 +46,9 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         messagesCollectionView.messagesDisplayDelegate = self
 
         // Get profile image of the current user
-        let storageRef = self.storage.reference(withPath: "profilePictures/\(currentUserUID)/profilePicture.jpg")
-        storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+        MainController.storage
+            .reference(withPath: "profilePictures/\(MainController.currentUser.uid)/profilePicture.jpg")
+            .getData(maxSize: 4 * 1024 * 1024) { data, error in
             if let error = error {
                 print("Error while downloading profile image: \(error.localizedDescription)")
                 self.currentUserProfileImage = UIImage(named: "defaultProfilePicture")
@@ -68,12 +63,12 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - Custom messages handlers
 
     func createNewChat() {
-        let users = [self.currentUserUID, self.chatPartnerUID]
+        let users = [MainController.currentUser.uid, self.chatPartnerUID]
         let data: [String: Any] = [
              "users":users
         ]
 
-        db.collection("Chats")
+        MainController.database.collection("Chats")
             .addDocument(data: data) { (error) in
                 if let error = error {
                     print("Unable to create chat! \(error)")
@@ -86,8 +81,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     func loadChat() {
         // Fetch all the chats which has current user in it
-        db.collection("Chats")
-            .whereField("users", arrayContains: currentUserUID)
+        MainController.database.collection("Chats")
+            .whereField("users", arrayContains: MainController.currentUser.uid)
             .getDocuments { (chatQuerySnap, error) in
             if let error = error {
                 print("Error: \(error)")
@@ -120,10 +115,11 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                             let newMessage = try Message.mapData(querySnapshot: message)
                                             self.messages.append(newMessage!)
                                         } catch MessageError.mapDataError {
-                                            return self.displayAlert("Error while mapping User!")
+                                            let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                            self.present(alert, animated: true, completion: nil)
                                         } catch {
-                                            print("Unexpected error: \(error)")
-                                            //return
+                                            let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
+                                            self.present(alert, animated: true, completion: nil)
                                         }
                                     }
                                     self.messagesCollectionView.reloadData()
@@ -167,32 +163,10 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         })
     }
 
-    // MARK: - Helper methods
-
-    fileprivate func displayAlert(_ msg: String) {
-        let alert = UIAlertController(
-            title: "Internal error", message: "Please contact support",
-            preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Ok", comment: ""),
-                style: .default,
-                handler: { action in
-                    switch action.style {
-                    case .default:
-                        SettingsTableViewController.signOut()
-                    default:
-                        print(msg)
-                    }
-            })
-        )
-        self.present(alert, animated: true, completion: nil)
-    }
-
     // MARK: - InputBarAccessoryViewDelegate
 
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(id: UUID().uuidString, senderUID: currentUserUID, created: Timestamp(), content: text)
+        let message = Message(id: UUID().uuidString, senderUID: MainController.currentUser.uid, created: Timestamp(), content: text)
 
         insertNewMessage(message)
         save(message)
@@ -205,7 +179,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - MessagesDataSource
 
     func currentSender() -> SenderType {
-        return Sender(id: currentUserUID, displayName: Auth.auth().currentUser?.displayName ?? "Name not found")
+        return Sender(id: MainController.currentUser.uid, displayName: MainController.currentUserAuth.displayName ?? "Name not found")
     }
 
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
@@ -230,7 +204,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
 
-        if message.sender.senderId == currentUserUID {
+        if message.sender.senderId == MainController.currentUser.uid {
             avatarView.image = currentUserProfileImage
         } else {
             avatarView.image = chatPartnerProfileImage

@@ -6,8 +6,6 @@
 //
 
 import Firebase
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 enum OfferError: Error {
     case mapDataError
@@ -55,7 +53,7 @@ struct Offer {
             throw OfferError.mapDataError
         }
 
-        let offer = Offer(uid: querySnapshot.documentID,
+        return Offer(uid: querySnapshot.documentID,
                           ownerUID: ownerUID,
                           title: title,
                           description: description,
@@ -63,8 +61,6 @@ struct Offer {
                           duration: duration,
                           type: type
         )
-
-        return offer
     }
 
 }

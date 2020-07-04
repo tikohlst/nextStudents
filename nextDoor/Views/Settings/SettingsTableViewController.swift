@@ -7,18 +7,8 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestoreSwift
-import FirebaseFirestore
-import FirebaseStorage
 
 class SettingsTableViewController: UITableViewController {
-
-    // MARK: - Variables
-
-    var db = Firestore.firestore()
-    var storage = Storage.storage()
-
-    var currentUser : User!
     
     // MARK: - IBOutlets
 
@@ -29,11 +19,6 @@ class SettingsTableViewController: UITableViewController {
 
     // MARK: - UIViewController events
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        currentUser = (parent?.parent as! MainController).currentUser
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -43,39 +28,8 @@ class SettingsTableViewController: UITableViewController {
             }
         }
 
-        db.collection("users")
-            .document(Auth.auth().currentUser!.uid)
-            .addSnapshotListener() { (document, error) in
-            if let document = document, document.exists {
-                let data = document.data()
-
-                self.currentUser.firstName = data?["firstName"] as! String
-                self.currentUser.lastName = data?["lastName"] as! String
-
-                // get profile image if it exists
-                let storageRef = self.storage.reference(withPath: "profilePictures/\(String(describing: Auth.auth().currentUser!.uid))/profilePicture.jpg")
-
-                storageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
-                    if let error = error {
-                        print("Error while downloading profile image: \(error.localizedDescription)")
-                        self.userImageView.image = nil
-                    } else {
-                        // Data for "profilePicture.jpg" is returned
-                        let image = UIImage(data: data!)
-                        self.currentUser.profileImage = image!
-                        self.userImageView.image = image
-                    }
-                }
-
-                self.userNameLabel.text = self.currentUser.firstName + " " + self.currentUser.lastName
-
-            } else {
-                print("Document doesn't exist.")
-            }
-        }
-
-        userNameLabel.text = currentUser.firstName + " " + currentUser.lastName
-        self.userImageView.image = currentUser.profileImage
+        userNameLabel.text = MainController.currentUser.firstName + " " + MainController.currentUser.lastName
+        self.userImageView.image = MainController.currentUser.profileImage
 
         // Show the profile image without whitespace
         if userImageView.frame.width > userImageView.frame.height {
@@ -124,17 +78,6 @@ class SettingsTableViewController: UITableViewController {
         let backItem = UIBarButtonItem()
         backItem.title = "Einstellungen"
         navigationItem.backBarButtonItem = backItem
-
-        if let identifier = segue.identifier {
-            switch identifier {
-            case "userProfileSegue":
-                if let vc = segue.destination as? ProfileViewController {
-                    vc.currentUser = currentUser
-                }
-            default:
-                break
-            }
-        }
     }
 
     // MARK: - Methods

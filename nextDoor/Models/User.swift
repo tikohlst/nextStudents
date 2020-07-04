@@ -6,8 +6,6 @@
 //
 
 import Firebase
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 enum UserError: Error {
     case mapDataError
@@ -61,7 +59,7 @@ class User {
             throw UserError.mapDataError
         }
 
-        let user = User(uid: querySnapshot.documentID,
+        return User(uid: querySnapshot.documentID,
                         firstName: firstName,
                         lastName: lastName,
                         street: street,
@@ -71,8 +69,6 @@ class User {
                         bio: bio,
                         skills: skills
         )
-
-        return user
     }
 
 }

@@ -7,9 +7,7 @@
 
 import UIKit
 import CoreLocation
-import FirebaseFirestoreSwift
-import FirebaseFirestore
-import FirebaseAuth
+import Firebase
 
 class OfferTableViewCell: UITableViewCell {
 
@@ -50,9 +48,6 @@ class OffersTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
-    let currentUserUID = Auth.auth().currentUser?.uid
-
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
     var offersArray: [Offer] = [] {
@@ -88,14 +83,14 @@ class OffersTableViewController: SortableTableViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
         // TODO: query all offers from users in range
-        db.collection("offers")
+        MainController.database.collection("offers")
             .addSnapshotListener() { (querySnapshot, error) in
             if error != nil {
                 print("Error getting documents: \(error!.localizedDescription)")
             } else {
                 for neighbor in querySnapshot!.documents {
                     // TODO: extract offers from every user
-                    self.db.collection("offers")
+                    MainController.database.collection("offers")
                         .document(neighbor.documentID)
                         .collection("offer")
                         .addSnapshotListener() { (querySnapshot, error) in
@@ -113,10 +108,11 @@ class OffersTableViewController: SortableTableViewController {
                                                                          ownerUID: neighbor.documentID)
                                         self.offersArray.append(newOffer)
                                     } catch OfferError.mapDataError {
-                                        return self.displayAlert("Error while mapping Offer!")
+                                        let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
+                                        self.present(alert, animated: true, completion: nil)
                                     } catch {
-                                        print("Unexpected error: \(error)")
-                                        return
+                                        let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
+                                        self.present(alert, animated: true, completion: nil)
                                     }
                                 }
                             }
@@ -150,7 +146,7 @@ class OffersTableViewController: SortableTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if searchedOffers.count > 0 {
             let selectedOffer = searchedOffers[indexPath.row]
-            if selectedOffer.ownerUID == currentUserUID {
+            if selectedOffer.ownerUID == MainController.currentUser.uid {
                 // selected offer is owned by current user
                 performSegue(withIdentifier: editOfferSegue, sender: nil)
             } else {
@@ -180,7 +176,7 @@ class OffersTableViewController: SortableTableViewController {
 
             // owner must be saved with the offer
             // get the owner of the offer
-            db.document("users/\(currentOffer.ownerUID)").getDocument { (document, error) in
+            MainController.database.document("users/\(currentOffer.ownerUID)").getDocument { (document, error) in
                 if error != nil {
                     print("error getting document: \(error!.localizedDescription)")
                 } else {
@@ -206,7 +202,7 @@ class OffersTableViewController: SortableTableViewController {
         if identifier == showOfferDetailSegue {
             let selectedIndex = self.tableView.indexPathForSelectedRow!
             let selectedOffer = searchedOffers[selectedIndex.row]
-            if selectedOffer.ownerUID == currentUserUID {
+            if selectedOffer.ownerUID == MainController.currentUser.uid {
                 return false
             }
         }
@@ -242,7 +238,7 @@ class OffersTableViewController: SortableTableViewController {
 
     // MARK: - Helper methods
 
-    func getCoordinate( addressString : String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
+    func getCoordinate( addressString: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(addressString) { (placemarks, error) in
             if error == nil {
@@ -266,26 +262,6 @@ class OffersTableViewController: SortableTableViewController {
 
     // unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
-    }
-
-    fileprivate func displayAlert(_ msg: String) {
-        let alert = UIAlertController(
-            title: "Internal error", message: "Please contact support",
-            preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Ok", comment: ""),
-                style: .default,
-                handler: { action in
-                    switch action.style {
-                    case .default:
-                        SettingsTableViewController.signOut()
-                    default:
-                        print(msg)
-                    }
-            })
-        )
-        self.present(alert, animated: true, completion: nil)
     }
 
 }

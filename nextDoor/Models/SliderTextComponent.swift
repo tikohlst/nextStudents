@@ -12,8 +12,8 @@ class SliderTextComponent {
 
     // MARK: - Variables
 
-    var slider : UISlider?
-    var textField : UITextField?
+    var slider: UISlider?
+    var textField: UITextField?
 
     // MARK: - Methods
 

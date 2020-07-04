@@ -6,18 +6,14 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import FirebaseAuth
+import Firebase
 
 class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
     // MARK: - Variables
 
     var pickerData = [String]()
-    var db = Firestore.firestore()
     var currentOffer: Offer?
-    let currentUser = Auth.auth().currentUser
 
     // MARK: - IBOutlets
 
@@ -92,8 +88,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     // MARK: - Methods
 
     private func create() {
-        self.db.collection("offers")
-            .document(currentUser!.uid)
+        MainController.database.collection("offers")
+            .document(MainController.currentUser.uid)
             .collection("offer")
             .document(UUID.init().uuidString)
             .setData([
@@ -110,15 +106,15 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     private func save() {
-        self.db.collection("offers")
-            .document(currentUser!.uid)
+        MainController.database.collection("offers")
+            .document(MainController.currentUser.uid)
             .collection("offer")
             .document(currentOffer!.uid)
             .updateData([
-            "title" : titleTextField.text ?? "",
-            "type" : offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
-            "description" : descriptionTextField.text ?? "",
-            "duration" : pickerData[timePickerView.selectedRow(inComponent: 0)]
+            "title": titleTextField.text ?? "",
+            "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+            "description": descriptionTextField.text ?? "",
+            "duration": pickerData[timePickerView.selectedRow(inComponent: 0)]
         ]) { err in
             if let err = err {
                 print("Error editing document: \(err.localizedDescription)")

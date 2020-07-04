@@ -6,7 +6,6 @@
 //
 
 import Firebase
-import FirebaseFirestore
 
 enum ChatError: Error {
     case mapDataError

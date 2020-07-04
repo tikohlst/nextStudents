@@ -12,12 +12,11 @@ class SortableTableViewController: UITableViewController {
     // MARK: - Variables
 
     var containerController: ContainerViewController?
-    
     var sortingOption: SortOption?
 
     // MARK: - Helper methods
     
-    func sort<T>(_ entities: T, by option : SortOption?) -> T {
+    func sort<T>(_ entities: T, by option: SortOption?) -> T {
         var result = entities
         switch option {
             case .firstName:

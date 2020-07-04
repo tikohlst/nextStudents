@@ -7,9 +7,6 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestoreSwift
-import FirebaseFirestore
-import FirebaseStorage
 
 class ChatTableViewCell: UITableViewCell {
 
@@ -49,10 +46,6 @@ class ChatsTableViewController: SortableTableViewController {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
-    var storage = Storage.storage()
-    let currentUserUID = Auth.auth().currentUser?.uid
-
     private let showChatDetailSegue = "showChatDetail"
     var chatsArray: [Chat] = [] {
         didSet {
@@ -86,8 +79,8 @@ class ChatsTableViewController: SortableTableViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
         // Get all chats from the current user
-        db.collection("Chats")
-            .whereField("users", arrayContains: currentUserUID ?? 0)
+        MainController.database.collection("Chats")
+            .whereField("users", arrayContains: MainController.currentUser.uid)
             .addSnapshotListener() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
@@ -97,10 +90,10 @@ class ChatsTableViewController: SortableTableViewController {
                         let users = chat.data()["users"] as! Array<String>
 
                         // Get uid from chat partner
-                        let chatPartnerUID = users.first(where: { $0 != self.currentUserUID})! as String
+                        let chatPartnerUID = users.first(where: { $0 != MainController.currentUser.uid})! as String
 
                         // Get newest message from the chat with the found chat id
-                        self.db.collection("Chats")
+                        MainController.database.collection("Chats")
                             .document(chat.documentID)
                             .collection("thread")
                             .order(by: "created", descending: true)
@@ -121,7 +114,7 @@ class ChatsTableViewController: SortableTableViewController {
                                     }
 
                                     // Get information about the chat partner
-                                    self.db.collection("users")
+                                    MainController.database.collection("users")
                                         .document(chatPartnerUID)
                                         .getDocument { (querySnapshot, error) in
                                             if error != nil {
@@ -136,7 +129,7 @@ class ChatsTableViewController: SortableTableViewController {
                                                     let newChat = try Chat.mapData(querySnapshot: latestMessage, chatPartner: chatPartner)
 
                                                     // Get profile image of the chat partner
-                                                    self.storage
+                                                    MainController.storage
                                                         .reference(withPath: "profilePictures/\(chatPartnerUID)/profilePicture.jpg")
                                                         .getData(maxSize: 4 * 1024 * 1024) { data, error in
 
@@ -159,9 +152,11 @@ class ChatsTableViewController: SortableTableViewController {
                                                             self.tableView.reloadData()
                                                     }
                                                 } catch UserError.mapDataError {
-                                                    return self.displayAlert("Error while mapping User!")
+                                                    let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                                    self.present(alert, animated: true, completion: nil)
                                                 } catch ChatError.mapDataError {
-                                                    return self.displayAlert("Error while mapping Chat!")
+                                                    let alert = MainController.displayAlert(withMessage: "Error while mapping Chat!", withSignOut: false)
+                                                    self.present(alert, animated: true, completion: nil)
                                                 } catch {
                                                     print("Unexpected error: \(error)")
                                                 }
@@ -227,7 +222,7 @@ class ChatsTableViewController: SortableTableViewController {
             let currentChat = searchedChats[indexPath.row]
 
             // Delete chat from the firebase database
-            self.db.collection("Chats")
+            MainController.database.collection("Chats")
                 .document(currentChat.localChatID)
                 .delete() { error in
                 if let error = error {
@@ -280,27 +275,6 @@ class ChatsTableViewController: SortableTableViewController {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
-    }
-
-    fileprivate func displayAlert(_ msg: String) {
-        let alert = UIAlertController(
-            title: "Internal error", message: "Please contact support",
-            preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Ok", comment: ""),
-                style: .default,
-                handler: { action in
-                    switch action.style {
-                    case .default:
-                        print(msg)
-                        SettingsTableViewController.signOut()
-                    default:
-                        print(msg)
-                    }
-            })
-        )
-        self.present(alert, animated: true, completion: nil)
     }
 
 }

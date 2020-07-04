@@ -10,10 +10,6 @@ import Firebase
 
 class PasswordViewController: FormViewController {
 
-    // MARK: - Variables
-
-    let currentUser = Auth.auth().currentUser
-
     // MARK: - UIViewController events
 
     override func viewDidLoad() {
@@ -78,7 +74,7 @@ class PasswordViewController: FormViewController {
                 if row.section?.form?.validate().isEmpty ?? false {
                     let dict = self.form.values(includeHidden: true)
                     let newPassword = dict["confirmedPassword"] as! String
-                    self.currentUser!.updatePassword(to: newPassword) { (error) in
+                    MainController.currentUserAuth.updatePassword(to: newPassword) { (error) in
                         if let error = error {
                             // An error happened.
                             print(error.localizedDescription)

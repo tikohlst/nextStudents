@@ -260,12 +260,12 @@
 		22CB9D61248E70F200D87E3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8FCADB92249CC67000795221 /* SliderTextComponent.swift */,
-				22ECD956249F6FAD002B8F82 /* Helper.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
-				22AAADBF2491654300542F5E /* Message.swift */,
 				22AAADC12491657C00542F5E /* Chat.swift */,
+				22AAADBF2491654300542F5E /* Message.swift */,
+				22ECD956249F6FAD002B8F82 /* Helper.swift */,
+				8FCADB92249CC67000795221 /* SliderTextComponent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

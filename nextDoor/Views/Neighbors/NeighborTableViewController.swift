@@ -6,20 +6,15 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class NeighborTableViewController: UITableViewController {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
-    let currentUserUID = Auth.auth().currentUser?.uid
-
     var chatsArray: [Chat] = []
     private let createOrShowChatSegue = "createOrShowChat"
 
+    // currentNeighbor
     var user: User!
 
     // MARK: - IBOutlets

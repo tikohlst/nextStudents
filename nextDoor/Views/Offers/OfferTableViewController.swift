@@ -6,16 +6,11 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import FirebaseStorage
+import Firebase
 
 class OfferTableViewController: UITableViewController {
 
     // MARK: - Variables
-
-    var db = Firestore.firestore()
-    var storage = Storage.storage()
 
     var offer: Offer!
     var neighborFirstName = ""
@@ -49,7 +44,7 @@ class OfferTableViewController: UITableViewController {
         offerNameLabel.text = offer.title
 
         // Show the first and last name of the neighbor who created the offer
-        db.document("users/\(offer.ownerUID)")
+        MainController.database.document("users/\(offer.ownerUID)")
             .getDocument { (document, error) in
             if error != nil {
                 print("error getting document: \(error!.localizedDescription)")
@@ -62,7 +57,7 @@ class OfferTableViewController: UITableViewController {
         }
 
         // Get profile image of the neighbor
-        self.storage
+        MainController.storage
             .reference(withPath: "profilePictures/\(offer.ownerUID)/profilePicture.jpg")
             .getData(maxSize: 4 * 1024 * 1024) { data, error in
             if let error = error {

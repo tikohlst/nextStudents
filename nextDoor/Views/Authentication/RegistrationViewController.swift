@@ -7,13 +7,11 @@
 
 import Eureka
 import Firebase
-import FirebaseAuth
 
 class RegistrationViewController: FormViewController {
 
     // MARK: - Variables
 
-    var db = Firestore.firestore()
     var user: User?
     var accountInfoMissing = false
 
@@ -322,12 +320,11 @@ class RegistrationViewController: FormViewController {
                     let street = dict["street"] as? String,
                     let housenumber = dict["housenumber"] as? String,
                     let zipcode = dict["zipcode"] as? String,
-                    let radius = Optional(Int(dict["radius"] as! Float)),
-                    let user = Auth.auth().currentUser {
-                    self.db.collection("users")
-                        .document(user.uid)
+                    let radius = Optional(Int(dict["radius"] as! Float)) {
+                    MainController.database.collection("users")
+                        .document(MainController.currentUser.uid)
                         .setData([
-                        "uid": user.uid,
+                        "uid": MainController.currentUser.uid,
                         "firstName": firstName,
                         "lastName": lastName,
                         "street": street,
@@ -358,24 +355,23 @@ class RegistrationViewController: FormViewController {
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? String,
-            let radius = Optional(Int(dict["radius"] as! Float)),
-            let user = Auth.auth().currentUser {
-            self.db.collection("users")
-                .document(user.uid)
+            let radius = Optional(Int(dict["radius"] as! Float)) {
+            MainController.database.collection("users")
+                .document(MainController.currentUser.uid)
                 .setData([
-                "uid" : user.uid,
-                "firstName" : firstName,
-                "lastName" : name,
-                "street" : street,
-                "housenumber" : housenumber,
-                "zipcode" : zipcode,
-                "radius" : radius
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    self.presentTabBarViewController()
-                }
+                    "uid": MainController.currentUser.uid,
+                    "firstName": firstName,
+                    "lastName": name,
+                    "street": street,
+                    "housenumber": housenumber,
+                    "zipcode": zipcode,
+                    "radius": radius
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        self.presentTabBarViewController()
+                    }
             }
         } else {
             print("something went wrong.")

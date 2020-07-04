@@ -7,8 +7,6 @@
 
 import UIKit
 import Firebase
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import GoogleSignIn
 
 class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDelegate {
@@ -16,7 +14,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     // MARK: - Variables
 
     var handle: AuthStateDidChangeListenerHandle?
-    var db = Firestore.firestore()
     var showRegistrationSegue = "showRegistrationSegue"
 
     // MARK: - IBOutlets
