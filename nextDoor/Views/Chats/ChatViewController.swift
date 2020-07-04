@@ -116,8 +116,15 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                 } else {
                                     self.messages.removeAll()
                                     for message in threadQuery!.documents {
-                                        let msg = Message(dictionary: message.data())
-                                        self.messages.append(msg!)
+                                        do {
+                                            let newMessage = try Message.mapData(querySnapshot: message)
+                                            self.messages.append(newMessage!)
+                                        } catch MessageError.mapDataError {
+                                            return self.displayAlert("Error while mapping User!")
+                                        } catch {
+                                            print("Unexpected error: \(error)")
+                                            //return
+                                        }
                                     }
                                     self.messagesCollectionView.reloadData()
                                     self.messagesCollectionView.scrollToBottom(animated: true)
@@ -148,7 +155,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             "content": message.content,
             "created": message.created,
             "id": message.id,
-            "senderID": message.senderID
+            "senderID": message.senderUID
         ]
 
         docReference?.collection("thread").addDocument(data: data, completion: { (error) in
@@ -160,10 +167,32 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         })
     }
 
+    // MARK: - Helper methods
+
+    fileprivate func displayAlert(_ msg: String) {
+        let alert = UIAlertController(
+            title: "Internal error", message: "Please contact support",
+            preferredStyle: .alert)
+        alert.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Ok", comment: ""),
+                style: .default,
+                handler: { action in
+                    switch action.style {
+                    case .default:
+                        SettingsTableViewController.signOut()
+                    default:
+                        print(msg)
+                    }
+            })
+        )
+        self.present(alert, animated: true, completion: nil)
+    }
+
     // MARK: - InputBarAccessoryViewDelegate
 
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(id: UUID().uuidString, content: text, created: Timestamp(), senderID: currentUserUID)
+        let message = Message(id: UUID().uuidString, senderUID: currentUserUID, created: Timestamp(), content: text)
 
         insertNewMessage(message)
         save(message)

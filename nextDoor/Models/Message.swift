@@ -8,37 +8,46 @@
 import Firebase
 import MessageKit
 
+enum MessageError: Error {
+    case mapDataError
+}
+
 struct Message {
 
     // MARK: - Variables
 
     var id: String
-    var content: String
+    var senderUID: String
     var created: Timestamp
-    var senderID: String
-
-    var dictionary: [String: Any] {
-        return [
-            "id": id,
-            "content": content,
-            "created": created,
-            "senderID": senderID ]
-    }
-
-}
-
-extension Message {
+    var content: String
 
     // MARK: - Methods
 
-    init?(dictionary: [String: Any]) {
-        guard let id = dictionary["id"] as? String,
-            let content = dictionary["content"] as? String,
-            let created = dictionary["created"] as? Timestamp,
-            let senderID = dictionary["senderID"] as? String
-            else {return nil}
+    init(id: String, senderUID: String, created: Timestamp, content: String){
+        self.id = id
+        self.senderUID = senderUID
+        self.created = created
+        self.content = content
+    }
 
-        self.init(id: id, content: content, created: created, senderID: senderID)
+    static func mapData(querySnapshot: DocumentSnapshot) throws -> Message? {
+
+        let data = querySnapshot.data()
+
+        // Data validation
+        guard let id = data?["id"] as? String,
+            let senderUID = data?["senderID"] as? String,
+            let created = data?["created"] as? Timestamp,
+            let content = data?["content"] as? String
+        else {
+            throw MessageError.mapDataError
+        }
+
+        return Message(id: id,
+                    senderUID: senderUID,
+                    created: created,
+                    content: content
+        )
     }
 
 }
@@ -46,7 +55,7 @@ extension Message {
 extension Message: MessageType {
 
     var sender: SenderType {
-        return Sender(id: senderID, displayName: "")
+        return Sender(id: senderUID, displayName: "")
     }
 
     var messageId: String {
