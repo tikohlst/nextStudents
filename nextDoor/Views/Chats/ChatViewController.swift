@@ -15,14 +15,9 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
 
     // MARK: - Variables
 
-    var currentUserProfileImage: UIImage? = nil
-
     var chatPartnerUID: String?
     var chatPartnerName: String?
-    var chatPartnerProfileImage: UIImage? = nil
-
-    var chatsArray: [Chat] = []
-    private let showChatDetailSegue = "showChatDetail"
+    var chatPartnerProfileImage: UIImage?
 
     private var docReference: DocumentReference?
 
@@ -45,19 +40,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
 
-        // Get profile image of the current user
-        MainController.storage
-            .reference(withPath: "profilePictures/\(MainController.currentUser.uid)/profilePicture.jpg")
-            .getData(maxSize: 4 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("Error while downloading profile image: \(error.localizedDescription)")
-                self.currentUserProfileImage = UIImage(named: "defaultProfilePicture")
-            } else {
-                // Data for "profilePicture.jpg" is returned
-                self.currentUserProfileImage = UIImage(data: data!)
-            }
-            self.loadChat()
-        }
+        self.loadChat()
     }
 
     // MARK: - Custom messages handlers
@@ -205,7 +188,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
 
         if message.sender.senderId == MainController.currentUser.uid {
-            avatarView.image = currentUserProfileImage
+            avatarView.image = MainController.currentUser.profileImage
         } else {
             avatarView.image = chatPartnerProfileImage
         }

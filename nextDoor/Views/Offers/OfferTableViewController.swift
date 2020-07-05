@@ -13,9 +13,6 @@ class OfferTableViewController: UITableViewController {
     // MARK: - Variables
 
     var offer: Offer!
-    var neighborFirstName = ""
-    var neighborLastName = ""
-    var neighborImage: UIImage!
 
     private let showChatFromOfferSegue = "showChatFromOffer"
 
@@ -44,30 +41,7 @@ class OfferTableViewController: UITableViewController {
         offerNameLabel.text = offer.title
 
         // Show the first and last name of the neighbor who created the offer
-        MainController.database.document("users/\(offer.ownerUID)")
-            .getDocument { (document, error) in
-            if error != nil {
-                print("error getting document: \(error!.localizedDescription)")
-            } else {
-                let ownerData = document?.data()
-                self.neighborFirstName = ownerData!["firstName"] as! String
-                self.neighborLastName = ownerData!["lastName"] as! String
-                self.offerCreatorLabel.text = self.neighborFirstName + " " + self.neighborLastName
-            }
-        }
-
-        // Get profile image of the neighbor
-        MainController.storage
-            .reference(withPath: "profilePictures/\(offer.ownerUID)/profilePicture.jpg")
-            .getData(maxSize: 4 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("Error while downloading profile image: \(error.localizedDescription)")
-                self.neighborImage = UIImage(named: "defaultProfilePicture")!
-            } else {
-                // Data for "profilePicture.jpg" is returned
-                self.neighborImage = UIImage(data: data!)
-            }
-        }
+        offerCreatorLabel.text = offer.ownerFirstName + " " + offer.ownerLastName
 
         // Show the description of the offer
         offerDescriptionTextView.text = offer.description
@@ -91,16 +65,26 @@ class OfferTableViewController: UITableViewController {
             let detailViewController = segue.destination as! ChatViewController
 
             // Set the title of the navigation item on the ChatViewController
-            detailViewController.navigationItem.title = "\(neighborFirstName) \(neighborLastName)"
+            detailViewController.navigationItem.title = offer.ownerFirstName + " " + offer.ownerLastName
 
             // Set the user ID at the ChatViewController
-            detailViewController.chatPartnerUID = offer!.ownerUID
+            detailViewController.chatPartnerUID = offer.ownerUID
 
             // Get first and last name of the chat partner and write it in the correct label
-            detailViewController.chatPartnerName = "\(neighborFirstName) \(neighborLastName)"
+            detailViewController.chatPartnerName = offer.ownerFirstName + " " + offer.ownerLastName
 
-            // Get the user image
-            detailViewController.chatPartnerProfileImage = neighborImage
+            // Get profile image of the neighbor
+            MainController.storage
+                .reference(withPath: "profilePictures/\(offer.ownerUID)/profilePicture.jpg")
+                .getData(maxSize: 4 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("Error while downloading profile image: \(error.localizedDescription)")
+                    detailViewController.chatPartnerProfileImage = UIImage(named: "defaultProfilePicture")!
+                } else {
+                    // Data for "profilePicture.jpg" is returned
+                    detailViewController.chatPartnerProfileImage = UIImage(data: data!)
+                }
+            }
         }
     }
 

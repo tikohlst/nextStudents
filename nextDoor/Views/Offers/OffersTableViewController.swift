@@ -50,6 +50,7 @@ class OffersTableViewController: SortableTableViewController {
 
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
+
     var offersArray: [Offer] = [] {
         didSet {
             searchedOffers = offersArray.map({$0})
@@ -89,36 +90,44 @@ class OffersTableViewController: SortableTableViewController {
                 print("Error getting documents: \(error!.localizedDescription)")
             } else {
                 for neighbor in querySnapshot!.documents {
-                    // TODO: extract offers from every user
-                    MainController.database.collection("offers")
-                        .document(neighbor.documentID)
-                        .collection("offer")
-                        .addSnapshotListener() { (querySnapshot, error) in
-                            guard let documents = querySnapshot?.documents else {
-                                print("Error fetching documents: \(error!)")
-                                return
-                            }
-                            // Create Offer object for every offer in the radius and write it into an array
-                            for offer in documents {
-                                // Skip already existing offers of this user
-                                if self.offersArray.firstIndex(where: { $0.uid == offer.documentID }) == nil
-                                {
-                                    do {
-                                        let newOffer = try Offer.mapData(querySnapshot: offer,
-                                                                         ownerUID: neighbor.documentID)
-                                        self.offersArray.append(newOffer)
-                                    } catch OfferError.mapDataError {
-                                        let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
-                                        self.present(alert, animated: true, completion: nil)
-                                    } catch {
-                                        let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
-                                        self.present(alert, animated: true, completion: nil)
+                    MainController.database
+                        .document("users/\(neighbor.documentID)")
+                        .getDocument { (owner, error) in
+                        if error != nil || owner == nil {
+                            print("error getting document: \(error!.localizedDescription)")
+                        } else {
+                            MainController.database.collection("offers")
+                                .document(neighbor.documentID)
+                                .collection("offer")
+                                .addSnapshotListener() { (querySnapshot, error) in
+                                    guard let documents = querySnapshot?.documents else {
+                                        print("Error fetching documents: \(error!)")
+                                        return
                                     }
-                                }
-                            }
+                                    // Create Offer object for every offer in the radius and write it into an array
+                                    for offer in documents {
+                                        // Skip already existing offers of this user
+                                        if self.offersArray.firstIndex(where: { $0.uid == offer.documentID }) == nil
+                                        {
+                                            do {
+                                                let newOffer = try Offer.mapData(querySnapshotOffer: offer,
+                                                                                 querySnapshotOwner: owner!)
 
-                            // Update the table
-                            self.tableView.reloadData()
+                                                self.offersArray.append(newOffer)
+                                            } catch OfferError.mapDataError {
+                                                let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
+                                                self.present(alert, animated: true, completion: nil)
+                                            } catch {
+                                                let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
+                                                self.present(alert, animated: true, completion: nil)
+                                            }
+                                        }
+                                    }
+
+                                    // Update the table
+                                    self.tableView.reloadData()
+                            }
+                        }
                     }
                 }
             }
@@ -174,17 +183,8 @@ class OffersTableViewController: SortableTableViewController {
             // Write the type of the current offer in the cell
             cell.typeLabel.text = currentOffer.type
 
-            // owner must be saved with the offer
-            // get the owner of the offer
-            MainController.database.document("users/\(currentOffer.ownerUID)").getDocument { (document, error) in
-                if error != nil {
-                    print("error getting document: \(error!.localizedDescription)")
-                } else {
-                    if let ownerData = document?.data(), let ownerGivenName = ownerData["firstName"] as? String, let ownerName = ownerData["lastName"] as? String {
-                        cell.ownerLabel.text = ownerGivenName + " " +  ownerName
-                    }
-                }
-            }
+            // Write the name of the owner of the current offer in the cell
+            cell.ownerLabel.text = currentOffer.ownerFirstName + " " +  currentOffer.ownerLastName
 
             // Write profil image in cell
             cell.offerImageView.image = currentOffer.offerImage
