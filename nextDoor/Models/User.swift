@@ -52,28 +52,28 @@ class User {
 
         // Data validation
         guard let firstName = data?["firstName"] as? String,
-                let lastName = data?["lastName"] as? String,
-                let street = data?["street"] as? String,
-                let housenumber = data?["housenumber"] as? String,
-                let zipcode = data?["zipcode"] as? String,
-                let gpsCoordinates = data?["gpsCoordinates"] as? GeoPoint,
-                let radius = data?["radius"] as? Int,
-                let bio = data?["bio"] as? String,
-                let skills = data?["skills"] as? String
-        else {
-            throw UserError.mapDataError
+            let lastName = data?["lastName"] as? String,
+            let street = data?["street"] as? String,
+            let housenumber = data?["housenumber"] as? String,
+            let zipcode = data?["zipcode"] as? String,
+            let gpsCoordinates = data?["gpsCoordinates"] as? GeoPoint,
+            let radius = data?["radius"] as? Int,
+            let bio = data?["bio"] as? String,
+            let skills = data?["skills"] as? String
+            else {
+                throw UserError.mapDataError
         }
 
         return User(uid: querySnapshot.documentID,
-                        firstName: firstName,
-                        lastName: lastName,
-                        street: street,
-                        housenumber: housenumber,
-                        zipcode: zipcode,
-                        gpsCoordinates: gpsCoordinates,
-                        radius: radius,
-                        bio: bio,
-                        skills: skills
+                    firstName: firstName,
+                    lastName: lastName,
+                    street: street,
+                    housenumber: housenumber,
+                    zipcode: zipcode,
+                    gpsCoordinates: gpsCoordinates,
+                    radius: radius,
+                    bio: bio,
+                    skills: skills
         )
     }
 

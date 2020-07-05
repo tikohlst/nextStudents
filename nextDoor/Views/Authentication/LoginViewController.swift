@@ -116,7 +116,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         }
     }
 
-    //
     func switchScreens(_ authResult: AuthDataResult?, _ error: Error?, _ strongSelf: LoginViewController) {
         if error != nil {
             let alert = UIAlertController(
@@ -128,8 +127,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
                     style: .default)
             )
             strongSelf.present(alert, animated: true, completion: nil)
-        }
-        else {
+        } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let containerController = storyboard.instantiateViewController(identifier: "containervc")
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)

@@ -185,60 +185,67 @@ class ProfileViewController: FormViewController {
         MainController.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
 
-                                        let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                                                      longitude: coordinates.longitude)
+                                        let numberRange = (-90.0)...(90.0)
+                                        if numberRange.contains(coordinates.latitude) && numberRange.contains(coordinates.longitude){
+                                            let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                          longitude: coordinates.longitude)
 
-                                        if let user = MainController.currentUser {
-                                            user.firstName = firstName
-                                            user.lastName = lastName
-                                            user.street = street
-                                            user.housenumber = housenumber
-                                            user.zipcode = zipcode
-                                            user.radius = radius
-                                            user.bio = bio
-                                            user.skills = skills
-                                            user.profileImage = profileImage
-                                            user.gpsCoordinates = gpsCoordinates
+                                            if let user = MainController.currentUser {
+                                                user.firstName = firstName
+                                                user.lastName = lastName
+                                                user.street = street
+                                                user.housenumber = housenumber
+                                                user.zipcode = zipcode
+                                                user.radius = radius
+                                                user.bio = bio
+                                                user.skills = skills
+                                                user.profileImage = profileImage
+                                                user.gpsCoordinates = gpsCoordinates
 
-                                            MainController.database.collection("users")
-                                                .document(MainController.currentUser.uid)
-                                                .setData([
-                                                "firstName": user.firstName,
-                                                "lastName": user.lastName,
-                                                "street": user.street,
-                                                "housenumber": user.housenumber,
-                                                "zipcode": user.zipcode,
-                                                "radius": user.radius,
-                                                "bio": user.bio,
-                                                "skills": user.skills,
-                                                "gpsCoordinates": user.gpsCoordinates
-                                            ]) { err in
-                                                if let err = err {
-                                                    print("Error editing document: \(err.localizedDescription)")
+                                                MainController.database.collection("users")
+                                                    .document(MainController.currentUser.uid)
+                                                    .setData([
+                                                        "firstName": user.firstName,
+                                                        "lastName": user.lastName,
+                                                        "street": user.street,
+                                                        "housenumber": user.housenumber,
+                                                        "zipcode": user.zipcode,
+                                                        "radius": user.radius,
+                                                        "bio": user.bio,
+                                                        "skills": user.skills,
+                                                        "gpsCoordinates": user.gpsCoordinates
+                                                    ]) { err in
+                                                        if let err = err {
+                                                            print("Error editing document: \(err.localizedDescription)")
+                                                        }
                                                 }
-                                            }
-                                            // profile image upload
-                                            let storageRef = MainController.storage
-                                                .reference(withPath: "profilePictures/\(String(describing: MainController.currentUser.uid))/profilePicture.jpg")
-                                            if let imageData = profileImage.jpegData(compressionQuality: 0.75) {
-                                                let imageMetadata = StorageMetadata.init()
-                                                imageMetadata.contentType = "image/jpeg"
-                                                storageRef.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
-                                                    if let error = error {
-                                                        print("Error while uploading profile image: \(error.localizedDescription)")
-                                                        return
+
+                                                // This variable is set to true to update the neighbors shown in NeighborsTableView
+                                                MainController.currentUserUpdated = true
+
+                                                // profile image upload
+                                                let storageRef = MainController.storage
+                                                    .reference(withPath: "profilePictures/\(String(describing: MainController.currentUser.uid))/profilePicture.jpg")
+                                                if let imageData = profileImage.jpegData(compressionQuality: 0.75) {
+                                                    let imageMetadata = StorageMetadata.init()
+                                                    imageMetadata.contentType = "image/jpeg"
+                                                    storageRef.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+                                                        if let error = error {
+                                                            print("Error while uploading profile image: \(error.localizedDescription)")
+                                                            return
+                                                        }
+                                                        print("upload complete with metadata: \(String(describing: storageMetadata))")
+                                                        // Don't go back until the new image has been completely uploaded
+                                                        self.navigationController?.popViewController(animated: true)
+                                                        self.dismiss(animated: true, completion: nil)
                                                     }
-                                                    print("upload complete with metadata: \(String(describing: storageMetadata))")
-                                                    // Don't go back until the new image has been completely uploaded
-                                                    self.navigationController?.popViewController(animated: true)
-                                                    self.dismiss(animated: true, completion: nil)
-                                                }
-                                            } else {
-                                                storageRef.delete { error in
-                                                    if let error = error {
-                                                        print("Error while deleting profile image: \(error.localizedDescription)")
-                                                    } else {
-                                                        print("File deleted successfully")
+                                                } else {
+                                                    storageRef.delete { error in
+                                                        if let error = error {
+                                                            print("Error while deleting profile image: \(error.localizedDescription)")
+                                                        } else {
+                                                            print("File deleted successfully")
+                                                        }
                                                     }
                                                 }
                                             }

@@ -17,6 +17,7 @@ class MainController: UITabBarController {
     static let storage = Storage.storage()
     static var currentUserAuth: Firebase.User!
     static var currentUser: User!
+    static var currentUserUpdated = true
 
     // MARK: - UIViewController events
 

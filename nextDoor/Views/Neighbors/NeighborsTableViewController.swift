@@ -84,46 +84,55 @@ class NeighborsTableViewController: SortableTableViewController {
         navigationItem.searchController?.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [NSAttributedString.Key.foregroundColor: UIColor.label])
         // Change the title of the Cancel button on the search bar
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
+    }
+
+    func getNeighbors() {
+        self.usersInRangeArray = []
+        // Update the table if there are no neighbors in range
+        self.tableView.reloadData()
 
         MainController.database.collection("users")
-            .whereField("radius", isGreaterThan: 0)
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
-                        // Don't show currentUser as its own neighbor
-                        if currentNeighbor.documentID != MainController.currentUser.uid {
-                            // Create User object for every neighbor in the radius and write it into an array
-                            do {
-                                let newUser = try User.mapData(querySnapshot: currentNeighbor)
-                                // Get profile image of the neighbor
-                                MainController.storage
-                                    .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
-                                    .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                        if let error = error {
-                                            print("Error while downloading profile image: \(error.localizedDescription)")
-                                            newUser.profileImage = UIImage(named: "defaultProfilePicture")!
-                                        } else {
-                                            // Data for "profilePicture.jpg" is returned
-                                            newUser.profileImage = UIImage(data: data!)!
-                                        }
+                        let differenceInMeter = self.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        // Only show neighbors in the defined range
+                        if (differenceInMeter) < Double(MainController.currentUser.radius) {
+                            // Don't show currentUser as its own neighbor
+                            if currentNeighbor.documentID != MainController.currentUser.uid {
+                                // Create User object for every neighbor in the radius and write it into an array
+                                do {
+                                    let newUser = try User.mapData(querySnapshot: currentNeighbor)
+                                    // Get profile image of the neighbor
+                                    MainController.storage
+                                        .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
+                                        .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
+                                            if let error = error {
+                                                print("Error while downloading profile image: \(error.localizedDescription)")
+                                                newUser.profileImage = UIImage(named: "defaultProfilePicture")!
+                                            } else {
+                                                // Data for "profilePicture.jpg" is returned
+                                                newUser.profileImage = UIImage(data: data!)!
+                                            }
 
-                                        self.usersInRangeArray.append(newUser)
+                                            self.usersInRangeArray.append(newUser)
 
-                                        // Sort the user by first name
-                                        self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
-                                            firstUser.firstName < secondUser.firstName
-                                        })
+                                            // Sort the user by first name
+                                            self.usersInRangeArray.sort(by: { (firstUser: User, secondUser: User) in
+                                                firstUser.firstName < secondUser.firstName
+                                            })
 
-                                        // Update the table
-                                        self.tableView.reloadData()
+                                            // Update the table
+                                            self.tableView.reloadData()
+                                    }
+                                } catch UserError.mapDataError {
+                                    let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                    self.present(alert, animated: true, completion: nil)
+                                } catch {
+                                    print("Unexpected error: \(error)")
                                 }
-                            } catch UserError.mapDataError {
-                                let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
-                                self.present(alert, animated: true, completion: nil)
-                            } catch {
-                                print("Unexpected error: \(error)")
                             }
                         }
                     }
@@ -137,6 +146,11 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController = container
             containerController!.tabViewController = self
             containerController!.setupSortingCellsAndDelegate()
+        }
+
+        if MainController.currentUserUpdated {
+            MainController.currentUserUpdated = false
+            self.getNeighbors()
         }
     }
 
@@ -219,6 +233,27 @@ class NeighborsTableViewController: SortableTableViewController {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
+    }
+
+    func degreesToRadians(_ number: Double) -> Double {
+        return number * .pi / 180
+    }
+
+    func getGPSDifference(_ gpsCoordinates1: GeoPoint,_ gpsCoordinates2: GeoPoint) -> Double {
+
+        let radius = 6371 // Earth's radius in kilometers
+        let latDelta = degreesToRadians(gpsCoordinates2.latitude - gpsCoordinates1.latitude)
+        let lonDelta = degreesToRadians(gpsCoordinates2.longitude - gpsCoordinates1.longitude)
+
+        let a = (sin(latDelta / 2) * sin(latDelta / 2)) +
+            (cos(degreesToRadians(gpsCoordinates1.latitude)) * cos(degreesToRadians(gpsCoordinates2.latitude)) *
+                sin(lonDelta / 2) * sin(lonDelta / 2))
+
+        let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        let differenceInKilometer = Double(radius) * c
+        let differenceInMeter = differenceInKilometer * 1000
+        return differenceInMeter
     }
 
 }
