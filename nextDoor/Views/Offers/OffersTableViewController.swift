@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreLocation
 import Firebase
 
 class OfferTableViewCell: UITableViewCell {
@@ -238,22 +237,6 @@ class OffersTableViewController: SortableTableViewController {
 
     // MARK: - Helper methods
 
-    func getCoordinate( addressString: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
-            if error == nil {
-                if let placemark = placemarks?[0] {
-                    let location = placemark.location!
-                        
-                    completionHandler(location.coordinate, nil)
-                    return
-                }
-            }
-                
-            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
-        }
-    }
-    
     @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)

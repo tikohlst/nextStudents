@@ -162,7 +162,11 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - MessagesDataSource
 
     func currentSender() -> SenderType {
-        return Sender(id: MainController.currentUser.uid, displayName: MainController.currentUserAuth.displayName ?? "Name not found")
+        if MainController.currentUser == nil {
+            return Sender(id: "User not found", displayName: "Name not found")
+        } else {
+            return Sender(id: MainController.currentUser.uid, displayName: (MainController.currentUser.firstName + " " + MainController.currentUser.lastName))
+        }
     }
 
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
@@ -186,11 +190,12 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
 
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-
-        if message.sender.senderId == MainController.currentUser.uid {
-            avatarView.image = MainController.currentUser.profileImage
-        } else {
-            avatarView.image = chatPartnerProfileImage
+        if MainController.currentUser != nil {
+            if message.sender.senderId == MainController.currentUser.uid {
+                avatarView.image = MainController.currentUser.profileImage
+            } else {
+                avatarView.image = chatPartnerProfileImage
+            }
         }
     }
 

@@ -302,47 +302,62 @@ class RegistrationViewController: FormViewController {
         Auth.auth().createUser(
             withEmail: (dict["email"] as! String),
             password: dict["password"] as! String) { authResult, error in
-            // Error handling
-            if error != nil {
-                let alert = UIAlertController(
-                    title: nil, message: error!.localizedDescription,
-                    preferredStyle: .alert)
-                alert.addAction(
-                    UIAlertAction(
-                        title: NSLocalizedString("OK", comment: "Default Action"),
-                        style: .default)
-                )
-                self.present(alert, animated: true, completion: nil)
-            } else if authResult != nil {
-                // Write userdata to firestore
-                if let firstName = dict["firstName"] as? String,
-                    let lastName = dict["lastName"] as? String,
-                    let street = dict["street"] as? String,
-                    let housenumber = dict["housenumber"] as? String,
-                    let zipcode = dict["zipcode"] as? String,
-                    let radius = Optional(Int(dict["radius"] as! Float)) {
-                    MainController.database.collection("users")
-                        .document(MainController.currentUser.uid)
-                        .setData([
-                        "uid": MainController.currentUser.uid,
-                        "firstName": firstName,
-                        "lastName": lastName,
-                        "street": street,
-                        "housenumber": housenumber,
-                        "zipcode": zipcode,
-                        "radius": radius
-                    ]) { err in
-                        if let err = err {
-                            print("Error adding document: \(err)")
-                        }
-                        else {
-                            self.presentLoginViewController()
-                        }
+                // Error handling
+                if error != nil {
+                    let alert = UIAlertController(
+                        title: nil, message: error!.localizedDescription,
+                        preferredStyle: .alert)
+                    alert.addAction(
+                        UIAlertAction(
+                            title: NSLocalizedString("OK", comment: "Default Action"),
+                            style: .default)
+                    )
+                    self.present(alert, animated: true, completion: nil)
+                } else if authResult != nil {
+                    // Write userdata to firestore
+                    if let firstName = dict["firstName"] as? String,
+                        let lastName = dict["lastName"] as? String,
+                        let street = dict["street"] as? String,
+                        let housenumber = dict["housenumber"] as? String,
+                        let zipcode = dict["zipcode"] as? String,
+                        let radius = Optional(Int(dict["radius"] as! Float)) {
+
+                        let addressString = street + " "
+                            + housenumber + ", "
+                            + zipcode + ", Deutschland"
+
+                        MainController.getCoordinate(addressString: addressString,
+                                                     completionHandler: { (coordinates, error) in
+
+                                                        let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                                      longitude: coordinates.longitude)
+
+                                                        MainController.database.collection("users")
+                                                            .document(MainController.currentUserAuth.uid)
+                                                            .setData([
+                                                                "uid": MainController.currentUserAuth.uid,
+                                                                "firstName": firstName,
+                                                                "lastName": lastName,
+                                                                "street": street,
+                                                                "housenumber": housenumber,
+                                                                "zipcode": zipcode,
+                                                                "radius": radius,
+                                                                "gpsCoordinates": gpsCoordinates,
+                                                                "bio": "",
+                                                                "skills": ""
+                                                            ]) { err in
+                                                                if let err = err {
+                                                                    print("Error adding document: \(err)")
+                                                                }
+                                                                else {
+                                                                    self.presentLoginViewController()
+                                                                }
+                                                        }
+                        })
+                    } else {
+                        print("Something went wrong.")
                     }
-                } else {
-                    print("Something went wrong.")
                 }
-            }
         }
     }
 
@@ -350,29 +365,43 @@ class RegistrationViewController: FormViewController {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
 
+        // Write userdata to firestore
         if let firstName = dict["firstName"] as? String,
             let name = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? String,
             let radius = Optional(Int(dict["radius"] as! Float)) {
-            MainController.database.collection("users")
-                .document(MainController.currentUser.uid)
-                .setData([
-                    "uid": MainController.currentUser.uid,
-                    "firstName": firstName,
-                    "lastName": name,
-                    "street": street,
-                    "housenumber": housenumber,
-                    "zipcode": zipcode,
-                    "radius": radius
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        self.presentTabBarViewController()
-                    }
-            }
+
+            let addressString = street + " "
+                + housenumber + ", "
+                + zipcode + ", Deutschland"
+
+            MainController.getCoordinate(addressString: addressString,
+                                         completionHandler: { (coordinates, error) in
+
+                                            let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                          longitude: coordinates.longitude)
+
+                                            MainController.database.collection("users")
+                                                .document(MainController.currentUser.uid)
+                                                .setData([
+                                                    "uid": MainController.currentUser.uid,
+                                                    "firstName": firstName,
+                                                    "lastName": name,
+                                                    "street": street,
+                                                    "housenumber": housenumber,
+                                                    "zipcode": zipcode,
+                                                    "radius": radius,
+                                                    "gpsCoordinates": gpsCoordinates
+                                                ]) { err in
+                                                    if let err = err {
+                                                        print("Error adding document: \(err)")
+                                                    } else {
+                                                        self.presentTabBarViewController()
+                                                    }
+                                            }
+            })
         } else {
             print("something went wrong.")
         }

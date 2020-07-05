@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import CoreLocation
 
 enum UserError: Error {
     case mapDataError
@@ -21,6 +22,7 @@ class User {
     var street: String
     var housenumber: String
     var zipcode: String
+    var gpsCoordinates: GeoPoint
     var radius: Int
     var bio: String
     var skills: String
@@ -29,13 +31,15 @@ class User {
     // MARK: - Methods
 
     init(uid: String, firstName: String, lastName: String, street: String,
-         housenumber: String, zipcode: String, radius: Int, bio: String, skills: String) {
+         housenumber: String, zipcode: String, gpsCoordinates: GeoPoint,
+         radius: Int, bio: String, skills: String) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.street = street
         self.housenumber = housenumber
         self.zipcode = zipcode
+        self.gpsCoordinates = gpsCoordinates
         self.radius = radius
         self.bio = bio
         self.skills = skills
@@ -52,6 +56,7 @@ class User {
                 let street = data?["street"] as? String,
                 let housenumber = data?["housenumber"] as? String,
                 let zipcode = data?["zipcode"] as? String,
+                let gpsCoordinates = data?["gpsCoordinates"] as? GeoPoint,
                 let radius = data?["radius"] as? Int,
                 let bio = data?["bio"] as? String,
                 let skills = data?["skills"] as? String
@@ -65,6 +70,7 @@ class User {
                         street: street,
                         housenumber: housenumber,
                         zipcode: zipcode,
+                        gpsCoordinates: gpsCoordinates,
                         radius: radius,
                         bio: bio,
                         skills: skills

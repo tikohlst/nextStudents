@@ -8,6 +8,7 @@
 import Eureka
 import ImageRow
 import Firebase
+import CoreLocation
 
 class ProfileViewController: FormViewController {
 
@@ -128,7 +129,14 @@ class ProfileViewController: FormViewController {
                 $0.title = "Änderungen speichern"
             }.onCellSelection { cell, row in
                 if row.section?.form?.validate().isEmpty ?? false {
-                    self.saveProfil()
+                    do {
+                        try self.saveProfil()
+                    } catch UserError.mapDataError {
+                        let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: true)
+                        self.present(alert, animated: true, completion: nil)
+                    } catch {
+                        print("Unexpected error: \(error)")
+                    }
                 }
             }
 
@@ -147,67 +155,95 @@ class ProfileViewController: FormViewController {
 
     // MARK: - Methods
 
-    func saveProfil() {
+    func saveProfil() throws {
         // Show an animated waiting circle
         let indicatorView = self.activityIndicator(style: .medium,
                                                    center: self.view.center)
         self.view.addSubview(indicatorView)
         indicatorView.startAnimating()
 
-        let dict = form.values(includeHidden: true)
-        if let user = MainController.currentUser {
-            user.firstName = dict["firstName"] as! String
-            user.lastName = dict["lastName"] as! String
-            user.street = dict["street"] as! String
-            user.housenumber = dict["housenumber"] as! String
-            user.zipcode = dict["zipcode"] as! String
-            user.radius = Int(dict["radius"] as! Float)
-            user.bio = dict["bio"] as! String
-            user.skills = dict["skills"] as! String
-            user.profileImage = dict["profileImage"] as! UIImage
+        let data = form.values(includeHidden: true)
 
-            MainController.database.collection("users").document(MainController.currentUser.uid).setData([
-                "firstName": user.firstName,
-                "lastName": user.lastName,
-                "street": user.street,
-                "housenumber": user.housenumber,
-                "zipcode": user.zipcode,
-                "radius": user.radius,
-                "bio": user.bio,
-                "skills": user.skills
-            ]) { err in
-                if let err = err {
-                    print("Error editing document: \(err.localizedDescription)")
-                }
-            }
-            // profile image upload
-            let storageRef = MainController.storage.reference(withPath: "profilePictures/\(String(describing: MainController.currentUser.uid))/profilePicture.jpg")
-            let profileImage = (dict["profileImage"] as? UIImage)
-            if let imageData = profileImage?.jpegData(compressionQuality: 0.75) {
-                let imageMetadata = StorageMetadata.init()
-                imageMetadata.contentType = "image/jpeg"
-                storageRef.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
-                    if let error = error {
-                        print("Error while uploading profile image: \(error.localizedDescription)")
-                        return
-                    }
-                    print("upload complete with metadata: \(String(describing: storageMetadata))")
-                    // Don't go back until the new image has been completely uploaded
-                    self.navigationController?.popViewController(animated: true)
-                    self.dismiss(animated: true, completion: nil)
-                }
-            } else {
-                if profileImage == nil {
-                    storageRef.delete { error in
-                        if let error = error {
-                            print("Error while deleting profile image: \(error.localizedDescription)")
-                        } else {
-                            print("File deleted successfully")
-                        }
-                    }
-                }
-            }
+        // Data validation
+        guard let firstName = data["firstName"] as? String,
+                let lastName = data["lastName"] as? String,
+                let street = data["street"] as? String,
+                let housenumber = data["housenumber"] as? String,
+                let zipcode = data["zipcode"] as? String,
+                let radius = Optional(Int(data["radius"] as! Float)),
+                let bio = data["bio"] as? String,
+                let skills = data["skills"] as? String,
+                let profileImage = data["profileImage"] as? UIImage
+        else {
+            throw UserError.mapDataError
         }
+
+        let addressString = street + " "
+                            + housenumber + ", "
+                            + zipcode + ", Deutschland"
+
+        MainController.getCoordinate(addressString: addressString,
+                                     completionHandler: { (coordinates, error) in
+
+                                        let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                      longitude: coordinates.longitude)
+
+                                        if let user = MainController.currentUser {
+                                            user.firstName = firstName
+                                            user.lastName = lastName
+                                            user.street = street
+                                            user.housenumber = housenumber
+                                            user.zipcode = zipcode
+                                            user.radius = radius
+                                            user.bio = bio
+                                            user.skills = skills
+                                            user.profileImage = profileImage
+                                            user.gpsCoordinates = gpsCoordinates
+
+                                            MainController.database.collection("users")
+                                                .document(MainController.currentUser.uid)
+                                                .setData([
+                                                "firstName": user.firstName,
+                                                "lastName": user.lastName,
+                                                "street": user.street,
+                                                "housenumber": user.housenumber,
+                                                "zipcode": user.zipcode,
+                                                "radius": user.radius,
+                                                "bio": user.bio,
+                                                "skills": user.skills,
+                                                "gpsCoordinates": user.gpsCoordinates
+                                            ]) { err in
+                                                if let err = err {
+                                                    print("Error editing document: \(err.localizedDescription)")
+                                                }
+                                            }
+                                            // profile image upload
+                                            let storageRef = MainController.storage
+                                                .reference(withPath: "profilePictures/\(String(describing: MainController.currentUser.uid))/profilePicture.jpg")
+                                            if let imageData = profileImage.jpegData(compressionQuality: 0.75) {
+                                                let imageMetadata = StorageMetadata.init()
+                                                imageMetadata.contentType = "image/jpeg"
+                                                storageRef.putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+                                                    if let error = error {
+                                                        print("Error while uploading profile image: \(error.localizedDescription)")
+                                                        return
+                                                    }
+                                                    print("upload complete with metadata: \(String(describing: storageMetadata))")
+                                                    // Don't go back until the new image has been completely uploaded
+                                                    self.navigationController?.popViewController(animated: true)
+                                                    self.dismiss(animated: true, completion: nil)
+                                                }
+                                            } else {
+                                                storageRef.delete { error in
+                                                    if let error = error {
+                                                        print("Error while deleting profile image: \(error.localizedDescription)")
+                                                    } else {
+                                                        print("File deleted successfully")
+                                                    }
+                                                }
+                                            }
+                                        }
+        })
     }
 
     private func activityIndicator(style: UIActivityIndicatorView.Style = .medium,
@@ -238,7 +274,6 @@ class ProfileViewController: FormViewController {
     }
 
     func deleteUser() {
-
         // Delete user from the firebase database
         MainController.database.collection("users").document(MainController.currentUser.uid).delete { error in
             if let error = error {

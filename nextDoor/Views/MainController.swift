@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 import Firebase
 
 class MainController: UITabBarController {
@@ -14,7 +15,7 @@ class MainController: UITabBarController {
 
     static let database = Firestore.firestore()
     static let storage = Storage.storage()
-    static let currentUserAuth = Auth.auth().currentUser!
+    static var currentUserAuth: Firebase.User!
     static var currentUser: User!
 
     // MARK: - UIViewController events
@@ -27,6 +28,8 @@ class MainController: UITabBarController {
     }
 
     override func viewDidLoad() {
+        MainController.currentUserAuth = Auth.auth().currentUser!
+
         MainController.database.collection("users")
             .document(MainController.currentUserAuth.uid)
             .addSnapshotListener { (querySnapshot, error) in
@@ -49,14 +52,15 @@ class MainController: UITabBarController {
                         }
                     }
 
+                    // check if userdata is complete
+                    self.checkMissingUserData()
+
                 } catch UserError.mapDataError {
                     let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: true)
                     self.present(alert, animated: true, completion: nil)
                 } catch {
                     print("Unexpected error: \(error)")
                 }
-                // check if userdata is complete
-                self.checkMissingUserData()
             }
         }
         super.viewDidLoad()
@@ -105,6 +109,22 @@ class MainController: UITabBarController {
         }
 
         return alert
+    }
+
+    static func getCoordinate( addressString: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?[0] {
+                    let location = placemark.location!
+
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
     }
 
 }
