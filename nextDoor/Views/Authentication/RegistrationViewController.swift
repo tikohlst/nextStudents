@@ -12,7 +12,6 @@ class RegistrationViewController: FormViewController {
 
     // MARK: - Variables
 
-    var user: User?
     var accountInfoMissing = false
 
     // MARK: - UIViewController events
@@ -283,7 +282,7 @@ class RegistrationViewController: FormViewController {
                 }
             }
 
-        if accountInfoMissing, let user = user {
+        if accountInfoMissing, let user = MainController.currentUser {
             form.rowBy(tag: "firstName")?.baseValue = user.firstName
             form.rowBy(tag: "lastName")?.baseValue = user.lastName
             form.rowBy(tag: "street")?.baseValue = user.street
@@ -385,7 +384,7 @@ class RegistrationViewController: FormViewController {
 
                                             MainController.database.collection("users")
                                                 .document(MainController.currentUser.uid)
-                                                .setData([
+                                                .updateData([
                                                     "uid": MainController.currentUser.uid,
                                                     "firstName": firstName,
                                                     "lastName": name,

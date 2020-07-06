@@ -76,12 +76,14 @@ class MainController: UITabBarController {
             MainController.currentUser.zipcode.isEmpty || MainController.currentUser.radius == 0 {
             // prompt the registration screen
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
-            vc.modalPresentationStyle = .fullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            vc.accountInfoMissing = true
-            vc.user = MainController.currentUser
-            self.present(vc, animated: true, completion: nil)
+            let viewController = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
+            viewController.accountInfoMissing = true
+            viewController.navigationItem.title = "Registrierung abschließen"
+
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .crossDissolve
+            self.present(navigationController, animated: true, completion: nil)
         }
     }
 
