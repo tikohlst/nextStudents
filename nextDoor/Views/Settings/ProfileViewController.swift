@@ -17,6 +17,18 @@ class ProfileViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(_ :)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+
+        // call the 'keyboardWillHide' function fro eureka when the view controller receive notification that keyboard is going to be hidden
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(_ :)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
