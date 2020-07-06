@@ -29,6 +29,7 @@ class ProfileViewController: FormViewController {
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
 
+        // Show validation error in each case in the row below the error
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
             cell.textLabel?.textColor = .white
@@ -36,9 +37,95 @@ class ProfileViewController: FormViewController {
             cell.textLabel?.textAlignment = .right
         }
 
-        TextRow.defaultCellUpdate = { cell, row in
+        NameRow.defaultCellUpdate = {cell, row in
+           if !row.isValid {
+               cell.titleLabel?.textColor = .red
+           }
+        }
+
+        NameRow.defaultOnRowValidationChanged = { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = validationMsg
+                        $0.cell.height = { 30 }
+                    }
+                    let indexPath = row.indexPath!.row + index + 1
+                    row.section!.insert(labelRow, at: indexPath)
+                }
+            }
+        }
+
+        TextRow.defaultCellUpdate = {cell, row in
+           if !row.isValid {
+               cell.titleLabel?.textColor = .red
+           }
+        }
+
+        TextRow.defaultOnRowValidationChanged = { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = validationMsg
+                        $0.cell.height = { 30 }
+                    }
+                    let indexPath = row.indexPath!.row + index + 1
+                    row.section!.insert(labelRow, at: indexPath)
+                }
+            }
+        }
+
+        IntRow.defaultCellUpdate = {cell, row in
+           if !row.isValid {
+               cell.titleLabel?.textColor = .red
+           }
+        }
+
+        IntRow.defaultOnRowValidationChanged = { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = validationMsg
+                        $0.cell.height = { 30 }
+                    }
+                    let indexPath = row.indexPath!.row + index + 1
+                    row.section!.insert(labelRow, at: indexPath)
+                }
+            }
+        }
+
+        SliderRow.defaultCellUpdate = {cell, row in
             if !row.isValid {
                 cell.titleLabel?.textColor = .red
+            }
+        }
+
+        SliderRow.defaultOnRowValidationChanged = { cell, row in
+            let rowIndex = row.indexPath!.row
+            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                row.section?.remove(at: rowIndex + 1)
+            }
+            if !row.isValid {
+                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                    let labelRow = LabelRow() {
+                        $0.title = validationMsg
+                        $0.cell.height = { 30 }
+                    }
+                    let indexPath = row.indexPath!.row + index + 1
+                    row.section!.insert(labelRow, at: indexPath)
+                }
             }
         }
 
@@ -59,19 +146,19 @@ class ProfileViewController: FormViewController {
 
             +++ Section()
 
-            <<< TextRow() {
+            <<< NameRow() {
                 $0.tag = "firstName"
                 $0.title = "Vorname"
                 $0.value = MainController.currentUser.firstName
-                $0.add(rule: RuleRequired())
+                $0.add(rule: RuleRequired(msg: "Gib deinen Vornamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
 
-            <<< TextRow() {
+            <<< NameRow() {
                 $0.tag = "lastName"
                 $0.title = "Nachname"
                 $0.value = MainController.currentUser.lastName
-                $0.add(rule: RuleRequired())
+                $0.add(rule: RuleRequired(msg: "Gib deinen Nachnamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
 
@@ -81,7 +168,7 @@ class ProfileViewController: FormViewController {
                 $0.tag = "street"
                 $0.title = "Straße"
                 $0.value = MainController.currentUser.street
-                $0.add(rule: RuleRequired())
+                $0.add(rule: RuleRequired(msg: "Gib die Straße ein, in der du wohnst."))
                 $0.validationOptions = .validatesOnChange
             }
 
@@ -89,16 +176,24 @@ class ProfileViewController: FormViewController {
                 $0.tag = "housenumber"
                 $0.title = "Hausnummer"
                 $0.value = MainController.currentUser.housenumber
-                $0.add(rule: RuleRequired())
+                $0.add(rule: RuleRequired(msg: "Gib deine Hausnummer ein."))
                 $0.validationOptions = .validatesOnChange
             }
 
-            <<< TextRow() {
+            <<< IntRow() {
                 $0.tag = "zipcode"
-                $0.title = "zipcode"
-                $0.value = MainController.currentUser.zipcode
-                $0.add(rule: RuleRequired())
+                $0.title = "Postleitzahl"
+                $0.value = Int(MainController.currentUser.zipcode)
+                $0.add(rule: RuleRequired(msg: "Gib deine Postleitzahl ein."))
+                $0.add(rule: RuleGreaterOrEqualThan(min: 10000, msg: "Die Postleitzahl ist zu klein."))
+                $0.add(rule: RuleSmallerOrEqualThan(max: 99999, msg: "Die Postleitzahl ist zu groß."))
                 $0.validationOptions = .validatesOnChange
+            }.cellSetup { cell, row in
+                row.formatter = nil
+            }.cellUpdate { cell, row in
+                row.useFormatterOnDidBeginEditing = false
+                row.useFormatterDuringInput = false
+                row.formatter = nil
             }
 
             +++ Section()
@@ -181,7 +276,7 @@ class ProfileViewController: FormViewController {
                 let lastName = data["lastName"] as? String,
                 let street = data["street"] as? String,
                 let housenumber = data["housenumber"] as? String,
-                let zipcode = data["zipcode"] as? String,
+                let zipcode = data["zipcode"] as? Int,
                 let radius = Optional(Int(data["radius"] as! Float)),
                 let bio = data["bio"] as? String,
                 let skills = data["skills"] as? String,
@@ -190,9 +285,7 @@ class ProfileViewController: FormViewController {
             throw UserError.mapDataError
         }
 
-        let addressString = street + " "
-                            + housenumber + ", "
-                            + zipcode + ", Deutschland"
+        let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
 
         MainController.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
@@ -207,7 +300,7 @@ class ProfileViewController: FormViewController {
                                                 user.lastName = lastName
                                                 user.street = street
                                                 user.housenumber = housenumber
-                                                user.zipcode = zipcode
+                                                user.zipcode = String(zipcode)
                                                 user.radius = radius
                                                 user.bio = bio
                                                 user.skills = skills

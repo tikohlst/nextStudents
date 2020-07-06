@@ -26,13 +26,13 @@ class RegistrationViewController: FormViewController {
 
         // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(RegistrationViewController.keyboardWillShow(_ :)),
+                                               selector: #selector(keyboardWillShow(_ :)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
 
-        // call the 'keyboardWillHide' function fro eureka when the view controller receive notification that keyboard is going to be hidden
+        // call the 'keyboardWillHide' function from eureka when the view controller receive notification that a keyboard is going to be hidden
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(RegistrationViewController.keyboardWillHide(_ :)),
+                                               selector: #selector(keyboardWillHide(_ :)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
 
@@ -141,13 +141,13 @@ class RegistrationViewController: FormViewController {
             }
         }
 
-        ZipCodeRow.defaultCellUpdate = {cell, row in
+        IntRow.defaultCellUpdate = {cell, row in
            if !row.isValid {
                cell.titleLabel?.textColor = .red
            }
         }
 
-        ZipCodeRow.defaultOnRowValidationChanged = { cell, row in
+        IntRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
                 row.section?.remove(at: rowIndex + 1)
@@ -239,7 +239,7 @@ class RegistrationViewController: FormViewController {
 
             +++ Section("Wohnort")
 
-            <<< TextRow() {
+            <<< NameRow() {
                 $0.tag = "street"
                 $0.title = "Straße"
                 $0.add(rule: RuleRequired(msg: "Gib die Straße ein, in der du wohnst."))
@@ -253,11 +253,19 @@ class RegistrationViewController: FormViewController {
                 $0.validationOptions = .validatesOnChange
             }
 
-            <<< ZipCodeRow() {
+            <<< IntRow() {
                 $0.tag = "zipcode"
                 $0.title = "Postleitzahl"
                 $0.add(rule: RuleRequired(msg: "Gib deine Postleitzahl ein."))
+                $0.add(rule: RuleGreaterOrEqualThan(min: 10000, msg: "Die Postleitzahl ist zu klein."))
+                $0.add(rule: RuleSmallerOrEqualThan(max: 99999, msg: "Die Postleitzahl ist zu groß."))
                 $0.validationOptions = .validatesOnChange
+            }.cellSetup { cell, row in
+                row.formatter = nil
+            }.cellUpdate { cell, row in
+                row.useFormatterOnDidBeginEditing = false
+                row.useFormatterDuringInput = false
+                row.formatter = nil
             }
 
             +++ Section()
@@ -333,9 +341,7 @@ class RegistrationViewController: FormViewController {
                         let zipcode = dict["zipcode"] as? String,
                         let radius = Optional(Int(dict["radius"] as! Float)) {
 
-                        let addressString = street + " "
-                            + housenumber + ", "
-                            + zipcode + ", Deutschland"
+                        let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
 
                         MainController.getCoordinate(addressString: addressString,
                                                      completionHandler: { (coordinates, error) in
@@ -384,9 +390,7 @@ class RegistrationViewController: FormViewController {
             let zipcode = dict["zipcode"] as? String,
             let radius = Optional(Int(dict["radius"] as! Float)) {
 
-            let addressString = street + " "
-                + housenumber + ", "
-                + zipcode + ", Deutschland"
+            let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
 
             MainController.getCoordinate(addressString: addressString,
                                          completionHandler: { (coordinates, error) in
