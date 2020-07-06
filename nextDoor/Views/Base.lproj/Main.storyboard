@@ -86,6 +86,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Passwort vergessen?"/>
+                                                <connections>
+                                                    <action selector="forgotPassword:" destination="5Ie-A5-f1d" eventType="touchUpInside" id="2zZ-f8-jBL"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="TET-wf-X3k">
                                                 <rect key="frame" x="16" y="246.5" width="382" height="150.5"/>

@@ -88,6 +88,32 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     // MARK: - Methods
 
+    @IBAction func forgotPassword(_ sender: Any) {
+        if let email = emailText.text {
+            Auth.auth().sendPasswordReset(withEmail: email) { error in
+                let alert = UIAlertController(
+                    title: nil,
+                    message: "",
+                    preferredStyle: .alert)
+
+                if let error = error {
+                    alert.title = "Error"
+                    alert.message = error.localizedDescription
+                } else {
+                    alert.message = "E-Mail was send to your mail-address"
+                }
+
+                alert.addAction(
+                    UIAlertAction(
+                        title: NSLocalizedString("Ok", comment: "Default Action"),
+                        style: .default)
+                )
+
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+
     @IBAction func googleSignInPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
     }
