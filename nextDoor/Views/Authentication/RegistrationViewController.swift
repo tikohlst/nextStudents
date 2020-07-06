@@ -16,11 +16,6 @@ class RegistrationViewController: FormViewController {
 
     // MARK: - UIViewController events
 
-    override func viewWillAppear(_ animated: Bool) {
-        // Show navigation bar
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
