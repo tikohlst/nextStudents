@@ -159,29 +159,6 @@ class RegistrationViewController: FormViewController {
             }
         }
 
-        SliderRow.defaultCellUpdate = {cell, row in
-            if !row.isValid {
-                cell.titleLabel?.textColor = .red
-            }
-        }
-
-        SliderRow.defaultOnRowValidationChanged = { cell, row in
-            let rowIndex = row.indexPath!.row
-            while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                row.section?.remove(at: rowIndex + 1)
-            }
-            if !row.isValid {
-                for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
-                    let labelRow = LabelRow() {
-                        $0.title = validationMsg
-                        $0.cell.height = { 30 }
-                    }
-                    let indexPath = row.indexPath!.row + index + 1
-                    row.section!.insert(labelRow, at: indexPath)
-                }
-            }
-        }
-
         form
 
             +++ Section("Accountinfo") {
@@ -265,22 +242,6 @@ class RegistrationViewController: FormViewController {
 
             +++ Section()
 
-            <<< SliderRow() {
-                $0.tag = "radius"
-                $0.title = "Radius"
-                $0.steps = 8
-                $0.value = 150.0
-            }.cellSetup { cell, row in
-                cell.slider.minimumValue = 100
-                cell.slider.maximumValue = 500
-                cell.valueLabel.text = "150"
-            }.cellUpdate { cell, row in
-                // Show radius as numeric number
-                cell.valueLabel.text = String(Int(row.value!)) + "m"
-            }
-
-            +++ Section()
-
             <<< ButtonRow() {
                 if accountInfoMissing {
                     $0.title = "Speichern"
@@ -303,7 +264,6 @@ class RegistrationViewController: FormViewController {
             form.rowBy(tag: "street")?.baseValue = user.street
             form.rowBy(tag: "housenumber")?.baseValue = user.housenumber
             form.rowBy(tag: "zipcode")?.baseValue = user.zipcode
-            (form.rowBy(tag: "radius") as! SliderRow).value = Float(user.radius)
         }
     }
 
@@ -312,6 +272,7 @@ class RegistrationViewController: FormViewController {
     func createAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
+        let radius = 300.0
 
         Auth.auth().createUser(
             withEmail: (dict["email"] as! String),
@@ -333,8 +294,7 @@ class RegistrationViewController: FormViewController {
                         let lastName = dict["lastName"] as? String,
                         let street = dict["street"] as? String,
                         let housenumber = dict["housenumber"] as? String,
-                        let zipcode = dict["zipcode"] as? String,
-                        let radius = Optional(Int(dict["radius"] as! Float)) {
+                        let zipcode = dict["zipcode"] as? Int {
 
                         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
 
@@ -345,14 +305,13 @@ class RegistrationViewController: FormViewController {
                                                                                       longitude: coordinates.longitude)
 
                                                         MainController.database.collection("users")
-                                                            .document(MainController.currentUserAuth.uid)
+                                                            .document(Auth.auth().currentUser!.uid)
                                                             .setData([
-                                                                "uid": MainController.currentUserAuth.uid,
                                                                 "firstName": firstName,
                                                                 "lastName": lastName,
                                                                 "street": street,
                                                                 "housenumber": housenumber,
-                                                                "zipcode": zipcode,
+                                                                "zipcode": String(zipcode),
                                                                 "radius": radius,
                                                                 "gpsCoordinates": gpsCoordinates,
                                                                 "bio": "",
@@ -376,14 +335,14 @@ class RegistrationViewController: FormViewController {
     func updateAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
+        let radius = 300.0
 
         // Write userdata to firestore
         if let firstName = dict["firstName"] as? String,
             let name = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
-            let zipcode = dict["zipcode"] as? String,
-            let radius = Optional(Int(dict["radius"] as! Float)) {
+            let zipcode = dict["zipcode"] as? String {
 
             let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
 
@@ -396,7 +355,6 @@ class RegistrationViewController: FormViewController {
                                             MainController.database.collection("users")
                                                 .document(MainController.currentUser.uid)
                                                 .updateData([
-                                                    "uid": MainController.currentUser.uid,
                                                     "firstName": firstName,
                                                     "lastName": name,
                                                     "street": street,
