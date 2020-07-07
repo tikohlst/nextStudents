@@ -358,6 +358,7 @@ PODS:
   - GTMSessionFetcher/Core (1.4.0)
   - GTMSessionFetcher/Full (1.4.0):
     - GTMSessionFetcher/Core (= 1.4.0)
+  - ImagePicker (3.2.0)
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
   - InputBarAccessoryView (4.3.2):
@@ -389,6 +390,7 @@ DEPENDENCIES:
   - FirebaseFirestoreSwift
   - FontBlaster
   - GoogleSignIn
+  - ImagePicker
   - ImageRow
   - MessageInputBar
   - MessageKit
@@ -421,6 +423,7 @@ SPEC REPOS:
     - gRPC-Core
     - GTMAppAuth
     - GTMSessionFetcher
+    - ImagePicker
     - ImageRow
     - InputBarAccessoryView
     - leveldb-library
@@ -456,6 +459,7 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  ImagePicker: 1d950bbb2422548ed58791b4ec7f42fe42920511
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   InputBarAccessoryView: 7985d418040a05fe894bd4b8328dd43ab35517c3
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
@@ -465,6 +469,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
 
-PODFILE CHECKSUM: 5b059319a817b01413feb18c86f4dfe9e7cc3421
+PODFILE CHECKSUM: 71d5c04b9af35dcf9b6cfe9ded9ca5100a56261f
 
 COCOAPODS: 1.9.3

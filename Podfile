@@ -15,6 +15,9 @@ target 'nextDoor' do
   pod 'Eureka'
   pod 'ImageRow'
 
+  # Image picker
+  pod 'ImagePicker'
+
   # add the Firebase pod for Google Analytics
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
