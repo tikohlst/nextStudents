@@ -7,17 +7,74 @@
 
 import Eureka
 import Firebase
+import CoreLocation
 
-class RegistrationViewController: FormViewController {
+class RegistrationViewController: FormViewController, CLLocationManagerDelegate {
 
     // MARK: - Variables
 
     var accountInfoMissing = false
 
+    private var locationManager: CLLocationManager?
+    var popUpShown = false
+
+    // MARK: - Functions
+
+    func startLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager?.requestAlwaysAuthorization()
+        locationManager?.startUpdatingLocation()
+        locationManager?.delegate = self
+    }
+
+    func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        if popUpShown != true {
+            MainController.lookUpCurrentLocation(locationManager: locationManager,
+                                                 completionHandler: { (placemark) in
+
+                                                    // Just show this pop up once
+                                                    self.popUpShown = true
+
+                                                    let street = (placemark?.thoroughfare)! as String
+                                                    let housenumber = (placemark?.subThoroughfare)! as String
+                                                    let zipcode = (placemark?.postalCode)! as String
+                                                    let city = (placemark?.locality)! as String
+
+                                                    let message = "Is this your actual address?\n\n"
+                                                        + "\(street) \(housenumber)\n"
+                                                        + "\(zipcode) \(city)"
+
+                                                    let alert = UIAlertController(title: "Actual address",
+                                                                                  message: message,
+                                                                                  preferredStyle: .alert)
+
+                                                    let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                                                        // Write address in textfields
+                                                        self.form.rowBy(tag: "street")?.value = street
+                                                        self.form.rowBy(tag: "street")?.reload()
+                                                        self.form.rowBy(tag: "housenumber")?.value = housenumber
+                                                        self.form.rowBy(tag: "housenumber")?.reload()
+                                                        self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
+                                                        self.form.rowBy(tag: "zipcode")?.reload()
+                                                    }
+                                                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+                                                    alert.addAction(deleteAction)
+                                                    alert.addAction(cancelAction)
+
+                                                    self.present(alert, animated: true, completion: nil)
+            })
+        }
+
+    }
+
     // MARK: - UIViewController events
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        startLocationManager()
 
         // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
