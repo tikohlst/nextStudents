@@ -234,6 +234,10 @@ class NeighborsTableViewController: SortableTableViewController {
             vc.toggleSortMenu(from: self)
         }
     }
+    
+    @IBAction func touchFilterButton(_ sender: UIBarButtonItem) {
+        
+    }
 
     static func degreesToRadians(_ number: Double) -> Double {
         return number * .pi / 180
@@ -280,6 +284,10 @@ extension NeighborsTableViewController: SortTableViewControllerDelegate {
     func forward(data: SortOption?) {
         sortingOption = data
     }
+}
+
+fileprivate extension UITableView {
+    
 }
 
 enum SortOption: String {

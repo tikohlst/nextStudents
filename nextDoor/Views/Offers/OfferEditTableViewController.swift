@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import ImagePicker
 
 class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
@@ -14,6 +15,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
 
     var pickerData = [String]()
     var currentOffer: Offer?
+    var imageViews = [UIImageView]()
+    var deletedImages = [String]()
 
     // MARK: - IBOutlets
 
@@ -24,6 +27,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBOutlet weak var createBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var deleteOfferCell: UITableViewCell!
+    @IBOutlet weak var newOfferImageView: UIImageView!
+    @IBOutlet weak var imageScrollView: UIScrollView!
     
     // MARK: - UIViewController events
 
@@ -43,6 +48,39 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             descriptionTextField.text = currentOffer!.description
             timePickerView.selectRow(pickerData.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
             deleteOfferCell.isHidden = false
+            
+            let storageRef = MainController.storage.reference().child("offers/\(currentOffer!.uid)")
+            storageRef.listAll { (result, error) in
+                if let error = error {
+                    print("Error while listing data: \(error.localizedDescription)")
+                } else {
+                    for item in result.items {
+                        item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
+                            if let error = error {
+                                print("Error while downloading image: \(error.localizedDescription)")
+                            } else {
+                                let image = UIImage(data: data!)
+                                let newView = UIImageView(image: image)
+                                newView.accessibilityIdentifier = item.name
+                                
+                                newView.frame.size.width = self.newOfferImageView.frame.size.width
+                                newView.frame.size.height = self.newOfferImageView.frame.size.height
+                                
+                                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTappedDelete(gesture:)))
+                                newView.addGestureRecognizer(tapGesture)
+                                newView.isUserInteractionEnabled = true
+                                
+                                self.imageViews.insert(newView, at: 0)
+                                self.imageScrollView.insertSubview(newView, at: 0)
+                                
+                                self.imageScrollView.contentSize.width = self.imageScrollView.frame.size.width + CGFloat(self.imageViews.count - 1) * self.newOfferImageView.frame.size.width + CGFloat(self.imageViews.count - 1) * 5.0
+                                
+                                self.layoutImages(animated: false)
+                            }
+                        }
+                    }
+                }
+            }
         }
         
     }
@@ -52,11 +90,11 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         pickerData = ["5", "10", "15", "30", "60"]
         timePickerView.delegate = self
         timePickerView.dataSource = self
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTapped(gesture:)))
+        // add it to the image view;
+        newOfferImageView.addGestureRecognizer(tapGesture)
+        // make sure imageView can be interacted with by user
+        newOfferImageView.isUserInteractionEnabled = true
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -75,7 +113,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 5
+        return 6
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,6 +129,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         let alert = UIAlertController(title: "Wollen Sie das Angebot wirklich löschen?", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ja", style: .default, handler: { (UIAlertAction) in
             MainController.database.collection("offers").document(MainController.currentUser.uid).collection("offer").document(self.currentOffer!.uid).delete()
+            MainController.storage.reference(withPath: "offers/\(self.currentOffer!.uid)").delete()
             self.performSegue(withIdentifier: "backToOffers", sender: nil)
         }))
         alert.addAction(UIAlertAction(title: "Nein", style: .default, handler: nil))
@@ -99,12 +138,53 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     
 
     // MARK: - Methods
+    
+    @objc func imageTapped(gesture: UIGestureRecognizer) {
+        // if the tapped view is a UIImageView then set it to imageview
+        if (gesture.view as? UIImageView) != nil {
+            let pickerController = ImagePickerController()
+            pickerController.delegate = self
+            present(pickerController, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func imageTappedDelete(gesture: UIGestureRecognizer) {
+        // if the tapped view is a UIImageView then set it to imageview
+        if let gestureView = gesture.view as? UIImageView {
+            if let index = imageViews.firstIndex(of: gestureView) {
+                let deletedView = imageViews.remove(at: index)
+                deletedView.removeFromSuperview()
+                layoutImages(animated: true)
+                if let identifier = deletedView.accessibilityIdentifier {
+                    deletedImages.append(identifier)
+                }
+            }
+            
+        }
+    }
+    
+    private func layoutImages(animated: Bool) {
+        var latestView = newOfferImageView
+        for view in imageViews {
+            let newX = latestView!.frame.origin.x + latestView!.frame.size.width + 5.0
+            let newY = latestView!.frame.origin.y
+            if animated {
+                UIView.animate(withDuration: 0.5) {
+                    view.frame.origin = CGPoint(x: newX, y: newY)
+                }
+            } else {
+                view.frame.origin = CGPoint(x: newX, y: newY)
+            }
+            latestView = view
+        }
+    }
 
     private func create() {
+        let newOfferId = UUID.init().uuidString
         MainController.database.collection("offers")
             .document(MainController.currentUser.uid)
             .collection("offer")
-            .document(UUID.init().uuidString)
+            .document(newOfferId)
             .setData([
             "date": Timestamp.init(),
             "title": titleTextField.text ?? "",
@@ -114,6 +194,14 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         ]) { err in
             if let err = err {
                 print("Error creating document: \(err.localizedDescription)")
+            }
+        }
+        for view in imageViews {
+            let storageRef = MainController.storage.reference(withPath: "offers/\(newOfferId)/\(UUID.init().uuidString).jpeg")
+            if let image = view.image, let imageData = image.jpegData(compressionQuality: 0.75) {
+                let imageMetaData = StorageMetadata.init()
+                imageMetaData.contentType = "image/jpeg"
+                upload(data: imageData, to: storageRef, metaData: imageMetaData)
             }
         }
     }
@@ -133,6 +221,33 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 print("Error editing document: \(err.localizedDescription)")
             }
         }
+        for view in imageViews {
+            let storageRef = MainController.storage.reference(withPath: "offers/\(currentOffer!.uid)/\(UUID.init().uuidString).jpeg")
+            if let image = view.image, let imageData = image.jpegData(compressionQuality: 0.75) {
+                let imageMetaData = StorageMetadata.init()
+                imageMetaData.contentType = "image/jpeg"
+                upload(data: imageData, to: storageRef, metaData: imageMetaData)
+            }
+        }
+        if !deletedImages.isEmpty {
+            for identifier in deletedImages {
+                let storageRef = MainController.storage.reference(withPath: "offers/\(currentOffer!.uid)/\(identifier)")
+                storageRef.delete { error in
+                    if let error = error {
+                        print ("Error deleting image: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func upload(data: Data, to storage: StorageReference, metaData: StorageMetadata) {
+        storage.putData(data, metadata: metaData) { (storageMetadata, error) in
+            if let error = error {
+                print("Error while uploading data: \(error.localizedDescription)")
+            }
+            print("uplaod complete with metadata: \(storageMetadata?.description ?? "nil")")
+        }
     }
     
     @IBAction func touchCreate(_ sender: UIBarButtonItem) {
@@ -151,4 +266,36 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         return true
     }
 
+}
+extension OfferEditTableViewController: ImagePickerDelegate {
+    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        
+    }
+    
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        var latestView = newOfferImageView
+        for image in images {
+            let newView = UIImageView(image: image)
+            newView.frame.size.width = newOfferImageView.frame.size.width
+            newView.frame.size.height = newOfferImageView.frame.size.height
+            imageScrollView.insertSubview(newView, at: 0)
+                
+            latestView = newView
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTappedDelete(gesture:)))
+            latestView!.addGestureRecognizer(tapGesture)
+            latestView!.isUserInteractionEnabled = true
+            
+            imageViews.insert(latestView!, at: 0)
+        }
+        imageScrollView.contentSize.width = imageScrollView.frame.size.width + CGFloat(imageViews.count - 1) * newOfferImageView.frame.size.width + CGFloat(imageViews.count - 1) * 5.0
+        layoutImages(animated: true)
+        presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+        presentedViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }

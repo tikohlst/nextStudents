@@ -272,10 +272,36 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Bilder" id="Knx-ec-7ex">
+                                <cells>
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="124" id="gMf-o4-EZM">
+                                        <rect key="frame" x="20" y="466" width="374" height="124"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gMf-o4-EZM" id="TzS-ca-61B">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="124"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zSs-00-uvt">
+                                                    <rect key="frame" x="10" y="5" width="354" height="114"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="defaultOfferImage" translatesAutoresizingMaskIntoConstraints="NO" id="Z0F-ib-wyM">
+                                                            <rect key="frame" x="8" y="4" width="115" height="106"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <viewLayoutGuide key="contentLayoutGuide" id="0jc-gK-Bhi"/>
+                                                    <viewLayoutGuide key="frameLayoutGuide" id="4ux-IX-6Mc"/>
+                                                </scrollView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection id="fPx-2V-mO1">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="45" id="iyb-Dx-LfH">
-                                        <rect key="frame" x="20" y="446" width="374" height="45"/>
+                                        <rect key="frame" x="20" y="626" width="374" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iyb-Dx-LfH" id="DMh-dg-eQB">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
@@ -316,6 +342,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="TP7-CF-ysa"/>
                     <connections>
+                        <outlet property="firstOfferImageView" destination="Z0F-ib-wyM" id="3wr-lM-41Y"/>
+                        <outlet property="imageScrollView" destination="zSs-00-uvt" id="gVR-wQ-eRf"/>
+                        <outlet property="imagesCell" destination="gMf-o4-EZM" id="n2Q-Ip-2OU"/>
                         <outlet property="offerContactNeighborButton" destination="jCQ-8C-H3J" id="rqy-aJ-l9h"/>
                         <outlet property="offerCreationDateLabel" destination="Ec6-7t-Dz0" id="wUr-AN-9Im"/>
                         <outlet property="offerCreatorLabel" destination="Put-IZ-nUl" id="ahO-JK-yBQ"/>
@@ -445,10 +474,36 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="ZbC-f3-sZk">
+                            <tableViewSection headerTitle="Bilder hinzufügen" id="dMK-pt-jpX">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="124" id="W3u-vK-gvo">
+                                        <rect key="frame" x="20" y="437.5" width="374" height="124"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W3u-vK-gvo" id="ECK-tB-ExM">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="124"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5E-x7-Ojp">
+                                                    <rect key="frame" x="10" y="5" width="354" height="114"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="plus" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="gue-Zj-5eC">
+                                                            <rect key="frame" x="8" y="4" width="115" height="106"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <viewLayoutGuide key="contentLayoutGuide" id="wlt-X1-uu4"/>
+                                                    <viewLayoutGuide key="frameLayoutGuide" id="B6B-cp-bvg"/>
+                                                </scrollView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="ZbC-f3-sZk" userLabel="Angebot löschen">
                                 <cells>
                                     <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="IOP-Ab-9UQ">
-                                        <rect key="frame" x="20" y="417.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="597.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IOP-Ab-9UQ" id="uSm-0o-WMG">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -499,6 +554,8 @@
                         <outlet property="createBarButtonItem" destination="fRj-vV-x6M" id="RtK-A7-7nA"/>
                         <outlet property="deleteOfferCell" destination="IOP-Ab-9UQ" id="sYE-8c-j1K"/>
                         <outlet property="descriptionTextField" destination="fWo-Kj-cu0" id="FPl-tp-ytG"/>
+                        <outlet property="imageScrollView" destination="i5E-x7-Ojp" id="S5K-WT-BpF"/>
+                        <outlet property="newOfferImageView" destination="gue-Zj-5eC" id="HMY-Ze-yiG"/>
                         <outlet property="offerNeedControl" destination="G0z-oO-UCT" id="sZW-nx-j2o"/>
                         <outlet property="timePickerView" destination="qow-mU-ANG" id="9By-C0-N6V"/>
                         <outlet property="titleTextField" destination="dVh-Sl-lEb" id="fBq-vV-Ze9"/>
@@ -508,7 +565,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODq-ZT-qzz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="aLs-tP-fvK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1583" y="1473"/>
+            <point key="canvasLocation" x="1582.608695652174" y="1472.5446428571429"/>
         </scene>
         <!--Angebote-->
         <scene sceneID="f9j-mS-lUi">
@@ -535,8 +592,10 @@
         <segue reference="4Zl-ks-Q0N"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="defaultOfferImage" width="500" height="500"/>
         <image name="line.horizontal.3.decrease.circle" catalog="system" width="128" height="121"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
         <image name="person.2.square.stack.fill" catalog="system" width="113" height="128"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
     </resources>
 </document>

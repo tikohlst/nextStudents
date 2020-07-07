@@ -237,7 +237,7 @@ class ProfileViewController: FormViewController {
             }.onCellSelection { cell, row in
                 if row.section?.form?.validate().isEmpty ?? false {
                     do {
-                        try self.saveProfil()
+                        try self.saveProfile()
                     } catch UserError.mapDataError {
                         let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: true)
                         self.present(alert, animated: true, completion: nil)
@@ -267,11 +267,12 @@ class ProfileViewController: FormViewController {
 
     // MARK: - Methods
 
-    func saveProfil() throws {
+    func saveProfile() throws {
         // Show an animated waiting circle
         let indicatorView = self.activityIndicator(style: .medium,
                                                    center: self.view.center)
         self.view.addSubview(indicatorView)
+        self.view.bringSubviewToFront(indicatorView)
         indicatorView.startAnimating()
 
         let data = form.values(includeHidden: true)
