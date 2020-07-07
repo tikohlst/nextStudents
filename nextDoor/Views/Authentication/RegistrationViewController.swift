@@ -15,59 +15,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
 
     var accountInfoMissing = false
 
-    private var locationManager: CLLocationManager?
+    private var locationManager = CLLocationManager()
     var popUpShown = false
 
-    // MARK: - Functions
+    var userGpsCoordinates: GeoPoint?
+    var formGpsCoordinates: GeoPoint?
 
-    func startLocationManager() {
-        locationManager = CLLocationManager()
-        locationManager?.requestAlwaysAuthorization()
-        locationManager?.startUpdatingLocation()
-        locationManager?.delegate = self
-    }
-
-    func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-        if popUpShown != true {
-            MainController.lookUpCurrentLocation(locationManager: locationManager,
-                                                 completionHandler: { (placemark) in
-
-                                                    // Just show this pop up once
-                                                    self.popUpShown = true
-
-                                                    let street = (placemark?.thoroughfare)! as String
-                                                    let housenumber = (placemark?.subThoroughfare)! as String
-                                                    let zipcode = (placemark?.postalCode)! as String
-                                                    let city = (placemark?.locality)! as String
-
-                                                    let message = "Is this your actual address?\n\n"
-                                                        + "\(street) \(housenumber)\n"
-                                                        + "\(zipcode) \(city)"
-
-                                                    let alert = UIAlertController(title: "Actual address",
-                                                                                  message: message,
-                                                                                  preferredStyle: .alert)
-
-                                                    let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
-                                                        // Write address in textfields
-                                                        self.form.rowBy(tag: "street")?.value = street
-                                                        self.form.rowBy(tag: "street")?.reload()
-                                                        self.form.rowBy(tag: "housenumber")?.value = housenumber
-                                                        self.form.rowBy(tag: "housenumber")?.reload()
-                                                        self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
-                                                        self.form.rowBy(tag: "zipcode")?.reload()
-                                                    }
-                                                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-                                                    alert.addAction(deleteAction)
-                                                    alert.addAction(cancelAction)
-
-                                                    self.present(alert, animated: true, completion: nil)
-            })
-        }
-
-    }
+    let defaultRadius = 300.0
 
     // MARK: - UIViewController events
 
@@ -307,11 +261,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }.onCellSelection {cell, row in
                 if row.section?.form?.validate().isEmpty ?? false {
-                    if self.accountInfoMissing {
-                        self.updateAccount()
-                    } else {
-                        self.createAccount()
-                    }
+                    self.callGPSVailation()
                 }
             }
 
@@ -324,12 +274,115 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         }
     }
 
+    // MARK: - Methods for GPS
+
+    func startLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+         print("Error: \(error.localizedDescription)")
+    }
+
+    func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        guard let coordinates: CLLocationCoordinate2D = locationManager.location?.coordinate else { return }
+
+        self.userGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                             longitude: coordinates.longitude)
+
+        if popUpShown != true {
+            MainController.lookUpCurrentLocation(locationManager: locationManager,
+                                                 completionHandler: { (placemark) in
+
+                                                    // Just show this pop up once
+                                                    self.popUpShown = true
+
+                                                    let street = (placemark?.thoroughfare)! as String
+                                                    let housenumber = (placemark?.subThoroughfare)! as String
+                                                    let zipcode = (placemark?.postalCode)! as String
+                                                    let city = (placemark?.locality)! as String
+
+                                                    let message = "Is this your actual address?\n\n"
+                                                        + "\(street) \(housenumber)\n"
+                                                        + "\(zipcode) \(city)"
+
+                                                    let alert = UIAlertController(title: "Actual address",
+                                                                                  message: message,
+                                                                                  preferredStyle: .alert)
+
+                                                    let acceptAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                                                        // Write address in textfields
+                                                        self.form.rowBy(tag: "street")?.value = street
+                                                        self.form.rowBy(tag: "street")?.reload()
+                                                        self.form.rowBy(tag: "housenumber")?.value = housenumber
+                                                        self.form.rowBy(tag: "housenumber")?.reload()
+                                                        self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
+                                                        self.form.rowBy(tag: "zipcode")?.reload()
+                                                    }
+                                                    let rejectAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+
+                                                    alert.addAction(acceptAction)
+                                                    alert.addAction(rejectAction)
+
+                                                    self.present(alert, animated: true, completion: nil)
+            })
+        }
+
+    }
+
     // MARK: - Methods
+
+    func callGPSVailation() {
+        let dict = self.form.values(includeHidden: true)
+
+        let street = dict["street"] as! String
+        let housenumber = dict["housenumber"] as! String
+        let zipcode = dict["zipcode"] as! Int
+
+        let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
+
+        MainController.getCoordinate(addressString: addressString,
+                                     completionHandler: { (coordinates, error) in
+
+                                        self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                           longitude: coordinates.longitude)
+
+                                        if self.checkAddress() {
+                                            if self.accountInfoMissing {
+                                                self.updateAccount()
+                                            } else {
+                                                self.createAccount()
+                                            }
+                                        } else {
+                                            let alert = UIAlertController(title: "Error",
+                                                                          message: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.",
+                                                                          preferredStyle: .alert)
+
+                                            alert.addAction(UIAlertAction(title: "Ok", style: .default))
+
+                                            self.present(alert, animated: true, completion: nil)
+                                        }
+        })
+    }
+
+    func checkAddress() -> Bool {
+        // Compare the current GPS position of the mobile phone with the GPS data of the entered address for a difference of more than 50m
+        let gpsDifferenceInMeter = NeighborsTableViewController.getGPSDifference(self.userGpsCoordinates!, self.formGpsCoordinates!)
+
+        if gpsDifferenceInMeter < 50 {
+            return true
+        } else {
+            return false
+        }
+    }
 
     func createAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
-        let radius = 300.0
 
         Auth.auth().createUser(
             withEmail: (dict["email"] as! String),
@@ -353,35 +406,26 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                         let housenumber = dict["housenumber"] as? String,
                         let zipcode = dict["zipcode"] as? Int {
 
-                        let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
-
-                        MainController.getCoordinate(addressString: addressString,
-                                                     completionHandler: { (coordinates, error) in
-
-                                                        let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                                                                      longitude: coordinates.longitude)
-
-                                                        MainController.database.collection("users")
-                                                            .document(Auth.auth().currentUser!.uid)
-                                                            .setData([
-                                                                "firstName": firstName,
-                                                                "lastName": lastName,
-                                                                "street": street,
-                                                                "housenumber": housenumber,
-                                                                "zipcode": String(zipcode),
-                                                                "radius": radius,
-                                                                "gpsCoordinates": gpsCoordinates,
-                                                                "bio": "",
-                                                                "skills": ""
-                                                            ]) { err in
-                                                                if let err = err {
-                                                                    print("Error adding document: \(err)")
-                                                                }
-                                                                else {
-                                                                    self.presentLoginViewController()
-                                                                }
-                                                        }
-                        })
+                        MainController.database.collection("users")
+                            .document(Auth.auth().currentUser!.uid)
+                            .setData([
+                                "firstName": firstName,
+                                "lastName": lastName,
+                                "street": street,
+                                "housenumber": housenumber,
+                                "zipcode": String(zipcode),
+                                "radius": self.defaultRadius,
+                                "gpsCoordinates": self.formGpsCoordinates!,
+                                "bio": "",
+                                "skills": ""
+                            ]) { err in
+                                if let err = err {
+                                    print("Error adding document: \(err)")
+                                }
+                                else {
+                                    self.presentLoginViewController()
+                                }
+                        }
                     } else {
                         print("Something went wrong.")
                     }
@@ -392,7 +436,6 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
     func updateAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
-        let radius = 300.0
 
         // Write userdata to firestore
         if let firstName = dict["firstName"] as? String,
@@ -401,32 +444,23 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? String {
 
-            let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
-
-            MainController.getCoordinate(addressString: addressString,
-                                         completionHandler: { (coordinates, error) in
-
-                                            let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                                                          longitude: coordinates.longitude)
-
-                                            MainController.database.collection("users")
-                                                .document(MainController.currentUser.uid)
-                                                .updateData([
-                                                    "firstName": firstName,
-                                                    "lastName": name,
-                                                    "street": street,
-                                                    "housenumber": housenumber,
-                                                    "zipcode": zipcode,
-                                                    "radius": radius,
-                                                    "gpsCoordinates": gpsCoordinates
-                                                ]) { err in
-                                                    if let err = err {
-                                                        print("Error adding document: \(err)")
-                                                    } else {
-                                                        self.presentTabBarViewController()
-                                                    }
-                                            }
-            })
+            MainController.database.collection("users")
+                .document(MainController.currentUser.uid)
+                .updateData([
+                    "firstName": firstName,
+                    "lastName": name,
+                    "street": street,
+                    "housenumber": housenumber,
+                    "zipcode": zipcode,
+                    "radius": self.defaultRadius,
+                    "gpsCoordinates": self.formGpsCoordinates!
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        self.presentTabBarViewController()
+                    }
+            }
         } else {
             print("something went wrong.")
         }

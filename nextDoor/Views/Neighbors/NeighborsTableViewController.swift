@@ -97,7 +97,7 @@ class NeighborsTableViewController: SortableTableViewController {
                     print("Error getting documents: \(err)")
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = self.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
                         // Only show neighbors in the defined range
                         if (differenceInMeter) < Double(MainController.currentUser.radius) {
                             // Don't show currentUser as its own neighbor
@@ -235,11 +235,11 @@ class NeighborsTableViewController: SortableTableViewController {
         }
     }
 
-    func degreesToRadians(_ number: Double) -> Double {
+    static func degreesToRadians(_ number: Double) -> Double {
         return number * .pi / 180
     }
 
-    func getGPSDifference(_ gpsCoordinates1: GeoPoint,_ gpsCoordinates2: GeoPoint) -> Double {
+    static func getGPSDifference(_ gpsCoordinates1: GeoPoint,_ gpsCoordinates2: GeoPoint) -> Double {
 
         let radius = 6371 // Earth's radius in kilometers
         let latDelta = degreesToRadians(gpsCoordinates2.latitude - gpsCoordinates1.latitude)
