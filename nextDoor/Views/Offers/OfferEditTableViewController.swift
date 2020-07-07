@@ -23,7 +23,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBOutlet weak var timePickerView: UIPickerView!
     @IBOutlet weak var createBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var cancelBarButtonItem: UIBarButtonItem!
-
+    @IBOutlet weak var deleteOfferCell: UITableViewCell!
+    
     // MARK: - UIViewController events
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +42,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             offerNeedControl.selectedSegmentIndex = currentOffer!.type == "Biete" ? 0 : 1
             descriptionTextField.text = currentOffer!.description
             timePickerView.selectRow(pickerData.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
+            deleteOfferCell.isHidden = false
         }
         
     }
@@ -73,7 +75,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,6 +86,17 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBAction func touchCancel(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "backToOffers", sender: nil)
     }
+    
+    @IBAction func touchDelete(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Wollen Sie das Angebot wirklich löschen?", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ja", style: .default, handler: { (UIAlertAction) in
+            MainController.database.collection("offers").document(MainController.currentUser.uid).collection("offer").document(self.currentOffer!.uid).delete()
+            self.performSegue(withIdentifier: "backToOffers", sender: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Nein", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
 
     // MARK: - Methods
 

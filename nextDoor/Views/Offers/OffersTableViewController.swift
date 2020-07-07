@@ -50,11 +50,7 @@ class OffersTableViewController: SortableTableViewController {
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
 
-    var offersArray: [Offer] = [] {
-        didSet {
-            searchedOffers = offersArray.map({$0})
-        }
-    }
+    var offersArray: [Offer] = []
     var searchedOffers: [Offer] = []
     override var sortingOption: SortOption? {
         didSet {
@@ -100,7 +96,7 @@ class OffersTableViewController: SortableTableViewController {
                                 .collection("offer")
                                 .addSnapshotListener() { (querySnapshot, error) in
                                     guard let documents = querySnapshot?.documents else {
-                                        print("Error fetching documents: \(error!)")
+                                        print("Error fetching documents: \(error!.localizedDescription)")
                                         return
                                     }
                                     // Create Offer object for every offer in the radius and write it into an array
@@ -117,7 +113,7 @@ class OffersTableViewController: SortableTableViewController {
                                                 let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
                                                 self.present(alert, animated: true, completion: nil)
                                             } catch {
-                                                let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
+                                                let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error.localizedDescription)", withSignOut: false)
                                                 self.present(alert, animated: true, completion: nil)
                                             }
                                         }
@@ -143,17 +139,24 @@ class OffersTableViewController: SortableTableViewController {
     }
 
     override func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            searchedOffers = offersArray.filter({$0.title.localizedCaseInsensitiveContains(searchText) || $0.description.localizedCaseInsensitiveContains(searchText)})
-        } else {
-            searchedOffers = offersArray.map({$0})
+        let searchBar = searchController.searchBar
+        filterContentForSearchText(searchBar.text!)
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        searchedOffers = offersArray.filter { (offer: Offer) -> Bool in
+            return offer.title.localizedCaseInsensitiveContains(searchText) ||
+                offer.ownerFirstName.localizedCaseInsensitiveContains(searchText) ||
+                offer.ownerLastName.localizedCaseInsensitiveContains(searchText) ||
+                offer.description.localizedCaseInsensitiveContains(searchText)
         }
         tableView.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if searchedOffers.count > 0 {
-            let selectedOffer = searchedOffers[indexPath.row]
+        let displayedOffers = isFiltering ? searchedOffers : offersArray
+        if displayedOffers.count > 0 {
+            let selectedOffer = displayedOffers[indexPath.row]
             if selectedOffer.ownerUID == MainController.currentUser.uid {
                 // selected offer is owned by current user
                 performSegue(withIdentifier: editOfferSegue, sender: nil)
@@ -164,17 +167,18 @@ class OffersTableViewController: SortableTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchedOffers.count
+        return isFiltering ? searchedOffers.count : offersArray.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
+        let usersToDisplay = isFiltering ? searchedOffers : offersArray
 
         // show all existing offers
-        if searchedOffers.count > 0 {
+        if usersToDisplay.count > 0 {
             // TODO: only show offers that match range constraints set with radius
-            let currentOffer = searchedOffers[indexPath.row]
+            let currentOffer = usersToDisplay[indexPath.row]
 
             // Write the title of the current offer in the cell
             cell.titleLabel.text = currentOffer.title
@@ -197,17 +201,6 @@ class OffersTableViewController: SortableTableViewController {
         return UIView()
     }
 
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == showOfferDetailSegue {
-            let selectedIndex = self.tableView.indexPathForSelectedRow!
-            let selectedOffer = searchedOffers[selectedIndex.row]
-            if selectedOffer.ownerUID == MainController.currentUser.uid {
-                return false
-            }
-        }
-        return true
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             let backItem = UIBarButtonItem()
@@ -216,17 +209,18 @@ class OffersTableViewController: SortableTableViewController {
             if let vc = containerController, vc.sortMenuVisible {
                 vc.toggleSortMenu(from: self)
             }
+            let displayedOffers = isFiltering ? searchedOffers : offersArray
             switch identifier {
                 case showOfferDetailSegue:
                     if let vc = segue.destination as? OfferTableViewController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = searchedOffers[selectedIndex.row]
+                        let selectedOffer = displayedOffers[selectedIndex.row]
                         vc.offer = selectedOffer
                     }
                 case editOfferSegue:
                     if let vc = segue.destination as? OfferEditTableViewController {
                         let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = searchedOffers[selectedIndex.row]
+                        let selectedOffer = displayedOffers[selectedIndex.row]
                         vc.currentOffer = selectedOffer
                     }
                 default:

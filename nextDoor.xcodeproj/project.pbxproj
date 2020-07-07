@@ -44,7 +44,7 @@
 		8F22337C24A62148003EC2D4 /* SortTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337B24A62148003EC2D4 /* SortTableViewController.swift */; };
 		8F22337E24A63057003EC2D4 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337D24A63057003EC2D4 /* ContainerViewController.swift */; };
 		8F22338024A8A03B003EC2D4 /* SortableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337F24A8A03B003EC2D4 /* SortableTableViewController.swift */; };
-		8F250FCD2494D33B00A6CD39 /* OfferEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */; };
+		8F250FCD2494D33B00A6CD39 /* OfferEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
 		8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */; };
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
@@ -107,7 +107,7 @@
 		8F22337B24A62148003EC2D4 /* SortTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTableViewController.swift; sourceTree = "<group>"; };
 		8F22337D24A63057003EC2D4 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		8F22337F24A8A03B003EC2D4 /* SortableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortableTableViewController.swift; sourceTree = "<group>"; };
-		8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditController.swift; sourceTree = "<group>"; };
+		8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditTableViewController.swift; sourceTree = "<group>"; };
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 				22739EE424AA673600D27D8A /* Offers.storyboard */,
 				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
 				2253260824753B1E00B35802 /* OfferTableViewController.swift */,
-				8F250FCC2494D33B00A6CD39 /* OfferEditController.swift */,
+				8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -501,7 +501,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F250FCD2494D33B00A6CD39 /* OfferEditController.swift in Sources */,
+				8F250FCD2494D33B00A6CD39 /* OfferEditTableViewController.swift in Sources */,
 				221A0CD524781BF700A46E1E /* User.swift in Sources */,
 				8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */,
 				2253260924753B1E00B35802 /* OfferTableViewController.swift in Sources */,

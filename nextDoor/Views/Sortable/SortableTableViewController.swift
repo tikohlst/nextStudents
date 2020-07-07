@@ -84,7 +84,7 @@ class SortableTableViewController: UITableViewController {
                     result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
                         let date1 = o1.date
                         let date2 = o2.date
-                        return date1.compare(date2) == .orderedAscending
+                        return date1.compare(date2) == .orderedDescending
                     }) as! T
                 }
             case nil:

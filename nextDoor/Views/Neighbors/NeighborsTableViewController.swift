@@ -206,6 +206,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if let identifier = segue.identifier {
+            let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
             switch identifier {
             case showNeighborDetailSegue:
                 if let vc = containerController, vc.sortMenuVisible {
@@ -215,7 +216,6 @@ class NeighborsTableViewController: SortableTableViewController {
                 let indexPath = self.tableView.indexPathForSelectedRow!
 
                 // Retrieve the selected user
-                let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
                 let currentUser = displayedUsers[indexPath.row]
 
                 // Get an instance of the NeighborTableViewController with asking the segue for it's destination.
