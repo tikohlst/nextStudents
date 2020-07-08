@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -39,7 +40,7 @@
                                                         <constraint firstAttribute="height" constant="25" id="uIQ-hx-zRd"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="textColor" name="Black-White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Titel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5r-d2-XK5">
@@ -48,7 +49,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="onO-cy-TIv"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="textColor" name="Black-White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Owner" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRK-D9-sd1">
@@ -57,10 +58,11 @@
                                                         <constraint firstAttribute="height" constant="25" id="5lH-28-cGQ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="textColor" name="Black-White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="kqF-0U-fux" secondAttribute="trailing" constant="10" id="7HH-g1-Do7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="rRK-D9-sd1" secondAttribute="trailing" constant="10" id="8pY-iF-8NX"/>
@@ -165,6 +167,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Put-IZ-nUl" secondAttribute="bottom" constant="5" id="6JR-GE-lHP"/>
                                                 <constraint firstItem="vvT-Gn-Alo" firstAttribute="top" secondItem="ggI-Rz-aOJ" secondAttribute="topMargin" constant="4" id="8ml-4W-p95"/>
@@ -196,12 +199,12 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" id="dI6-Tb-G0s">
                                                     <rect key="frame" x="0.0" y="-1" width="374" height="101"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -228,6 +231,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="pUL-05-760" secondAttribute="bottom" id="B8w-cJ-8tq"/>
                                                 <constraint firstAttribute="bottom" secondItem="yMo-2D-9Xn" secondAttribute="bottom" id="DwL-vc-Zzt"/>
@@ -259,6 +263,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Ec6-7t-Dz0" secondAttribute="bottom" id="38E-T8-kVW"/>
                                                 <constraint firstItem="Ec6-7t-Dz0" firstAttribute="leading" secondItem="y6K-LP-u4P" secondAttribute="trailing" constant="20" id="61V-nS-Vxd"/>
@@ -290,10 +295,12 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
                                                     </subviews>
+                                                    <color key="backgroundColor" name="White-Grey"/>
                                                     <viewLayoutGuide key="contentLayoutGuide" id="0jc-gK-Bhi"/>
                                                     <viewLayoutGuide key="frameLayoutGuide" id="4ux-IX-6Mc"/>
                                                 </scrollView>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -425,6 +432,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -445,6 +453,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -470,6 +479,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -492,10 +502,12 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
                                                     </subviews>
+                                                    <color key="backgroundColor" name="White-Grey"/>
                                                     <viewLayoutGuide key="contentLayoutGuide" id="wlt-X1-uu4"/>
                                                     <viewLayoutGuide key="frameLayoutGuide" id="B6B-cp-bvg"/>
                                                 </scrollView>
                                             </subviews>
+                                            <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -597,5 +609,11 @@
         <image name="list.bullet" catalog="system" width="128" height="88"/>
         <image name="person.2.square.stack.fill" catalog="system" width="113" height="128"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <namedColor name="Black-White">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White-Grey">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

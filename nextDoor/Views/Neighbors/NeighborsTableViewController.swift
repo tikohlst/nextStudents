@@ -33,7 +33,6 @@ class NeighborTableViewCell: UITableViewCell {
         // Show profile image rounded
         neighborImageView.layer.cornerRadius = neighborImageView.frame.width/2
 
-        neighborView.backgroundColor = UIColor.white
         neighborView.layer.cornerRadius = 10
         neighborView.layer.masksToBounds = false
         neighborView.layer.shouldRasterize = true
@@ -186,7 +185,6 @@ class NeighborsTableViewController: SortableTableViewController {
 
             // Write first name of the neighbor in the cell
             cell.neighborNameLabel.text = currentUser.firstName
-            cell.neighborNameLabel.textColor = UIColor.init(displayP3Red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0)
 
             // Write radius to actual user in cell
             cell.neighborRangeLabel.text = "\(currentUser.street) \(currentUser.housenumber)"

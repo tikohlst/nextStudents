@@ -27,7 +27,6 @@ class OfferTableViewCell: UITableViewCell {
         // show profile image rounded
         offerImageView.layer.cornerRadius = offerImageView.frame.width/2
 
-        offerView.backgroundColor = UIColor.white
         offerView.layer.cornerRadius = 10
         offerView.layer.masksToBounds = false
         offerView.layer.shouldRasterize = true

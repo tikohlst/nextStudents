@@ -275,13 +275,13 @@ class ProfileViewController: FormViewController {
             <<< LabelRow() {
                 $0.tag = "numberOfNeighbors"
             }.cellSetup { cell, row in
-                cell.contentView.backgroundColor = .white
-                cell.textLabel?.textColor = .black
+                cell.contentView.backgroundColor = UIColor(named: "White-Gray6")
+                cell.textLabel?.textColor = UIColor(named: "Black-White")
                 cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
                 cell.textLabel?.textAlignment = .right
             }.cellUpdate { cell, row in
-                cell.contentView.backgroundColor = .white
-                cell.textLabel?.textColor = .black
+                cell.contentView.backgroundColor = UIColor(named: "White-Gray6")
+                cell.textLabel?.textColor = UIColor(named: "Black-White")
                 cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
                 cell.textLabel?.textAlignment = .right
             }
