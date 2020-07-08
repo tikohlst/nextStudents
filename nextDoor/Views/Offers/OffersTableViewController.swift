@@ -50,7 +50,7 @@ class OffersTableViewController: SortableTableViewController {
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
 
-    var offersArray: [Offer] = []
+    static var offersArray: [Offer] = []
     var searchedOffers: [Offer] = []
     override var sortingOption: SortOption? {
         didSet {
@@ -58,7 +58,7 @@ class OffersTableViewController: SortableTableViewController {
                 if isFiltering {
                     searchedOffers = super.sort(searchedOffers, by: sortingOption)
                 } else {
-                    offersArray = super.sort(offersArray, by: sortingOption)
+                    OffersTableViewController.offersArray = super.sort(OffersTableViewController.offersArray, by: sortingOption)
                 }
                 self.tableView.reloadData()
             }
@@ -78,44 +78,42 @@ class OffersTableViewController: SortableTableViewController {
         // Change the title of the Cancel button on the search bar
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
 
-        // TODO: query all offers from users in range
-        MainController.database.collection("offers")
-            .addSnapshotListener() { (querySnapshot, error) in
-            if error != nil {
-                print("Error getting documents: \(error!.localizedDescription)")
-            } else {
-                for neighbor in querySnapshot!.documents {
-                    MainController.database
-                        .document("users/\(neighbor.documentID)")
-                        .getDocument { (owner, error) in
-                        if error != nil || owner == nil {
-                            print("error getting document: \(error!.localizedDescription)")
-                        } else {
+        MainController.database.collection("users")
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for currentNeighbor in querySnapshot!.documents {
+                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        // Only show neighbors in the defined range
+                        if (differenceInMeter) < Double(MainController.currentUser.radius) {
+                            // Create User object for every neighbor in the radius and write it into an array
                             MainController.database.collection("offers")
-                                .document(neighbor.documentID)
+                                .document(currentNeighbor.documentID)
                                 .collection("offer")
                                 .addSnapshotListener() { (querySnapshot, error) in
                                     guard let documents = querySnapshot?.documents else {
                                         print("Error fetching documents: \(error!.localizedDescription)")
                                         return
                                     }
-                                    // Create Offer object for every offer in the radius and write it into an array
+                                    // Create Offer object and write it into an array
                                     for offer in documents {
-                                        // Skip already existing offers of this user
-                                        if self.offersArray.firstIndex(where: { $0.uid == offer.documentID }) == nil
-                                        {
-                                            do {
-                                                let newOffer = try Offer.mapData(querySnapshotOffer: offer,
-                                                                                 querySnapshotOwner: owner!)
+                                        // Remove old Offer object if exists
+                                        if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
+                                            OffersTableViewController.offersArray.remove(at: existingOffer)
+                                        }
 
-                                                self.offersArray.append(newOffer)
-                                            } catch OfferError.mapDataError {
-                                                let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
-                                                self.present(alert, animated: true, completion: nil)
-                                            } catch {
-                                                let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error.localizedDescription)", withSignOut: false)
-                                                self.present(alert, animated: true, completion: nil)
-                                            }
+                                        do {
+                                            let newOffer = try Offer.mapData(querySnapshotOffer: offer,
+                                                                             querySnapshotOwner: currentNeighbor)
+
+                                            OffersTableViewController.offersArray.append(newOffer)
+                                        } catch OfferError.mapDataError {
+                                            let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
+                                            self.present(alert, animated: true, completion: nil)
+                                        } catch {
+                                            let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error.localizedDescription)", withSignOut: false)
+                                            self.present(alert, animated: true, completion: nil)
                                         }
                                     }
 
@@ -125,7 +123,6 @@ class OffersTableViewController: SortableTableViewController {
                         }
                     }
                 }
-            }
         }
     }
 
@@ -144,7 +141,7 @@ class OffersTableViewController: SortableTableViewController {
     }
     
     func filterContentForSearchText(_ searchText: String) {
-        searchedOffers = offersArray.filter { (offer: Offer) -> Bool in
+        searchedOffers = OffersTableViewController.offersArray.filter { (offer: Offer) -> Bool in
             return offer.title.localizedCaseInsensitiveContains(searchText) ||
                 offer.ownerFirstName.localizedCaseInsensitiveContains(searchText) ||
                 offer.ownerLastName.localizedCaseInsensitiveContains(searchText) ||
@@ -154,7 +151,7 @@ class OffersTableViewController: SortableTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let displayedOffers = isFiltering ? searchedOffers : offersArray
+        let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
         if displayedOffers.count > 0 {
             let selectedOffer = displayedOffers[indexPath.row]
             if selectedOffer.ownerUID == MainController.currentUser.uid {
@@ -167,17 +164,16 @@ class OffersTableViewController: SortableTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltering ? searchedOffers.count : offersArray.count
+        return isFiltering ? searchedOffers.count : OffersTableViewController.offersArray.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
-        let usersToDisplay = isFiltering ? searchedOffers : offersArray
+        let usersToDisplay = isFiltering ? searchedOffers : OffersTableViewController.offersArray
 
         // show all existing offers
         if usersToDisplay.count > 0 {
-            // TODO: only show offers that match range constraints set with radius
             let currentOffer = usersToDisplay[indexPath.row]
 
             // Write the title of the current offer in the cell
@@ -209,7 +205,7 @@ class OffersTableViewController: SortableTableViewController {
             if let vc = containerController, vc.sortMenuVisible {
                 vc.toggleSortMenu(from: self)
             }
-            let displayedOffers = isFiltering ? searchedOffers : offersArray
+            let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
             switch identifier {
                 case showOfferDetailSegue:
                     if let vc = segue.destination as? OfferTableViewController {

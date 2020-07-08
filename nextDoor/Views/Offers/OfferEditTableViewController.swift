@@ -126,13 +126,36 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     @IBAction func touchDelete(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Wollen Sie das Angebot wirklich löschen?", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ja", style: .default, handler: { (UIAlertAction) in
-            MainController.database.collection("offers").document(MainController.currentUser.uid).collection("offer").document(self.currentOffer!.uid).delete()
-            MainController.storage.reference(withPath: "offers/\(self.currentOffer!.uid)").delete()
+        let alert = UIAlertController(
+            title: "Wollen Sie das Angebot wirklich löschen?",
+            message: nil,
+            preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(
+            title: "Ja",
+            style: .default,
+            handler: { (UIAlertAction) in
+            MainController.database
+                .collection("offers")
+                .document(MainController.currentUser.uid)
+                .collection("offer")
+                .document(self.currentOffer!.uid)
+                .delete()
+            MainController.storage
+                .reference(withPath: "offers/\(self.currentOffer!.uid)")
+                .delete()
+            // Remove Offer object from array
+            if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == self.currentOffer!.uid }) {
+                OffersTableViewController.offersArray.remove(at: existingOffer)
+            }
             self.performSegue(withIdentifier: "backToOffers", sender: nil)
         }))
-        alert.addAction(UIAlertAction(title: "Nein", style: .default, handler: nil))
+
+        alert.addAction(UIAlertAction(
+            title: "Nein",
+            style: .default,
+            handler: nil))
+
         self.present(alert, animated: true)
     }
     
