@@ -17,6 +17,62 @@ class ProfileViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        var countNeighborsInRange = [Float: Int]()
+        countNeighborsInRange[100.0] = 0
+        countNeighborsInRange[150.0] = 0
+        countNeighborsInRange[200.0] = 0
+        countNeighborsInRange[250.0] = 0
+        countNeighborsInRange[300.0] = 0
+        countNeighborsInRange[350.0] = 0
+        countNeighborsInRange[400.0] = 0
+        countNeighborsInRange[450.0] = 0
+        countNeighborsInRange[500.0] = 0
+
+        MainController.database.collection("users")
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for currentNeighbor in querySnapshot!.documents {
+                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+
+                        // Don't show currentUser as its own neighbor
+                        if currentNeighbor.documentID != MainController.currentUser.uid {
+                            // Count neighbors in the different ranges
+                            if (differenceInMeter) < 500.0 {
+                                countNeighborsInRange[500.0]! += 1
+                                if (differenceInMeter) < 450.0 {
+                                    countNeighborsInRange[450.0]! += 1
+                                    if (differenceInMeter) < 400.0 {
+                                        countNeighborsInRange[400.0]! += 1
+                                        if (differenceInMeter) < 350.0 {
+                                            countNeighborsInRange[350.0]! += 1
+                                            if (differenceInMeter) < 300.0 {
+                                                countNeighborsInRange[300.0]! += 1
+                                                if (differenceInMeter) < 250.0 {
+                                                    countNeighborsInRange[250.0]! += 1
+                                                    if (differenceInMeter) < 200.0 {
+                                                        countNeighborsInRange[200.0]! += 1
+                                                        if (differenceInMeter) < 150.0 {
+                                                            countNeighborsInRange[150.0]! += 1
+                                                            if (differenceInMeter) < 100.0 {
+                                                                countNeighborsInRange[100.0]! += 1
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    self.form.rowBy(tag: "numberOfNeighbors")?.title = "Bei diesem Radius gibt es \(countNeighborsInRange[Float(MainController.currentUser.radius)] ?? 0) Nachbarn in der Nähe."
+                    self.form.rowBy(tag: "numberOfNeighbors")?.reload()
+                }
+        }
+
         // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_ :)),
@@ -196,7 +252,9 @@ class ProfileViewController: FormViewController {
                 row.formatter = nil
             }
 
-            +++ Section()
+            +++ Section(){
+                $0.tag = "slider"
+            }
 
             <<< SliderRow() {
                 $0.tag = "radius"
@@ -210,6 +268,22 @@ class ProfileViewController: FormViewController {
             }.cellUpdate { cell, row in
                 // Show radius as numeric number
                 cell.valueLabel.text = String(Int(row.value!)) + "m"
+                self.form.rowBy(tag: "numberOfNeighbors")?.title = "Bei diesem Radius gibt es \(countNeighborsInRange[row.value!] ?? 0) Nachbarn in der Nähe."
+                self.form.sectionBy(tag: "slider")?.reload()
+            }
+
+            <<< LabelRow() {
+                $0.tag = "numberOfNeighbors"
+            }.cellSetup { cell, row in
+                cell.contentView.backgroundColor = .white
+                cell.textLabel?.textColor = .black
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
+                cell.textLabel?.textAlignment = .right
+            }.cellUpdate { cell, row in
+                cell.contentView.backgroundColor = .white
+                cell.textLabel?.textColor = .black
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
+                cell.textLabel?.textAlignment = .right
             }
 
             +++ Section("Biografie")
