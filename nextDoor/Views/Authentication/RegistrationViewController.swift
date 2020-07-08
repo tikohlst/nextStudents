@@ -358,7 +358,6 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                 self.createAccount()
                                             }
                                         } else {
-                                            print("An error occurred: \(error!.localizedDescription)")
                                             let alert = MainController.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
@@ -432,7 +431,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             let name = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
-            let zipcode = dict["zipcode"] as? String {
+            let zipcode = dict["zipcode"] as? Int {
 
             MainController.database.collection("users")
                 .document(MainController.currentUser.uid)
@@ -441,7 +440,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                     "lastName": name,
                     "street": street,
                     "housenumber": housenumber,
-                    "zipcode": zipcode,
+                    "zipcode": String(zipcode),
                     "radius": self.defaultRadius,
                     "gpsCoordinates": self.formGpsCoordinates!
                 ]) { err in
