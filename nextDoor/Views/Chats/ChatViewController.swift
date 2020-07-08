@@ -149,6 +149,11 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         })
     }
 
+    func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
+    {
+        return isFromCurrentSender(message: message) ? .white : .darkText
+    }
+
     // MARK: - InputBarAccessoryViewDelegate
 
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
