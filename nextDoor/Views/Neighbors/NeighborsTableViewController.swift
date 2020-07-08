@@ -128,7 +128,8 @@ class NeighborsTableViewController: SortableTableViewController {
                                             self.tableView.reloadData()
                                     }
                                 } catch UserError.mapDataError {
-                                    let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                    print("Error while mapping User!")
+                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
                                     self.present(alert, animated: true, completion: nil)
                                 } catch {
                                     print("Unexpected error: \(error)")

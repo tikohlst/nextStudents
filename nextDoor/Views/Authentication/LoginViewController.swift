@@ -91,24 +91,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     @IBAction func forgotPassword(_ sender: Any) {
         if let email = emailText.text {
             Auth.auth().sendPasswordReset(withEmail: email) { error in
-                let alert = UIAlertController(
-                    title: nil,
-                    message: "",
-                    preferredStyle: .alert)
-
-                if let error = error {
-                    alert.title = "Error"
-                    alert.message = error.localizedDescription
-                } else {
-                    alert.message = "E-Mail was send to your mail-address"
-                }
-
-                alert.addAction(
-                    UIAlertAction(
-                        title: NSLocalizedString("Ok", comment: "Default Action"),
-                        style: .default)
-                )
-
+                print("Error while resetting password!")
+                let alert = MainController.displayAlert(withMessage: "Es wurde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet.", withSignOut: false)
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -144,14 +128,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
 
     func switchScreens(_ authResult: AuthDataResult?, _ error: Error?, _ strongSelf: LoginViewController) {
         if error != nil {
-            let alert = UIAlertController(
-                title: nil, message: error!.localizedDescription,
-                preferredStyle: .alert)
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("OK", comment: "Default Action"),
-                    style: .default)
-            )
+            print("Error while switching screens!")
+            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
             strongSelf.present(alert, animated: true, completion: nil)
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)

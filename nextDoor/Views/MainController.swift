@@ -57,7 +57,8 @@ class MainController: UITabBarController {
                     self.checkMissingUserData()
 
                 } catch UserError.mapDataError {
-                    let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: true)
+                    print("Error while mapping User!")
+                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: true)
                     self.present(alert, animated: true, completion: nil)
                 } catch {
                     print("Unexpected error: \(error)")
@@ -87,16 +88,16 @@ class MainController: UITabBarController {
         }
     }
 
-    static func displayAlert(withMessage message: String, withSignOut: Bool) -> UIAlertController {
+    static func displayAlert(withMessage message: String?, withSignOut: Bool) -> UIAlertController {
         let alert = UIAlertController(
-            title: "Internal error",
-            message: "Please contact support",
+            title: "Interner Fehler",
+            message: message ?? "Bitte wenden Sie sich an den Support.",
             preferredStyle: .alert)
 
         if withSignOut {
             alert.addAction(
                 UIAlertAction(
-                    title: NSLocalizedString("Sign out", comment: ""),
+                    title: NSLocalizedString("Ausloggen", comment: ""),
                     style: .default,
                     handler: { action in
                         SettingsTableViewController.signOut()

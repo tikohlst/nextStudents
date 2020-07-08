@@ -313,7 +313,8 @@ class ProfileViewController: FormViewController {
                     do {
                         try self.saveProfile()
                     } catch UserError.mapDataError {
-                        let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: true)
+                        print("Error while mapping User!")
+                        let alert = MainController.displayAlert(withMessage: nil, withSignOut: true)
                         self.present(alert, animated: true, completion: nil)
                     } catch {
                         print("Unexpected error: \(error)")
@@ -452,11 +453,15 @@ class ProfileViewController: FormViewController {
     }
 
     func presentDeletionFailsafe() {
-        let alert = UIAlertController(title: nil, message: "Are you sure you'd like to delete your account?", preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: nil,
+            message: "Möchten Sie Ihr Konto wirklich löschen?",
+            preferredStyle: .alert)
 
         let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
             self.deleteUser()
         }
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
         alert.addAction(deleteAction)

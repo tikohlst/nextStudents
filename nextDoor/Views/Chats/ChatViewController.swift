@@ -32,10 +32,11 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         navigationItem.title = chatPartnerName
         navigationItem.largeTitleDisplayMode = .never
         maintainPositionOnKeyboardFrameChanged = true
+
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
         messageInputBar.sendButton.setTitleColor(UIColor.lightGray, for: .normal)
-
         messageInputBar.delegate = self
+
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -98,10 +99,12 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                             let newMessage = try Message.mapData(querySnapshot: message)
                                             self.messages.append(newMessage!)
                                         } catch MessageError.mapDataError {
-                                            let alert = MainController.displayAlert(withMessage: "Error while mapping User!", withSignOut: false)
+                                            print("Error while mapping User!")
+                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         } catch {
-                                            let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error)", withSignOut: false)
+                                            print("Unexpected error: \(error)")
+                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
                                     }

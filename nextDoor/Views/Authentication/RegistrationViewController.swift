@@ -358,12 +358,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                 self.createAccount()
                                             }
                                         } else {
-                                            let alert = UIAlertController(title: "Error",
-                                                                          message: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.",
-                                                                          preferredStyle: .alert)
-
-                                            alert.addAction(UIAlertAction(title: "Ok", style: .default))
-
+                                            print("An error occurred: \(error!.localizedDescription)")
+                                            let alert = MainController.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
         })
@@ -389,14 +385,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             password: dict["password"] as! String) { authResult, error in
                 // Error handling
                 if error != nil {
-                    let alert = UIAlertController(
-                        title: nil, message: error!.localizedDescription,
-                        preferredStyle: .alert)
-                    alert.addAction(
-                        UIAlertAction(
-                            title: NSLocalizedString("OK", comment: "Default Action"),
-                            style: .default)
-                    )
+                    print("An error occurred: \(error!.localizedDescription)")
+                    let alert = MainController.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                     self.present(alert, animated: true, completion: nil)
                 } else if authResult != nil {
                     // Write userdata to firestore

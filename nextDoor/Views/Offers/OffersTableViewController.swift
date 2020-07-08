@@ -142,10 +142,12 @@ class OffersTableViewController: SortableTableViewController {
                                                     }
                                             }
                                         } catch OfferError.mapDataError {
-                                            let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
+                                            print("Error while mapping Offer!")
+                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         } catch {
-                                            let alert = MainController.displayAlert(withMessage: "Unexpected error: \(error.localizedDescription)", withSignOut: false)
+                                            print("Unexpected error: \(error.localizedDescription)")
+                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
                                     }
