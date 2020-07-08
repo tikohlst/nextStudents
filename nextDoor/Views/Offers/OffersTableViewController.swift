@@ -98,16 +98,49 @@ class OffersTableViewController: SortableTableViewController {
                                     }
                                     // Create Offer object and write it into an array
                                     for offer in documents {
-                                        // Remove old Offer object if exists
-                                        if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
-                                            OffersTableViewController.offersArray.remove(at: existingOffer)
-                                        }
-
                                         do {
-                                            let newOffer = try Offer.mapData(querySnapshotOffer: offer,
+                                            var newOffer = try Offer.mapData(querySnapshotOffer: offer,
                                                                              querySnapshotOwner: currentNeighbor)
+                                            // Get image of the offer
+                                            MainController.storage
+                                                .reference().child("offers/\(offer.documentID)")
+                                                .listAll { (result, error) in
+                                                    if let error = error {
+                                                        print("Error while listing data: \(error.localizedDescription)")
+                                                    } else {
+                                                        if result.items.count > 0 {
+                                                            for item in result.items {
+                                                                item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
+                                                                    if let error = error {
+                                                                        print("Error while downloading profile image: \(error.localizedDescription)")
+                                                                        newOffer.offerImage = UIImage(named: "defaultProfilePicture")!
+                                                                    } else {
+                                                                        // Data for "profilePicture.jpg" is returned
+                                                                        newOffer.offerImage = UIImage(data: data!)!
+                                                                    }
 
-                                            OffersTableViewController.offersArray.append(newOffer)
+                                                                    // Remove old Offer object if exists
+                                                                    if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
+                                                                        OffersTableViewController.offersArray.remove(at: existingOffer)
+                                                                    }
+
+                                                                    OffersTableViewController.offersArray.append(newOffer)
+                                                                    // Update the table
+                                                                    self.tableView.reloadData()
+                                                                }
+                                                            }
+                                                        } else {
+                                                            // Remove old Offer object if exists
+                                                            if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
+                                                                OffersTableViewController.offersArray.remove(at: existingOffer)
+                                                            }
+
+                                                            OffersTableViewController.offersArray.append(newOffer)
+                                                            // Update the table
+                                                            self.tableView.reloadData()
+                                                        }
+                                                    }
+                                            }
                                         } catch OfferError.mapDataError {
                                             let alert = MainController.displayAlert(withMessage: "Error while mapping Offer!", withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
@@ -116,9 +149,6 @@ class OffersTableViewController: SortableTableViewController {
                                             self.present(alert, animated: true, completion: nil)
                                         }
                                     }
-
-                                    // Update the table
-                                    self.tableView.reloadData()
                             }
                         }
                     }
