@@ -10,45 +10,45 @@ import Firebase
 import GoogleSignIn
 
 class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDelegate {
-
+    
     // MARK: - Variables
-
+    
     var handle: AuthStateDidChangeListenerHandle?
     var showRegistrationSegue = "showRegistrationSegue"
-
+    
     // MARK: - IBOutlets
-
+    
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var emailView: UIView!
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var signInButton: UIButton!
-
+    
     // MARK: - UIViewController events
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance().delegate = self
-
+        
         // Must be set for func textFieldShouldReturn()
         emailText.delegate = self
         passwordText.delegate = self
-
+        
         // Shadow for email view
         emailView.layer.shadowColor = UIColor.black.cgColor
         emailView.layer.shadowRadius = 10
         emailView.layer.shadowOpacity = 0.1
         emailView.layer.shadowOffset.height = -3
-
+        
         // Shadow for password view
         passwordView.layer.shadowColor = UIColor.black.cgColor
         passwordView.layer.shadowRadius = 10
         passwordView.layer.shadowOpacity = 0.1
         passwordView.layer.shadowOffset.height = -3
-
+        
         signInButton.setImage(UIImage(named: "Google Logo"), for: .normal)
         signInButton.imageEdgeInsets = UIEdgeInsets(
             top: 10,
@@ -63,20 +63,20 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             right: -10
         )
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         // Hide navigation bar
         navigationController?.setNavigationBarHidden(true, animated: true)
-
+        
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
         }
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if segue.identifier == showRegistrationSegue {
@@ -85,9 +85,9 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             navigationItem.backBarButtonItem = backItem
         }
     }
-
+    
     // MARK: - Methods
-
+    
     @IBAction func forgotPassword(_ sender: Any) {
         if let email = emailText.text {
             Auth.auth().sendPasswordReset(withEmail: email) { error in
@@ -97,11 +97,11 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             }
         }
     }
-
+    
     @IBAction func googleSignInPressed(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
     }
-
+    
     // Sign in with Google account
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
@@ -115,7 +115,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             self!.switchScreens(authResult, error, strongSelf)
         }
     }
-
+    
     // Sign in with nextDoor account
     @IBAction func touchLogin(_ sender: UIButton) {
         if let email = emailText.text, let password = passwordText.text {
@@ -125,7 +125,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             }
         }
     }
-
+    
     func switchScreens(_ authResult: AuthDataResult?, _ error: Error?, _ strongSelf: LoginViewController) {
         if error != nil {
             print("Error while switching screens!")
@@ -135,15 +135,15 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let containerController = storyboard.instantiateViewController(identifier: "containervc")
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
-
+            
         }
     }
-
+    
     // This function is called when you click return key in the text field.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Resign the first responder from textField to close the keyboard.
         textField.resignFirstResponder()
         return true
     }
-
+    
 }

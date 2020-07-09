@@ -10,41 +10,41 @@ import Firebase
 import CoreLocation
 
 class RegistrationViewController: FormViewController, CLLocationManagerDelegate {
-
+    
     // MARK: - Variables
-
+    
     var accountInfoMissing = false
-
+    
     private var locationManager = CLLocationManager()
     var popUpShown = false
-
+    
     var userGpsCoordinates: GeoPoint?
     var formGpsCoordinates: GeoPoint?
-
+    
     let defaultRadius = 300.0
-
+    
     // MARK: - UIViewController events
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         startLocationManager()
-
+        
         // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_ :)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         // call the 'keyboardWillHide' function from eureka when the view controller receive notification that a keyboard is going to be hidden
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide(_ :)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
-
+        
         // Show navigation bar
         navigationController?.setNavigationBarHidden(false, animated: true)
-
+        
         // Show validation error in each case in the row below the error
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
@@ -52,13 +52,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
             cell.textLabel?.textAlignment = .right
         }
-
+        
         EmailRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         EmailRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -77,13 +77,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }
         }
-
+        
         PasswordRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         PasswordRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -100,13 +100,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }
         }
-
+        
         NameRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         NameRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -123,13 +123,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }
         }
-
+        
         TextRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         TextRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -146,13 +146,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }
         }
-
+        
         IntRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         IntRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -169,16 +169,16 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }
         }
-
+        
         form
-
+            
             +++ Section("Accountinfo") {
                 $0.tag = "accountTag"
                 $0.hidden = .function(["accountTag"], { section in
                     return self.accountInfoMissing
                 })
             }
-
+            
             <<< EmailRow() {
                 $0.tag = "email"
                 $0.title = "E-Mail Adresse"
@@ -186,7 +186,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 $0.add(rule: RuleEmail(msg: "Du musst eine gültige E-Mail-Adresse eingeben."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< PasswordRow() {
                 $0.tag = "password"
                 $0.title = "Passwort"
@@ -195,7 +195,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 $0.add(rule: RuleMaxLength(maxLength: 16, msg: "Dein Passwort darf maximal 16 Zeichen enthalten."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< PasswordRow() {
                 $0.tag = "passwordCheck"
                 $0.title = "Passwort bestätigen"
@@ -203,39 +203,39 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             +++ Section("Name")
-
+            
             <<< NameRow() {
                 $0.tag = "firstName"
                 $0.title = "Vorname"
                 $0.add(rule: RuleRequired(msg: "Gib deinen Vornamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< NameRow() {
                 $0.tag = "lastName"
                 $0.title = "Nachname"
                 $0.add(rule: RuleRequired(msg: "Gib deinen Nachnamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             +++ Section("Wohnort")
-
+            
             <<< NameRow() {
                 $0.tag = "street"
                 $0.title = "Straße"
                 $0.add(rule: RuleRequired(msg: "Gib die Straße ein, in der du wohnst."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< TextRow() {
                 $0.tag = "housenumber"
                 $0.title = "Hausnummer"
                 $0.add(rule: RuleRequired(msg: "Gib deine Hausnummer ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< IntRow() {
                 $0.tag = "zipcode"
                 $0.title = "Postleitzahl"
@@ -250,9 +250,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 row.useFormatterDuringInput = false
                 row.formatter = nil
             }
-
+            
             +++ Section()
-
+            
             <<< ButtonRow() {
                 if accountInfoMissing {
                     $0.title = "Speichern"
@@ -263,8 +263,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 if row.section?.form?.validate().isEmpty ?? false {
                     self.callGPSVailation()
                 }
-            }
-
+        }
+        
         if accountInfoMissing, let user = MainController.currentUser {
             form.rowBy(tag: "firstName")?.baseValue = user.firstName
             form.rowBy(tag: "lastName")?.baseValue = user.lastName
@@ -273,47 +273,47 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             form.rowBy(tag: "zipcode")?.baseValue = user.zipcode
         }
     }
-
+    
     // MARK: - Methods for GPS
-
+    
     func startLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-         print("Error: \(error.localizedDescription)")
+        print("Error: \(error.localizedDescription)")
     }
-
+    
     func locationManager(_ locationManager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        
         guard let coordinates: CLLocationCoordinate2D = locationManager.location?.coordinate else { return }
-
+        
         self.userGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                             longitude: coordinates.longitude)
-
+                                           longitude: coordinates.longitude)
+        
         if popUpShown != true {
             MainController.lookUpCurrentLocation(locationManager: locationManager,
                                                  completionHandler: { (placemark) in
-
+                                                    
                                                     // Just show this pop up once
                                                     self.popUpShown = true
-
+                                                    
                                                     let street = (placemark?.thoroughfare)! as String
                                                     let housenumber = (placemark?.subThoroughfare)! as String
                                                     let zipcode = (placemark?.postalCode)! as String
                                                     let city = (placemark?.locality)! as String
-
+                                                    
                                                     let message = "Is this your actual address?\n\n"
                                                         + "\(street) \(housenumber)\n"
                                                         + "\(zipcode) \(city)"
-
+                                                    
                                                     let alert = UIAlertController(title: "Actual address",
                                                                                   message: message,
                                                                                   preferredStyle: .alert)
-
+                                                    
                                                     let acceptAction = UIAlertAction(title: "Yes", style: .default) { _ in
                                                         // Write address in textfields
                                                         self.form.rowBy(tag: "street")?.value = street
@@ -324,33 +324,33 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                         self.form.rowBy(tag: "zipcode")?.reload()
                                                     }
                                                     let rejectAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
-
+                                                    
                                                     alert.addAction(acceptAction)
                                                     alert.addAction(rejectAction)
-
+                                                    
                                                     self.present(alert, animated: true, completion: nil)
             })
         }
-
+        
     }
-
+    
     // MARK: - Methods
-
+    
     func callGPSVailation() {
         let dict = self.form.values(includeHidden: true)
-
+        
         let street = dict["street"] as! String
         let housenumber = dict["housenumber"] as! String
         let zipcode = dict["zipcode"] as! Int
-
+        
         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
-
+        
         MainController.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
-
+                                        
                                         self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
                                                                            longitude: coordinates.longitude)
-
+                                        
                                         if self.checkAddress() {
                                             if self.accountInfoMissing {
                                                 self.updateAccount()
@@ -363,22 +363,22 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                         }
         })
     }
-
+    
     func checkAddress() -> Bool {
         // Compare the current GPS position of the mobile phone with the GPS data of the entered address for a difference of more than 50m
         let gpsDifferenceInMeter = NeighborsTableViewController.getGPSDifference(self.userGpsCoordinates!, self.formGpsCoordinates!)
-
+        
         if gpsDifferenceInMeter < 50 {
             return true
         } else {
             return false
         }
     }
-
+    
     func createAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
-
+        
         Auth.auth().createUser(
             withEmail: (dict["email"] as! String),
             password: dict["password"] as! String) { authResult, error in
@@ -394,7 +394,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                         let street = dict["street"] as? String,
                         let housenumber = dict["housenumber"] as? String,
                         let zipcode = dict["zipcode"] as? Int {
-
+                        
                         MainController.database.collection("users")
                             .document(Auth.auth().currentUser!.uid)
                             .setData([
@@ -421,18 +421,18 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
         }
     }
-
+    
     func updateAccount() {
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
-
+        
         // Write userdata to firestore
         if let firstName = dict["firstName"] as? String,
             let name = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? Int {
-
+            
             MainController.database.collection("users")
                 .document(MainController.currentUser.uid)
                 .updateData([
@@ -454,21 +454,21 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             print("something went wrong.")
         }
     }
-
+    
     func presentLoginViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let startViewController = storyboard.instantiateViewController(identifier: "loginNavigationVC")
-
+        
         startViewController.modalPresentationStyle = .fullScreen
         startViewController.modalTransitionStyle = .crossDissolve
-
+        
         present(startViewController, animated: true, completion: nil)
     }
-
+    
     func presentTabBarViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let containerController = storyboard.instantiateViewController(identifier: "containervc")
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
     }
-
+    
 }

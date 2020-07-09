@@ -8,9 +8,9 @@
 import UIKit
 
 class ContainerViewController: UIViewController {
-
+    
     // MARK: - Variables
-
+    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var sortingContainer: UIView!
@@ -22,9 +22,9 @@ class ContainerViewController: UIViewController {
     
     
     var sortMenuVisible = false
-
+    
     // MARK: - UIViewController events
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bottomConstraint.constant = self.sortingContainer.frame.size.height
@@ -33,9 +33,9 @@ class ContainerViewController: UIViewController {
             mainController.selectedIndex = 1
         }
     }
-
+    
     // MARK: - Helper methods
-
+    
     func toggleSortMenu(from viewController: UIViewController) {
         if sortMenuVisible {
             UIView.animate(withDuration: 0.5, animations: {
@@ -85,5 +85,5 @@ class ContainerViewController: UIViewController {
             }
         }
     }
-
+    
 }

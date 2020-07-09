@@ -13,9 +13,9 @@ enum UserError: Error {
 }
 
 class User {
-
+    
     // MARK: - Variables
-
+    
     let uid: String
     var firstName: String
     var lastName: String
@@ -27,9 +27,9 @@ class User {
     var bio: String
     var skills: String
     var profileImage: UIImage
-
+    
     // MARK: - Methods
-
+    
     init(uid: String, firstName: String, lastName: String, street: String,
          housenumber: String, zipcode: String, gpsCoordinates: GeoPoint,
          radius: Int, bio: String, skills: String) {
@@ -45,11 +45,11 @@ class User {
         self.skills = skills
         self.profileImage = UIImage(named: "defaultProfilePicture")!
     }
-
+    
     static func mapData(querySnapshot: DocumentSnapshot) throws -> User {
-
+        
         let data = querySnapshot.data()
-
+        
         // Data validation
         guard let firstName = data?["firstName"] as? String,
             let lastName = data?["lastName"] as? String,
@@ -63,7 +63,7 @@ class User {
             else {
                 throw UserError.mapDataError
         }
-
+        
         return User(uid: querySnapshot.documentID,
                     firstName: firstName,
                     lastName: lastName,
@@ -76,5 +76,5 @@ class User {
                     skills: skills
         )
     }
-
+    
 }

@@ -11,12 +11,12 @@ import Firebase
 import CoreLocation
 
 class ProfileViewController: FormViewController {
-
+    
     // MARK: - UIViewController events
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         var countNeighborsInRange = [Float: Int]()
         countNeighborsInRange[100.0] = 0
         countNeighborsInRange[150.0] = 0
@@ -27,7 +27,7 @@ class ProfileViewController: FormViewController {
         countNeighborsInRange[400.0] = 0
         countNeighborsInRange[450.0] = 0
         countNeighborsInRange[500.0] = 0
-
+        
         MainController.database.collection("users")
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -35,7 +35,7 @@ class ProfileViewController: FormViewController {
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
                         let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
-
+                        
                         // Don't show currentUser as its own neighbor
                         if currentNeighbor.documentID != MainController.currentUser.uid {
                             // Count neighbors in the different ranges
@@ -72,19 +72,19 @@ class ProfileViewController: FormViewController {
                     self.form.rowBy(tag: "numberOfNeighbors")?.reload()
                 }
         }
-
+        
         // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_ :)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         // call the 'keyboardWillHide' function fro eureka when the view controller receive notification that keyboard is going to be hidden
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide(_ :)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
-
+        
         // Show validation error in each case in the row below the error
         LabelRow.defaultCellUpdate = { cell, row in
             cell.contentView.backgroundColor = .red
@@ -92,13 +92,13 @@ class ProfileViewController: FormViewController {
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 13)
             cell.textLabel?.textAlignment = .right
         }
-
+        
         NameRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         NameRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -115,13 +115,13 @@ class ProfileViewController: FormViewController {
                 }
             }
         }
-
+        
         TextRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         TextRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -138,13 +138,13 @@ class ProfileViewController: FormViewController {
                 }
             }
         }
-
+        
         IntRow.defaultCellUpdate = {cell, row in
-           if !row.isValid {
-               cell.titleLabel?.textColor = .red
-           }
+            if !row.isValid {
+                cell.titleLabel?.textColor = .red
+            }
         }
-
+        
         IntRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -161,13 +161,13 @@ class ProfileViewController: FormViewController {
                 }
             }
         }
-
+        
         SliderRow.defaultCellUpdate = {cell, row in
             if !row.isValid {
                 cell.titleLabel?.textColor = .red
             }
         }
-
+        
         SliderRow.defaultOnRowValidationChanged = { cell, row in
             let rowIndex = row.indexPath!.row
             while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
@@ -184,11 +184,11 @@ class ProfileViewController: FormViewController {
                 }
             }
         }
-
+        
         form
-
+            
             +++ Section()
-
+            
             <<< ImageRow() {
                 $0.tag = "profileImage"
                 $0.title = "Profilbild"
@@ -199,9 +199,9 @@ class ProfileViewController: FormViewController {
             }.cellUpdate { cell, row in
                 cell.accessoryView?.layer.cornerRadius = 17
             }
-
+            
             +++ Section()
-
+            
             <<< NameRow() {
                 $0.tag = "firstName"
                 $0.title = "Vorname"
@@ -209,7 +209,7 @@ class ProfileViewController: FormViewController {
                 $0.add(rule: RuleRequired(msg: "Gib deinen Vornamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< NameRow() {
                 $0.tag = "lastName"
                 $0.title = "Nachname"
@@ -217,9 +217,9 @@ class ProfileViewController: FormViewController {
                 $0.add(rule: RuleRequired(msg: "Gib deinen Nachnamen für dein Profil ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             +++ Section()
-
+            
             <<< TextRow() {
                 $0.tag = "street"
                 $0.title = "Straße"
@@ -227,7 +227,7 @@ class ProfileViewController: FormViewController {
                 $0.add(rule: RuleRequired(msg: "Gib die Straße ein, in der du wohnst."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< TextRow() {
                 $0.tag = "housenumber"
                 $0.title = "Hausnummer"
@@ -235,7 +235,7 @@ class ProfileViewController: FormViewController {
                 $0.add(rule: RuleRequired(msg: "Gib deine Hausnummer ein."))
                 $0.validationOptions = .validatesOnChange
             }
-
+            
             <<< IntRow() {
                 $0.tag = "zipcode"
                 $0.title = "Postleitzahl"
@@ -251,11 +251,11 @@ class ProfileViewController: FormViewController {
                 row.useFormatterDuringInput = false
                 row.formatter = nil
             }
-
+            
             +++ Section(){
                 $0.tag = "slider"
             }
-
+            
             <<< SliderRow() {
                 $0.tag = "radius"
                 $0.title = "Radius"
@@ -271,7 +271,7 @@ class ProfileViewController: FormViewController {
                 self.form.rowBy(tag: "numberOfNeighbors")?.title = "Bei diesem Radius gibt es \(countNeighborsInRange[row.value!] ?? 0) Nachbarn in der Nähe."
                 self.form.sectionBy(tag: "slider")?.reload()
             }
-
+            
             <<< LabelRow() {
                 $0.tag = "numberOfNeighbors"
             }.cellSetup { cell, row in
@@ -285,27 +285,27 @@ class ProfileViewController: FormViewController {
                 cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
                 cell.textLabel?.textAlignment = .right
             }
-
+            
             +++ Section("Biografie")
-
+            
             <<< TextAreaRow() {
                 $0.tag = "bio"
                 $0.placeholder = "Erzähle etwas über dich selbst..."
                 $0.value = MainController.currentUser.bio
                 $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
             }
-
+            
             +++ Section("Fähigkeiten")
-
+            
             <<< TextAreaRow() {
                 $0.tag = "skills"
                 $0.placeholder = "Deine Fähigkeiten..."
                 $0.value = MainController.currentUser.skills
                 $0.textAreaHeight = .dynamic(initialTextViewHeight: 110)
             }
-
+            
             +++ Section()
-
+            
             <<< ButtonRow() {
                 $0.title = "Änderungen speichern"
             }.onCellSelection { cell, row in
@@ -321,9 +321,9 @@ class ProfileViewController: FormViewController {
                     }
                 }
             }
-
+            
             +++ Section()
-
+            
             <<< ButtonRow() {
                 $0.title = "Profil löschen"
             }.cellUpdate { cell, row in
@@ -332,16 +332,16 @@ class ProfileViewController: FormViewController {
                 if row.section?.form?.validate().isEmpty ?? false {
                     self.presentDeletionFailsafe()
                 }
-            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.flashScrollIndicators()
     }
-
+    
     // MARK: - Methods
-
+    
     func saveProfile() throws {
         // Show an animated waiting circle
         let indicatorView = self.activityIndicator(style: .medium,
@@ -349,33 +349,33 @@ class ProfileViewController: FormViewController {
         self.view.addSubview(indicatorView)
         self.view.bringSubviewToFront(indicatorView)
         indicatorView.startAnimating()
-
+        
         let data = form.values(includeHidden: true)
-
+        
         // Data validation
         guard let firstName = data["firstName"] as? String,
-                let lastName = data["lastName"] as? String,
-                let street = data["street"] as? String,
-                let housenumber = data["housenumber"] as? String,
-                let zipcode = data["zipcode"] as? Int,
-                let radius = Optional(Int(data["radius"] as! Float)),
-                let bio = data["bio"] as? String,
-                let skills = data["skills"] as? String,
-                let profileImage = data["profileImage"] as? UIImage
-        else {
-            throw UserError.mapDataError
+            let lastName = data["lastName"] as? String,
+            let street = data["street"] as? String,
+            let housenumber = data["housenumber"] as? String,
+            let zipcode = data["zipcode"] as? Int,
+            let radius = Optional(Int(data["radius"] as! Float)),
+            let bio = data["bio"] as? String,
+            let skills = data["skills"] as? String,
+            let profileImage = data["profileImage"] as? UIImage
+            else {
+                throw UserError.mapDataError
         }
-
+        
         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
-
+        
         MainController.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
-
+                                        
                                         let numberRange = (-90.0)...(90.0)
                                         if numberRange.contains(coordinates.latitude) && numberRange.contains(coordinates.longitude){
                                             let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
                                                                           longitude: coordinates.longitude)
-
+                                            
                                             if let user = MainController.currentUser {
                                                 user.firstName = firstName
                                                 user.lastName = lastName
@@ -387,7 +387,7 @@ class ProfileViewController: FormViewController {
                                                 user.skills = skills
                                                 user.profileImage = profileImage
                                                 user.gpsCoordinates = gpsCoordinates
-
+                                                
                                                 MainController.database.collection("users")
                                                     .document(MainController.currentUser.uid)
                                                     .setData([
@@ -405,10 +405,10 @@ class ProfileViewController: FormViewController {
                                                             print("Error editing document: \(err.localizedDescription)")
                                                         }
                                                 }
-
+                                                
                                                 // This variable is set to true to update the neighbors shown in NeighborsTableView
                                                 MainController.currentUserUpdated = true
-
+                                                
                                                 // profile image upload
                                                 let storageRef = MainController.storage
                                                     .reference(withPath: "profilePictures/\(String(describing: MainController.currentUser.uid))/profilePicture.jpg")
@@ -438,10 +438,10 @@ class ProfileViewController: FormViewController {
                                         }
         })
     }
-
+    
     private func activityIndicator(style: UIActivityIndicatorView.Style = .medium,
-                                       frame: CGRect? = nil,
-                                       center: CGPoint? = nil) -> UIActivityIndicatorView {
+                                   frame: CGRect? = nil,
+                                   center: CGPoint? = nil) -> UIActivityIndicatorView {
         let activityIndicatorView = UIActivityIndicatorView(style: style)
         if let frame = frame {
             activityIndicatorView.frame = frame
@@ -451,25 +451,25 @@ class ProfileViewController: FormViewController {
         }
         return activityIndicatorView
     }
-
+    
     func presentDeletionFailsafe() {
         let alert = UIAlertController(
             title: nil,
             message: "Möchten Sie Ihr Konto wirklich löschen?",
             preferredStyle: .alert)
-
+        
         let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
             self.deleteUser()
         }
-
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
+        
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)
-
+        
         present(alert, animated: true, completion: nil)
     }
-
+    
     func deleteUser() {
         // Delete user from the firebase database
         MainController.database.collection("users").document(MainController.currentUser.uid).delete { error in
@@ -494,5 +494,5 @@ class ProfileViewController: FormViewController {
             }
         }
     }
-
+    
 }

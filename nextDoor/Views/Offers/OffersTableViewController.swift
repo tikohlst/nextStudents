@@ -9,32 +9,32 @@ import UIKit
 import Firebase
 
 class OfferTableViewCell: UITableViewCell {
-
+    
     // MARK: - IBOutlets
-
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var ownerLabel: UILabel!
     @IBOutlet weak var offerImageView: UIImageView!
     @IBOutlet weak var offerView: UIView!
-
+    
     // MARK: - Methods
-
+    
     // Inside UITableViewCell subclass
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        
         // show profile image rounded
         offerImageView.layer.cornerRadius = offerImageView.frame.width/2
-
+        
         offerView.layer.cornerRadius = 10
         offerView.layer.masksToBounds = false
         offerView.layer.shouldRasterize = true
         offerView.layer.rasterizationScale = UIScreen.main.scale
-
+        
         offerView.layer.borderWidth = 0.5
         offerView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
-
+        
         offerView.layer.shadowOffset = CGSize(width: 3, height: 3)
         offerView.layer.shadowRadius  = 3
         offerView.layer.shadowOpacity = 0.2
@@ -43,12 +43,12 @@ class OfferTableViewCell: UITableViewCell {
 }
 
 class OffersTableViewController: SortableTableViewController {
-
+    
     // MARK: - Variables
-
+    
     private let showOfferDetailSegue = "showOfferDetails"
     private let editOfferSegue = "editOffer"
-
+    
     static var offersArray: [Offer] = []
     var searchedOffers: [Offer] = []
     override var sortingOption: SortOption? {
@@ -64,19 +64,19 @@ class OffersTableViewController: SortableTableViewController {
         }
     }
     // MARK: - UIViewController events
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Don't view the lines between the cells
         tableView.separatorStyle = .none
-
+        
         navigationItem.searchController = UISearchController(searchResultsController: nil)
         // Change placeholder for search field
         navigationItem.searchController?.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Suche", attributes: [NSAttributedString.Key.foregroundColor: UIColor.label])
         // Change the title of the Cancel button on the search bar
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
-
+        
         MainController.database.collection("users")
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -117,12 +117,12 @@ class OffersTableViewController: SortableTableViewController {
                                                                         // Data for "profilePicture.jpg" is returned
                                                                         newOffer.offerImage = UIImage(data: data!)!
                                                                     }
-
+                                                                    
                                                                     // Remove old Offer object if exists
                                                                     if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
                                                                         OffersTableViewController.offersArray.remove(at: existingOffer)
                                                                     }
-
+                                                                    
                                                                     OffersTableViewController.offersArray.append(newOffer)
                                                                     // Update the table
                                                                     self.tableView.reloadData()
@@ -133,7 +133,7 @@ class OffersTableViewController: SortableTableViewController {
                                                             if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
                                                                 OffersTableViewController.offersArray.remove(at: existingOffer)
                                                             }
-
+                                                            
                                                             OffersTableViewController.offersArray.append(newOffer)
                                                             // Update the table
                                                             self.tableView.reloadData()
@@ -156,9 +156,9 @@ class OffersTableViewController: SortableTableViewController {
                 }
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
-
+        
         // Create Offer object and write it into an array
         for var offer in OffersTableViewController.offersArray {
             // Get image of the offer
@@ -178,24 +178,24 @@ class OffersTableViewController: SortableTableViewController {
                                     // Data for "OfferImage" is returned
                                     offer.offerImage = UIImage(data: data!)!
                                 }
-
+                                
                                 // Remove old Offer object if exists
                                 if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.uid }) {
                                     OffersTableViewController.offersArray.remove(at: existingOffer)
                                 }
-
+                                
                                 OffersTableViewController.offersArray.append(offer)
                                 // Update the table
                                 self.tableView.reloadData()
                             }
                         } else {
                             offer.offerImage = UIImage(named: "defaultOfferImage")!
-
+                            
                             // Remove old Offer object if exists
                             if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.uid }) {
                                 OffersTableViewController.offersArray.remove(at: existingOffer)
                             }
-
+                            
                             OffersTableViewController.offersArray.append(offer)
                             // Update the table
                             self.tableView.reloadData()
@@ -203,7 +203,7 @@ class OffersTableViewController: SortableTableViewController {
                     }
             }
         }
-
+        
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
             containerController = container
@@ -211,7 +211,7 @@ class OffersTableViewController: SortableTableViewController {
             containerController!.setupSortingCellsAndDelegate()
         }
     }
-
+    
     override func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         filterContentForSearchText(searchBar.text!)
@@ -226,7 +226,7 @@ class OffersTableViewController: SortableTableViewController {
         }
         tableView.reloadData()
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
         if displayedOffers.count > 0 {
@@ -239,29 +239,29 @@ class OffersTableViewController: SortableTableViewController {
             }
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isFiltering ? searchedOffers.count : OffersTableViewController.offersArray.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
         let usersToDisplay = isFiltering ? searchedOffers : OffersTableViewController.offersArray
-
+        
         // show all existing offers
         if usersToDisplay.count > 0 {
             let currentOffer = usersToDisplay[indexPath.row]
-
+            
             // Write the title of the current offer in the cell
             cell.titleLabel.text = currentOffer.title
             
             // Write the type of the current offer in the cell
             cell.typeLabel.text = currentOffer.type
-
+            
             // Write the name of the owner of the current offer in the cell
             cell.ownerLabel.text = currentOffer.ownerFirstName + " " +  currentOffer.ownerLastName
-
+            
             // Write profil image in cell
             cell.offerImageView.image = currentOffer.offerImage
             // Set profile image rounded
@@ -269,11 +269,11 @@ class OffersTableViewController: SortableTableViewController {
         }
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             let backItem = UIBarButtonItem()
@@ -284,36 +284,36 @@ class OffersTableViewController: SortableTableViewController {
             }
             let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
             switch identifier {
-                case showOfferDetailSegue:
-                    if let vc = segue.destination as? OfferTableViewController {
-                        let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = displayedOffers[selectedIndex.row]
-                        vc.offer = selectedOffer
-                    }
-                case editOfferSegue:
-                    if let vc = segue.destination as? OfferEditTableViewController {
-                        let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = displayedOffers[selectedIndex.row]
-                        vc.currentOffer = selectedOffer
-                    }
-                default:
-                    break
+            case showOfferDetailSegue:
+                if let vc = segue.destination as? OfferTableViewController {
+                    let selectedIndex = self.tableView.indexPathForSelectedRow!
+                    let selectedOffer = displayedOffers[selectedIndex.row]
+                    vc.offer = selectedOffer
+                }
+            case editOfferSegue:
+                if let vc = segue.destination as? OfferEditTableViewController {
+                    let selectedIndex = self.tableView.indexPathForSelectedRow!
+                    let selectedOffer = displayedOffers[selectedIndex.row]
+                    vc.currentOffer = selectedOffer
+                }
+            default:
+                break
             }
         }
     }
-
+    
     // MARK: - Helper methods
-
+    
     @IBAction func touchSortButton(_ sender: UIBarButtonItem) {
         if let vc = containerController {
             vc.toggleSortMenu(from: self)
         }
     }
-
+    
     // unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
     }
-
+    
 }
 
 extension OffersTableViewController: SortTableViewControllerDelegate {

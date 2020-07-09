@@ -12,46 +12,46 @@ import InputBarAccessoryView
 import SDWebImage
 
 class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
-
+    
     // MARK: - Variables
-
+    
     var chatPartnerUID: String?
     var chatPartnerName: String?
     var chatPartnerProfileImage: UIImage?
-
+    
     private var docReference: DocumentReference?
-
+    
     var messages: [Message] = []
-
+    
     // MARK: - UIViewController events
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.title = chatPartnerName
         navigationItem.title = chatPartnerName
         navigationItem.largeTitleDisplayMode = .never
         maintainPositionOnKeyboardFrameChanged = true
-
+        
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
         messageInputBar.sendButton.setTitleColor(UIColor.lightGray, for: .normal)
         messageInputBar.delegate = self
-
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
-
+        
         self.loadChat()
     }
-
+    
     // MARK: - Custom messages handlers
-
+    
     func createNewChat() {
         let users = [MainController.currentUser.uid, self.chatPartnerUID]
         let data: [String: Any] = [
-             "users":users
+            "users":users
         ]
-
+        
         MainController.database.collection("Chats")
             .addDocument(data: data) { (error) in
                 if let error = error {
@@ -62,76 +62,76 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                 }
         }
     }
-
+    
     func loadChat() {
         // Fetch all the chats which has current user in it
         MainController.database.collection("Chats")
             .whereField("users", arrayContains: MainController.currentUser.uid)
             .getDocuments { (chatQuerySnap, error) in
-            if let error = error {
-                print("Error: \(error)")
-                return
-            } else {
-                // Count the no. of documents returned
-                let numberOfChats = chatQuerySnap!.documents.count
-
-                if numberOfChats == 0 {
-                    // If documents count is zero that means there is no chat available and we need to create a new instance
-                    self.createNewChat()
-                }
-                else if numberOfChats >= 1 {
-                    // Chat(s) found for currentUser
-                    for loadedChat in chatQuerySnap!.documents {
-                        // Get the chat with the chat partner
-                        if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
-                            self.docReference = loadedChat.reference
-                            // fetch it's thread collection
-                            loadedChat.reference.collection("thread")
-                            .order(by: "created", descending: false)
-                            .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
-                                if let error = error {
-                                    print("Error: \(error)")
-                                    return
-                                } else {
-                                    self.messages.removeAll()
-                                    for message in threadQuery!.documents {
-                                        do {
-                                            let newMessage = try Message.mapData(querySnapshot: message)
-                                            self.messages.append(newMessage!)
-                                        } catch MessageError.mapDataError {
-                                            print("Error while mapping User!")
-                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
-                                            self.present(alert, animated: true, completion: nil)
-                                        } catch {
-                                            print("Unexpected error: \(error)")
-                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
-                                            self.present(alert, animated: true, completion: nil)
-                                        }
-                                    }
-                                    self.messagesCollectionView.reloadData()
-                                    self.messagesCollectionView.scrollToBottom(animated: true)
-                                }
-                            })
-                            return
-                        }
-                    }
-                    self.createNewChat()
+                if let error = error {
+                    print("Error: \(error)")
+                    return
                 } else {
-                    print("Let's hope this error never prints!")
+                    // Count the no. of documents returned
+                    let numberOfChats = chatQuerySnap!.documents.count
+                    
+                    if numberOfChats == 0 {
+                        // If documents count is zero that means there is no chat available and we need to create a new instance
+                        self.createNewChat()
+                    }
+                    else if numberOfChats >= 1 {
+                        // Chat(s) found for currentUser
+                        for loadedChat in chatQuerySnap!.documents {
+                            // Get the chat with the chat partner
+                            if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
+                                self.docReference = loadedChat.reference
+                                // fetch it's thread collection
+                                loadedChat.reference.collection("thread")
+                                    .order(by: "created", descending: false)
+                                    .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
+                                        if let error = error {
+                                            print("Error: \(error)")
+                                            return
+                                        } else {
+                                            self.messages.removeAll()
+                                            for message in threadQuery!.documents {
+                                                do {
+                                                    let newMessage = try Message.mapData(querySnapshot: message)
+                                                    self.messages.append(newMessage!)
+                                                } catch MessageError.mapDataError {
+                                                    print("Error while mapping User!")
+                                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                                    self.present(alert, animated: true, completion: nil)
+                                                } catch {
+                                                    print("Unexpected error: \(error)")
+                                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                                    self.present(alert, animated: true, completion: nil)
+                                                }
+                                            }
+                                            self.messagesCollectionView.reloadData()
+                                            self.messagesCollectionView.scrollToBottom(animated: true)
+                                        }
+                                    })
+                                return
+                            }
+                        }
+                        self.createNewChat()
+                    } else {
+                        print("Let's hope this error never prints!")
+                    }
                 }
-            }
         }
     }
-
+    
     private func insertNewMessage(_ message: Message) {
         messages.append(message)
         messagesCollectionView.reloadData()
-
+        
         DispatchQueue.main.async {
             self.messagesCollectionView.scrollToBottom(animated: true)
         }
     }
-
+    
     private func save(_ message: Message) {
         let data: [String: Any] = [
             "content": message.content,
@@ -139,7 +139,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             "id": message.id,
             "senderID": message.senderUID
         ]
-
+        
         docReference?.collection("thread").addDocument(data: data, completion: { (error) in
             if let error = error {
                 print("Error sending message: \(error)")
@@ -148,27 +148,27 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             self.messagesCollectionView.scrollToBottom()
         })
     }
-
+    
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
     {
         return isFromCurrentSender(message: message) ? .white : .darkText
     }
-
+    
     // MARK: - InputBarAccessoryViewDelegate
-
+    
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = Message(id: UUID().uuidString, senderUID: MainController.currentUser.uid, created: Timestamp(), content: text)
-
+        
         insertNewMessage(message)
         save(message)
-
+        
         inputBar.inputTextView.text = ""
         messagesCollectionView.reloadData()
         messagesCollectionView.scrollToBottom(animated: true)
     }
-
+    
     // MARK: - MessagesDataSource
-
+    
     func currentSender() -> SenderType {
         if MainController.currentUser == nil {
             return Sender(id: "User not found", displayName: "Name not found")
@@ -176,27 +176,27 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             return Sender(id: MainController.currentUser.uid, displayName: (MainController.currentUser.firstName + " " + MainController.currentUser.lastName))
         }
     }
-
+    
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
         return messages[indexPath.section]
     }
-
+    
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
     }
-
+    
     // MARK: - MessagesLayoutDelegate
-
+    
     func avatarSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
         return .zero
     }
-
+    
     // MARK: - MessagesDisplayDelegate
-
+    
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return isFromCurrentSender(message: message) ? .blue: .lightGray
     }
-
+    
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         if MainController.currentUser != nil {
             if message.sender.senderId == MainController.currentUser.uid {
@@ -206,10 +206,10 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             }
         }
     }
-
+    
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight: .bottomLeft
         return .bubbleTail(corner, .curved)
     }
-
+    
 }
