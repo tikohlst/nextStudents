@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import SafariServices
 
 class SettingsTableViewController: UITableViewController {
     
@@ -15,6 +16,7 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var userBioLabel: UILabel!
+    @IBOutlet weak var helpTableViewCell: UITableViewCell!
     @IBOutlet weak var signOutTableViewCell: UITableViewCell!
     
     // MARK: - UIViewController events
@@ -43,9 +45,20 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath == self.tableView.indexPath(for: signOutTableViewCell) {
+        switch indexPath {
+        case self.tableView.indexPath(for: helpTableViewCell):
+            showReadme()
+        case self.tableView.indexPath(for: signOutTableViewCell):
             SettingsTableViewController.signOut()
+        default:
+            return
         }
+    }
+    
+    func showReadme() {
+        let url = URL(string: "https://github.com/tikohlst/nextDoor")!
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true)
     }
     
     // MARK: - Table view data source
