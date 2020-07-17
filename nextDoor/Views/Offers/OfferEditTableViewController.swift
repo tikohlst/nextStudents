@@ -17,6 +17,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     var currentOffer: Offer?
     var imageViews = [UIImageView]()
     var deletedImages = [String]()
+    var addedImages = [UIImageView]()
     
     // MARK: - IBOutlets
     
@@ -186,6 +187,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                     deletedImages.append(identifier)
                 }
             }
+            if let index = addedImages.firstIndex(of: gestureView) {
+                addedImages.remove(at: index)
+            }
         }
     }
     
@@ -237,7 +241,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 }
         }
         
-        uploadImages(currentOfferUID: newOfferId)
+        uploadImages(images: addedImages, for: newOfferId)
     }
     
     private func saveOffer() {
@@ -264,12 +268,12 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                         if let error = error {
                             print ("Error deleting image: \(error.localizedDescription)")
                         } else {
-                            self.uploadImages(currentOfferUID: self.currentOffer!.uid)
+                            self.uploadImages(images: self.addedImages, for: self.currentOffer!.uid)
                         }
                 }
             }
         } else {
-            self.uploadImages(currentOfferUID: currentOffer!.uid)
+            self.uploadImages(images: self.addedImages, for: currentOffer!.uid)
         }
     }
     
@@ -297,6 +301,30 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         } else {
             // Perform segue without having to wait for an image to be uploaded
             self.performSegue(withIdentifier: "backToOffers", sender: nil)
+        }
+    }
+    
+    private func uploadImages(images: [UIImageView], for offerID: String) {
+        if images.count > 0 {
+            for view in images {
+                let storageRef = MainController.storage
+                    .reference(withPath: "offers/\(offerID)/\(UUID.init().uuidString).jpeg")
+                if let image = view.image, let imageData = image.jpegData(compressionQuality: 0.75) {
+                    let imageMetaData = StorageMetadata.init()
+                    imageMetaData.contentType = "image/jpeg"
+                    // Upload image
+                    storageRef.putData(imageData, metadata: imageMetaData) { (storageMetadata, error) in
+                        if let error = error {
+                            print("Error while uploading data: \(error.localizedDescription)")
+                        } else {
+                            print("uplaod complete with metadata: \(storageMetadata?.description ?? "nil")")
+                            
+                            // Don't go back to the offers TableView until the new image has been completely uploaded
+                            self.performSegue(withIdentifier: "backToOffers", sender: nil)
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -339,6 +367,7 @@ extension OfferEditTableViewController: ImagePickerDelegate {
             latestView!.isUserInteractionEnabled = true
             
             imageViews.insert(latestView!, at: 0)
+            addedImages.append(latestView!)
         }
         imageScrollView.contentSize.width = imageScrollView.frame.size.width
             + CGFloat(imageViews.count - 1)
