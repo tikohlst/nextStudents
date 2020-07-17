@@ -153,11 +153,11 @@ class ChatsTableViewController: SortableTableViewController {
                                                     }
                                                 } catch UserError.mapDataError {
                                                     print("Error while mapping User!")
-                                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
                                                     self.present(alert, animated: true, completion: nil)
                                                 } catch ChatError.mapDataError {
                                                     print("Error while mapping Chat!")
-                                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
                                                     self.present(alert, animated: true, completion: nil)
                                                 } catch {
                                                     print("Unexpected error: \(error)")

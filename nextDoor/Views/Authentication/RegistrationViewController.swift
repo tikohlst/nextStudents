@@ -295,7 +295,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                            longitude: coordinates.longitude)
         
         if popUpShown != true {
-            MainController.lookUpCurrentLocation(locationManager: locationManager,
+            Utility.lookUpCurrentLocation(locationManager: locationManager,
                                                  completionHandler: { (placemark) in
                                                     
                                                     // Just show this pop up once
@@ -345,7 +345,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         
         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
         
-        MainController.getCoordinate(addressString: addressString,
+        Utility.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
                                         
                                         self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
@@ -358,7 +358,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                 self.createAccount()
                                             }
                                         } else {
-                                            let alert = MainController.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                                            let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
         })
@@ -366,7 +366,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
     
     func checkAddress() -> Bool {
         // Compare the current GPS position of the mobile phone with the GPS data of the entered address for a difference of more than 50m
-        let gpsDifferenceInMeter = NeighborsTableViewController.getGPSDifference(self.userGpsCoordinates!, self.formGpsCoordinates!)
+        let gpsDifferenceInMeter = Utility.getGPSDifference(self.userGpsCoordinates!, self.formGpsCoordinates!)
         
         if gpsDifferenceInMeter < 50 {
             return true
@@ -385,7 +385,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 // Error handling
                 if error != nil {
                     print("An error occurred: \(error!.localizedDescription)")
-                    let alert = MainController.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                    let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                     self.present(alert, animated: true, completion: nil)
                 } else if authResult != nil {
                     // Write userdata to firestore

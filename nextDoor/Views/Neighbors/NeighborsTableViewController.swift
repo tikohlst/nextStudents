@@ -96,7 +96,7 @@ class NeighborsTableViewController: SortableTableViewController {
                     print("Error getting documents: \(err)")
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        let differenceInMeter = Utility.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
                         // Only show neighbors in the defined range
                         if (differenceInMeter) < Double(MainController.currentUser.radius) {
                             // Don't show currentUser as its own neighbor
@@ -128,7 +128,7 @@ class NeighborsTableViewController: SortableTableViewController {
                                     }
                                 } catch UserError.mapDataError {
                                     print("Error while mapping User!")
-                                    let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
                                     self.present(alert, animated: true, completion: nil)
                                 } catch {
                                     print("Unexpected error: \(error)")
@@ -236,27 +236,6 @@ class NeighborsTableViewController: SortableTableViewController {
     
     @IBAction func touchFilterButton(_ sender: UIBarButtonItem) {
         
-    }
-    
-    static func degreesToRadians(_ number: Double) -> Double {
-        return number * .pi / 180
-    }
-    
-    static func getGPSDifference(_ gpsCoordinates1: GeoPoint,_ gpsCoordinates2: GeoPoint) -> Double {
-        
-        let radius = 6371 // Earth's radius in kilometers
-        let latDelta = degreesToRadians(gpsCoordinates2.latitude - gpsCoordinates1.latitude)
-        let lonDelta = degreesToRadians(gpsCoordinates2.longitude - gpsCoordinates1.longitude)
-        
-        let a = (sin(latDelta / 2) * sin(latDelta / 2)) +
-            (cos(degreesToRadians(gpsCoordinates1.latitude)) * cos(degreesToRadians(gpsCoordinates2.latitude)) *
-                sin(lonDelta / 2) * sin(lonDelta / 2))
-        
-        let c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        
-        let differenceInKilometer = Double(radius) * c
-        let differenceInMeter = differenceInKilometer * 1000
-        return differenceInMeter
     }
     
 }

@@ -8,7 +8,6 @@
 import Eureka
 import ImageRow
 import Firebase
-import CoreLocation
 
 class ProfileViewController: FormViewController {
     
@@ -34,7 +33,7 @@ class ProfileViewController: FormViewController {
                     print("Error getting documents: \(err)")
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        let differenceInMeter = Utility.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
                         
                         // Don't show currentUser as its own neighbor
                         if currentNeighbor.documentID != MainController.currentUser.uid {
@@ -314,7 +313,7 @@ class ProfileViewController: FormViewController {
                         try self.saveProfile()
                     } catch UserError.mapDataError {
                         print("Error while mapping User!")
-                        let alert = MainController.displayAlert(withMessage: nil, withSignOut: true)
+                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
                         self.present(alert, animated: true, completion: nil)
                     } catch {
                         print("Unexpected error: \(error)")
@@ -368,7 +367,7 @@ class ProfileViewController: FormViewController {
         
         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
         
-        MainController.getCoordinate(addressString: addressString,
+        Utility.getCoordinate(addressString: addressString,
                                      completionHandler: { (coordinates, error) in
                                         
                                         let numberRange = (-90.0)...(90.0)

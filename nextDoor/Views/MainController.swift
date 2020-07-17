@@ -5,8 +5,6 @@
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
-import UIKit
-import CoreLocation
 import Firebase
 
 class MainController: UITabBarController {
@@ -58,7 +56,7 @@ class MainController: UITabBarController {
                         
                     } catch UserError.mapDataError {
                         print("Error while mapping User!")
-                        let alert = MainController.displayAlert(withMessage: nil, withSignOut: true)
+                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
                         self.present(alert, animated: true, completion: nil)
                     } catch {
                         print("Unexpected error: \(error)")
@@ -85,74 +83,6 @@ class MainController: UITabBarController {
             navigationController.modalPresentationStyle = .fullScreen
             navigationController.modalTransitionStyle = .crossDissolve
             self.present(navigationController, animated: true, completion: nil)
-        }
-    }
-    
-    static func displayAlert(withMessage message: String?, withSignOut: Bool) -> UIAlertController {
-        let alert = UIAlertController(
-            title: "Interner Fehler",
-            message: message ?? "Bitte wenden Sie sich an den Support.",
-            preferredStyle: .alert)
-        
-        if withSignOut {
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("Ausloggen", comment: ""),
-                    style: .default,
-                    handler: { action in
-                        SettingsTableViewController.signOut()
-                })
-            )
-        } else {
-            alert.addAction(
-                UIAlertAction(
-                    title: NSLocalizedString("Ok", comment: ""),
-                    style: .default
-                )
-            )
-        }
-        
-        return alert
-    }
-    
-    static func lookUpCurrentLocation(locationManager: CLLocationManager, completionHandler: @escaping (CLPlacemark?) -> Void ) {
-        // Use the last reported location.
-        if let lastLocation = locationManager.location {
-            let geocoder = CLGeocoder()
-            
-            // Look up the location and pass it to the completion handler
-            geocoder.reverseGeocodeLocation(lastLocation,
-                                            completionHandler: { (placemarks, error) in
-                                                if error == nil {
-                                                    let firstLocation = placemarks?[0]
-                                                    completionHandler(firstLocation)
-                                                }
-                                                else {
-                                                    // An error occurred during geocoding.
-                                                    completionHandler(nil)
-                                                }
-            })
-        }
-        else {
-            // No location was available.
-            completionHandler(nil)
-        }
-    }
-    
-    static func getCoordinate( addressString: String,
-                               completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
-            if error == nil {
-                if let placemark = placemarks?[0] {
-                    let location = placemark.location!
-                    
-                    completionHandler(location.coordinate, nil)
-                    return
-                }
-            }
-            
-            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
     

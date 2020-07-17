@@ -83,7 +83,7 @@ class OffersTableViewController: SortableTableViewController {
                     print("Error getting documents: \(err)")
                 } else {
                     for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = NeighborsTableViewController.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
+                        let differenceInMeter = Utility.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
                         // Only show neighbors in the defined range
                         if (differenceInMeter) < Double(MainController.currentUser.radius) {
                             // Create User object for every neighbor in the radius and write it into an array
@@ -142,11 +142,11 @@ class OffersTableViewController: SortableTableViewController {
                                             }
                                         } catch OfferError.mapDataError {
                                             print("Error while mapping Offer!")
-                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                            let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         } catch {
                                             print("Unexpected error: \(error.localizedDescription)")
-                                            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+                                            let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
                                             self.present(alert, animated: true, completion: nil)
                                         }
                                     }

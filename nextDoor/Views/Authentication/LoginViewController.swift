@@ -92,7 +92,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         if let email = emailText.text {
             Auth.auth().sendPasswordReset(withEmail: email) { error in
                 print("Error while resetting password!")
-                let alert = MainController.displayAlert(withMessage: "Es wurde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet.", withSignOut: false)
+                let alert = Utility.displayAlert(withMessage: "Es wurde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet.", withSignOut: false)
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -129,7 +129,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     func switchScreens(_ authResult: AuthDataResult?, _ error: Error?, _ strongSelf: LoginViewController) {
         if error != nil {
             print("Error while switching screens!")
-            let alert = MainController.displayAlert(withMessage: nil, withSignOut: false)
+            let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
             strongSelf.present(alert, animated: true, completion: nil)
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
