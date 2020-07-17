@@ -60,7 +60,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override var sortingOption: SortOption? {
         didSet {
             if let sortingOption = sortingOption {
-                if isFiltering {
+                if isSorting {
                     searchedUsers = super.sort(searchedUsers, by: sortingOption)
                 } else {
                     usersInRangeArray = super.sort(usersInRangeArray, by: sortingOption)
@@ -168,7 +168,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltering ? searchedUsers.count : usersInRangeArray.count
+        return isSorting ? searchedUsers.count : usersInRangeArray.count
     }
     
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -177,7 +177,7 @@ class NeighborsTableViewController: SortableTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
-        let usersToDisplay = isFiltering ? searchedUsers : usersInRangeArray
+        let usersToDisplay = isSorting ? searchedUsers : usersInRangeArray
         
         // Show all existing users
         if usersToDisplay.count > 0 {
@@ -205,7 +205,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if let identifier = segue.identifier {
-            let displayedUsers = isFiltering ? searchedUsers : usersInRangeArray
+            let displayedUsers = isSorting ? searchedUsers : usersInRangeArray
             switch identifier {
             case showNeighborDetailSegue:
                 if let vc = containerController, vc.sortMenuVisible {
@@ -222,6 +222,11 @@ class NeighborsTableViewController: SortableTableViewController {
                 
                 // Set the currentUser at the NeighborTableViewController.
                 detailViewController.user = currentUser
+            case "showFilterOptions":
+                if let vc = segue.destination as? FilterPopOverController, let ppc = vc.popoverPresentationController {
+                    ppc.delegate = self
+                    vc.users = isSorting ? searchedUsers : usersInRangeArray
+                }
             default:
                 break
             }
@@ -241,7 +246,7 @@ class NeighborsTableViewController: SortableTableViewController {
 }
 
 extension UITableViewController: UISearchResultsUpdating {
-    var isFiltering: Bool {
+    var isSorting: Bool {
         return (navigationItem.searchController?.isActive ?? false) && !isSearchbarEmpty
     }
     var isSearchbarEmpty: Bool {
@@ -264,8 +269,16 @@ extension NeighborsTableViewController: SortTableViewControllerDelegate {
     }
 }
 
-fileprivate extension UITableView {
-    
+extension NeighborsTableViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension NeighborsTableViewController: FilterControllerDelegate {
+    func forward(data: [User]) {
+        
+    }
 }
 
 enum SortOption: String {

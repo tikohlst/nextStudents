@@ -57,7 +57,7 @@ class ChatsTableViewController: SortableTableViewController {
     override var sortingOption: SortOption? {
         didSet {
             if let sortingOption = sortingOption {
-                if isFiltering {
+                if isSorting {
                     searchedChats = super.sort(searchedChats, by: sortingOption)
                 } else {
                     chatsArray = super.sort(chatsArray, by: sortingOption)

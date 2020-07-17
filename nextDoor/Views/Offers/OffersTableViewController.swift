@@ -54,7 +54,7 @@ class OffersTableViewController: SortableTableViewController {
     override var sortingOption: SortOption? {
         didSet {
             if let sortingOption = sortingOption {
-                if isFiltering {
+                if isSorting {
                     searchedOffers = super.sort(searchedOffers, by: sortingOption)
                 } else {
                     OffersTableViewController.offersArray = super.sort(OffersTableViewController.offersArray, by: sortingOption)
@@ -228,7 +228,7 @@ class OffersTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
+        let displayedOffers = isSorting ? searchedOffers : OffersTableViewController.offersArray
         if displayedOffers.count > 0 {
             let selectedOffer = displayedOffers[indexPath.row]
             if selectedOffer.ownerUID == MainController.currentUser.uid {
@@ -241,13 +241,13 @@ class OffersTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isFiltering ? searchedOffers.count : OffersTableViewController.offersArray.count
+        return isSorting ? searchedOffers.count : OffersTableViewController.offersArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
-        let usersToDisplay = isFiltering ? searchedOffers : OffersTableViewController.offersArray
+        let usersToDisplay = isSorting ? searchedOffers : OffersTableViewController.offersArray
         
         // show all existing offers
         if usersToDisplay.count > 0 {
@@ -282,7 +282,7 @@ class OffersTableViewController: SortableTableViewController {
             if let vc = containerController, vc.sortMenuVisible {
                 vc.toggleSortMenu(from: self)
             }
-            let displayedOffers = isFiltering ? searchedOffers : OffersTableViewController.offersArray
+            let displayedOffers = isSorting ? searchedOffers : OffersTableViewController.offersArray
             switch identifier {
             case showOfferDetailSegue:
                 if let vc = segue.destination as? OfferTableViewController {
