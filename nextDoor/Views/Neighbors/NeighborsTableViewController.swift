@@ -103,7 +103,7 @@ class NeighborsTableViewController: SortableTableViewController {
                             if currentNeighbor.documentID != MainController.currentUser.uid {
                                 // Create User object for every neighbor in the radius and write it into an array
                                 do {
-                                    let newUser = try User.mapData(querySnapshot: currentNeighbor)
+                                    let newUser = try User().mapData(uid: currentNeighbor.documentID, data: currentNeighbor.data())
                                     // Get profile image of the neighbor
                                     MainController.storage
                                         .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")

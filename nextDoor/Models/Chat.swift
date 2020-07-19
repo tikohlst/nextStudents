@@ -11,7 +11,11 @@ enum ChatError: Error {
     case mapDataError
 }
 
-struct Chat {
+protocol ChatService {
+    func mapData(data: [String:Any]?, chatPartner: User) throws -> Chat?
+}
+
+struct Chat: ChatService {
     
     // MARK: - Variables
     
@@ -22,16 +26,21 @@ struct Chat {
     
     // MARK: - Methods
     
-    init(localChatID: String, chatPartner: User, latestMessage: String, timestampOfTheLatestMessage: Timestamp) {
+    init(localChatID: String, chatPartner: User, latestMessage: String,
+         timestampOfTheLatestMessage: Timestamp) {
+        
         self.localChatID = localChatID
         self.chatPartner = chatPartner
         self.latestMessage = latestMessage
         self.timestampOfTheLatestMessage = timestampOfTheLatestMessage
     }
     
-    static func mapData(querySnapshot: DocumentSnapshot, chatPartner: User) throws -> Chat? {
-        
-        let data = querySnapshot.data()
+    init(){
+        self.init(localChatID: "", chatPartner: User(), latestMessage: "",
+                  timestampOfTheLatestMessage: Timestamp())
+    }
+    
+    func mapData(data: [String:Any]?, chatPartner: User) throws -> Chat? {
         
         // Data validation
         guard let localChatID = data?["id"] as? String,

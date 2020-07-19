@@ -12,7 +12,11 @@ enum MessageError: Error {
     case mapDataError
 }
 
-struct Message {
+protocol MessageService {
+    func mapData(data: [String:Any]?) throws -> Message?
+}
+
+struct Message: MessageService {
     
     // MARK: - Variables
     
@@ -30,9 +34,11 @@ struct Message {
         self.content = content
     }
     
-    static func mapData(querySnapshot: DocumentSnapshot) throws -> Message? {
-        
-        let data = querySnapshot.data()
+    init(){
+        self.init(id: "", senderUID: "", created: Timestamp(), content: "")
+    }
+    
+    func mapData(data: [String:Any]?) throws -> Message? {
         
         // Data validation
         guard let id = data?["id"] as? String,

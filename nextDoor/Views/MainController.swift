@@ -37,7 +37,7 @@ class MainController: UITabBarController {
                 } else {
                     do {
                         // get current user
-                        MainController.currentUser = try User.mapData(querySnapshot: querySnapshot!)
+                        MainController.currentUser = try User().mapData(uid: querySnapshot!.documentID, data: querySnapshot!.data()!)
                         
                         // get profile image if it exists
                         MainController.storage

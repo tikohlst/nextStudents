@@ -12,7 +12,11 @@ enum UserError: Error {
     case mapDataError
 }
 
-class User {
+protocol UserService {
+    func mapData(uid: String, data: [String:Any]?) throws -> User
+}
+
+class User: UserService {
     
     // MARK: - Variables
     
@@ -46,9 +50,13 @@ class User {
         self.profileImage = UIImage(named: "defaultProfilePicture")!
     }
     
-    static func mapData(querySnapshot: DocumentSnapshot) throws -> User {
-        
-        let data = querySnapshot.data()
+    convenience init(){
+        self.init(uid: "", firstName: "", lastName: "", street: "",
+                  housenumber: "", zipcode: "", gpsCoordinates: GeoPoint(latitude: 0, longitude: 0),
+                  radius: 0, bio: "", skills: "")
+    }
+    
+    func mapData(uid: String, data: [String: Any]?) throws -> User {
         
         // Data validation
         guard let firstName = data?["firstName"] as? String,
@@ -64,7 +72,7 @@ class User {
                 throw UserError.mapDataError
         }
         
-        return User(uid: querySnapshot.documentID,
+        return User(uid: uid,
                     firstName: firstName,
                     lastName: lastName,
                     street: street,

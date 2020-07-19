@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		221860ED24C1989000490A80 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221860EC24C1989000490A80 /* Utility.swift */; };
+		221860F824C1DA3300490A80 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221860F724C1DA3300490A80 /* UserTests.swift */; };
 		221A0CD524781BF700A46E1E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A0CD424781BF700A46E1E /* User.swift */; };
 		221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */; };
 		221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */; };
@@ -27,7 +28,6 @@
 		22739EE524AA673600D27D8A /* Offers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22739EE424AA673600D27D8A /* Offers.storyboard */; };
 		22AAADC02491654300542F5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
 		22AAADC22491657C00542F5E /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
-		22CE93EA24ADCF85001287C1 /* nextDoorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CE93E924ADCF85001287C1 /* nextDoorTests.swift */; };
 		22ECD957249F6FAD002B8F82 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ECD956249F6FAD002B8F82 /* Fonts.swift */; };
 		22ECD965249F860A002B8F82 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */; };
 		22ECD966249F860A002B8F82 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95C249F85FC002B8F82 /* OpenSans-BoldItalic.ttf */; };
@@ -39,6 +39,14 @@
 		22ECD96C249F860A002B8F82 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD962249F8607002B8F82 /* OpenSans-Light.ttf */; };
 		22ECD96D249F860A002B8F82 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD963249F8608002B8F82 /* OpenSans-Italic.ttf */; };
 		22ECD96E249F860A002B8F82 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD964249F860A002B8F82 /* OpenSans-Semibold.ttf */; };
+		22FC0F9F24C46768008DA855 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A0CD424781BF700A46E1E /* User.swift */; };
+		22FC0FA124C46931008DA855 /* OfferTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC0FA024C46931008DA855 /* OfferTests.swift */; };
+		22FC0FA324C46943008DA855 /* ChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC0FA224C46943008DA855 /* ChatTests.swift */; };
+		22FC0FA524C46951008DA855 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FC0FA424C46950008DA855 /* MessageTests.swift */; };
+		22FC0FA624C47156008DA855 /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221B08912487A54C00CE8A9B /* Offer.swift */; };
+		22FC0FA724C48290008DA855 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
+		22FC0FA824C49299008DA855 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
+		52B94471D5317779FEC4D990 /* Pods_nextDoorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD87DDE044DB1D23D312065 /* Pods_nextDoorTests.framework */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
@@ -67,7 +75,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1DD87DDE044DB1D23D312065 /* Pods_nextDoorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nextDoorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		221860EC24C1989000490A80 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		221860F724C1DA3300490A80 /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		221A0CD424781BF700A46E1E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborsTableViewController.swift; sourceTree = "<group>"; };
 		221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersTableViewController.swift; sourceTree = "<group>"; };
@@ -90,7 +100,6 @@
 		22AAADBF2491654300542F5E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		22AAADC12491657C00542F5E /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		22CE93E724ADCF85001287C1 /* nextDoorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nextDoorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22CE93E924ADCF85001287C1 /* nextDoorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nextDoorTests.swift; sourceTree = "<group>"; };
 		22CE93EB24ADCF85001287C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22ECD956249F6FAD002B8F82 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -103,7 +112,11 @@
 		22ECD962249F8607002B8F82 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		22ECD963249F8608002B8F82 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		22ECD964249F860A002B8F82 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		22FC0FA024C46931008DA855 /* OfferTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTests.swift; sourceTree = "<group>"; };
+		22FC0FA224C46943008DA855 /* ChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTests.swift; sourceTree = "<group>"; };
+		22FC0FA424C46950008DA855 /* MessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
 		52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.debug.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.debug.xcconfig"; sourceTree = "<group>"; };
+		8BE71D706973C54ECBBA1307 /* Pods-nextDoorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoorTests.debug.xcconfig"; path = "Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F0B560D248FA60B00703F0A /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
@@ -118,6 +131,7 @@
 		8FC6C4E82488E7A700572566 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		8FCADB92249CC67000795221 /* SliderTextComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTextComponent.swift; sourceTree = "<group>"; };
+		93CB5158533E1026A96D9528 /* Pods-nextDoorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoorTests.release.xcconfig"; path = "Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests.release.xcconfig"; sourceTree = "<group>"; };
 		C791AABF570E612F23821CB2 /* Pods_nextDoor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nextDoor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1AD591835EEDBD3E21E4E14 /* Pods-nextDoor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextDoor.release.xcconfig"; path = "Target Support Files/Pods-nextDoor/Pods-nextDoor.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,6 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52B94471D5317779FEC4D990 /* Pods_nextDoorTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,8 +311,11 @@
 		22CE93E824ADCF85001287C1 /* nextDoorTests */ = {
 			isa = PBXGroup;
 			children = (
-				22CE93E924ADCF85001287C1 /* nextDoorTests.swift */,
 				22CE93EB24ADCF85001287C1 /* Info.plist */,
+				221860F724C1DA3300490A80 /* UserTests.swift */,
+				22FC0FA024C46931008DA855 /* OfferTests.swift */,
+				22FC0FA224C46943008DA855 /* ChatTests.swift */,
+				22FC0FA424C46950008DA855 /* MessageTests.swift */,
 			);
 			path = nextDoorTests;
 			sourceTree = "<group>";
@@ -324,6 +342,8 @@
 			children = (
 				52805C042C717B65228A6664 /* Pods-nextDoor.debug.xcconfig */,
 				E1AD591835EEDBD3E21E4E14 /* Pods-nextDoor.release.xcconfig */,
+				8BE71D706973C54ECBBA1307 /* Pods-nextDoorTests.debug.xcconfig */,
+				93CB5158533E1026A96D9528 /* Pods-nextDoorTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -332,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				C791AABF570E612F23821CB2 /* Pods_nextDoor.framework */,
+				1DD87DDE044DB1D23D312065 /* Pods_nextDoorTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -363,9 +384,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22CE93F024ADCF85001287C1 /* Build configuration list for PBXNativeTarget "nextDoorTests" */;
 			buildPhases = (
+				517F8F1BB0D8176A2D0237D9 /* [CP] Check Pods Manifest.lock */,
 				22CE93E324ADCF85001287C1 /* Sources */,
 				22CE93E424ADCF85001287C1 /* Frameworks */,
 				22CE93E524ADCF85001287C1 /* Resources */,
+				2DCEC77CC7DB61CA3E3CA575 /* [CP] Embed Pods Frameworks */,
+				5BAB91F00AF3DCD1B829B126 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -452,6 +476,62 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2DCEC77CC7DB61CA3E3CA575 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		517F8F1BB0D8176A2D0237D9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-nextDoorTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5BAB91F00AF3DCD1B829B126 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nextDoorTests/Pods-nextDoorTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A274B2F7BBE5BE48AC6642F3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -548,7 +628,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22CE93EA24ADCF85001287C1 /* nextDoorTests.swift in Sources */,
+				22FC0FA624C47156008DA855 /* Offer.swift in Sources */,
+				22FC0FA124C46931008DA855 /* OfferTests.swift in Sources */,
+				22FC0FA524C46951008DA855 /* MessageTests.swift in Sources */,
+				22FC0FA824C49299008DA855 /* Message.swift in Sources */,
+				221860F824C1DA3300490A80 /* UserTests.swift in Sources */,
+				22FC0FA724C48290008DA855 /* Chat.swift in Sources */,
+				22FC0F9F24C46768008DA855 /* User.swift in Sources */,
+				22FC0FA324C46943008DA855 /* ChatTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +825,7 @@
 		};
 		22CE93EE24ADCF85001287C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BE71D706973C54ECBBA1307 /* Pods-nextDoorTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -759,6 +847,7 @@
 		};
 		22CE93EF24ADCF85001287C1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93CB5158533E1026A96D9528 /* Pods-nextDoorTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;

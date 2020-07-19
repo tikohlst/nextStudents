@@ -11,7 +11,13 @@ enum OfferError: Error {
     case mapDataError
 }
 
-struct Offer {
+protocol OfferService {
+    func mapData(uidOffer: String, dataOffer: [String:Any]?,
+                 uidOwner: String, dataOwner: [String:Any]?) throws -> Offer
+}
+
+struct Offer: OfferService {
+    
     
     // MARK: - Variables
     
@@ -28,7 +34,8 @@ struct Offer {
     
     // MARK: - Methods
     
-    init(uid: String, ownerUID: String, ownerFirstName: String, ownerLastName: String, title: String, description: String,
+    init(uid: String, ownerUID: String, ownerFirstName: String,
+         ownerLastName: String, title: String, description: String,
          date: Date, duration: String, type: String) {
         self.uid = uid
         self.ownerUID = ownerUID
@@ -42,11 +49,14 @@ struct Offer {
         self.offerImage = UIImage(named: "defaultOfferImage")!
     }
     
-    static func mapData(querySnapshotOffer: DocumentSnapshot,
-                        querySnapshotOwner: DocumentSnapshot) throws -> Offer {
-        
-        let dataOffer = querySnapshotOffer.data()
-        let dataOwner = querySnapshotOwner.data()
+    init(){
+        self.init(uid: "", ownerUID: "", ownerFirstName: "", ownerLastName: "",
+                  title: "", description: "", date: Date(),
+                  duration: "15", type: "")
+    }
+    
+    func mapData(uidOffer: String, dataOffer: [String:Any]?,
+                 uidOwner: String, dataOwner: [String:Any]?) throws -> Offer {
         
         // Data validation
         guard let title = dataOffer?["title"] as? String,
@@ -65,8 +75,8 @@ struct Offer {
                 throw UserError.mapDataError
         }
         
-        return Offer(uid: querySnapshotOffer.documentID,
-                     ownerUID: querySnapshotOwner.documentID,
+        return Offer(uid: uidOffer,
+                     ownerUID: uidOwner,
                      ownerFirstName: ownerFirstName,
                      ownerLastName: ownerLastName,
                      title: title,

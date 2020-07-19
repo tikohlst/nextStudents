@@ -98,8 +98,10 @@ class OffersTableViewController: SortableTableViewController {
                                     // Create Offer object and write it into an array
                                     for offer in documents {
                                         do {
-                                            var newOffer = try Offer.mapData(querySnapshotOffer: offer,
-                                                                             querySnapshotOwner: currentNeighbor)
+                                            var newOffer = try Offer().mapData(uidOffer: offer.documentID,
+                                                                               dataOffer: offer.data(),
+                                                                               uidOwner: currentNeighbor.documentID,
+                                                                               dataOwner: currentNeighbor.data())
                                             // Get image of the offer
                                             MainController.storage
                                                 .reference().child("offers/\(offer.documentID)")

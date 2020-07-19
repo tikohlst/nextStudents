@@ -96,7 +96,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                             self.messages.removeAll()
                                             for message in threadQuery!.documents {
                                                 do {
-                                                    let newMessage = try Message.mapData(querySnapshot: message)
+                                                    let newMessage = try Message().mapData(data: message.data())
                                                     self.messages.append(newMessage!)
                                                 } catch MessageError.mapDataError {
                                                     print("Error while mapping User!")

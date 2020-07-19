@@ -125,8 +125,8 @@ class ChatsTableViewController: SortableTableViewController {
                                             }
                                             else {
                                                 do {
-                                                    let chatPartner = try User.mapData(querySnapshot: querySnapshot!)
-                                                    let newChat = try Chat.mapData(querySnapshot: latestMessage, chatPartner: chatPartner)
+                                                    let chatPartner = try User().mapData(uid: querySnapshot!.documentID, data: querySnapshot!.data()!)
+                                                    let newChat = try Chat().mapData(data: latestMessage.data(), chatPartner: chatPartner)
                                                     
                                                     // Get profile image of the chat partner
                                                     MainController.storage
