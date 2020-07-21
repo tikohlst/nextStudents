@@ -275,7 +275,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
             }.onCellSelection {cell, row in
                 if row.section?.form?.validate().isEmpty ?? false {
-                    self.callGPSVailation()
+                    self.callGPSValidation()
                 }
             }
         if accountInfoMissing, let user = MainController.currentUser {
@@ -349,7 +349,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
     
     // MARK: - Methods
     
-    func callGPSVailation() {
+    func callGPSValidation() {
         let dict = self.form.values(includeHidden: true)
         
         let street = dict["street"] as! String
