@@ -229,7 +229,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             .collection("offer")
             .document(newOfferId)
             .setData([
-                "date": Timestamp.init(),
+                "date": Timestamp(),
                 "title": titleTextField.text ?? "",
                 "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
                 "description": descriptionTextField.text ?? "",
@@ -324,6 +324,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                     }
                 }
             }
+        } else {
+            // Don't go back to the offers TableView until the new image has been completely uploaded
+            self.performSegue(withIdentifier: "backToOffers", sender: nil)
         }
     }
     
