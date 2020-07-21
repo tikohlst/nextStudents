@@ -28,10 +28,6 @@ class ContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bottomConstraint.constant = self.sortingContainer.frame.size.height
-        // show the offers screen after login
-        if let mainController = mainController {
-            mainController.selectedIndex = 1
-        }
     }
     
     // MARK: - Helper methods

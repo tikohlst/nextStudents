@@ -27,6 +27,7 @@ class MainController: UITabBarController {
     }
     
     override func viewDidLoad() {
+        selectedIndex = 1
         MainController.currentUserAuth = Auth.auth().currentUser!
         
         MainController.database.collection("users")
