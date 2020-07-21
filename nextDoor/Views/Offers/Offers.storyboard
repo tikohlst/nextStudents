@@ -510,24 +510,24 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Dauer des Angebots" id="iRW-qI-Zgc">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="NJZ-85-IJN">
-                                        <rect key="frame" x="20" y="338" width="374" height="43.5"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="60" id="NJZ-85-IJN">
+                                        <rect key="frame" x="20" y="338" width="374" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NJZ-85-IJN" id="woT-Df-OQF">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
-                                                    <rect key="frame" x="106" y="0.0" width="80" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                </pickerView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Min." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2o-wO-GgM">
-                                                    <rect key="frame" x="212" y="12" width="33" height="21"/>
+                                                    <rect key="frame" x="202" y="15" width="50" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
+                                                    <rect key="frame" x="106" y="0.0" width="80" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                </pickerView>
                                             </subviews>
                                             <color key="backgroundColor" name="White-Grey"/>
                                         </tableViewCellContentView>
@@ -537,7 +537,7 @@
                             <tableViewSection headerTitle="Bilder hinzufügen" id="dMK-pt-jpX">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="124" id="W3u-vK-gvo">
-                                        <rect key="frame" x="20" y="437.5" width="374" height="124"/>
+                                        <rect key="frame" x="20" y="454" width="374" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W3u-vK-gvo" id="ECK-tB-ExM">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="124"/>
@@ -565,7 +565,7 @@
                             <tableViewSection id="ZbC-f3-sZk" userLabel="Angebot löschen">
                                 <cells>
                                     <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="IOP-Ab-9UQ">
-                                        <rect key="frame" x="20" y="597.5" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="614" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IOP-Ab-9UQ" id="uSm-0o-WMG">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
@@ -651,7 +651,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="4Zl-ks-Q0N"/>
+        <segue reference="GkJ-ve-uKj"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="defaultOfferImage" width="500" height="500"/>
