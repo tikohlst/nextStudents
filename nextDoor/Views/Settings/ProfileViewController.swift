@@ -285,6 +285,20 @@ class ProfileViewController: FormViewController {
                 cell.textLabel?.textAlignment = .right
             }
             
+            +++ Section("Hochschule/Universität")
+            
+            <<< PickerRow<String>() {
+                $0.tag = "hs"
+                $0.options = ["keine Angabe", "Hochschule RheinMain", "Uni Mainz", "Uni2"]
+                $0.value = $0.options[$0.options.firstIndex(of: MainController.currentUser.school)!]
+            }
+            
+            <<< TextRow() {
+                $0.tag = "degreeProgram"
+                $0.title = "Studiengang"
+                $0.value = MainController.currentUser.degreeProgram
+            }
+            
             +++ Section("Biografie")
             
             <<< TextAreaRow() {
@@ -360,7 +374,9 @@ class ProfileViewController: FormViewController {
             let radius = Optional(Int(data["radius"] as! Float)),
             let bio = data["bio"] as? String,
             let skills = data["skills"] as? String,
-            let profileImage = data["profileImage"] as? UIImage
+            let profileImage = data["profileImage"] as? UIImage,
+            let school = data["hs"] as? String,
+            let degreeProgram = data["degreeProgram"] as? String
             else {
                 throw UserError.mapDataError
         }
@@ -386,6 +402,8 @@ class ProfileViewController: FormViewController {
                                                 user.skills = skills
                                                 user.profileImage = profileImage
                                                 user.gpsCoordinates = gpsCoordinates
+                                                user.school = school
+                                                user.degreeProgram = degreeProgram
                                                 
                                                 MainController.database.collection("users")
                                                     .document(MainController.currentUser.uid)
@@ -398,7 +416,9 @@ class ProfileViewController: FormViewController {
                                                         "radius": user.radius,
                                                         "bio": user.bio,
                                                         "skills": user.skills,
-                                                        "gpsCoordinates": user.gpsCoordinates
+                                                        "gpsCoordinates": user.gpsCoordinates,
+                                                        "school": user.school,
+                                                        "degreeProgram": user.degreeProgram
                                                     ]) { err in
                                                         if let err = err {
                                                             print("Error editing document: \(err.localizedDescription)")

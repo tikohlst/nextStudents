@@ -50,6 +50,11 @@ class OffersTableViewController: SortableTableViewController {
     private let editOfferSegue = "editOffer"
     
     static var offersArray: [Offer] = []
+    var allOffers = [Offer]() {
+        didSet {
+            OffersTableViewController.offersArray = allOffers
+        }
+    }
     var searchedOffers: [Offer] = []
     override var sortingOption: SortOption? {
         didSet {
@@ -121,22 +126,22 @@ class OffersTableViewController: SortableTableViewController {
                                                                     }
                                                                     
                                                                     // Remove old Offer object if exists
-                                                                    if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
-                                                                        OffersTableViewController.offersArray.remove(at: existingOffer)
+                                                                    if let existingOffer = self.allOffers.firstIndex(where: { $0.uid == offer.documentID }) {
+                                                                        self.allOffers.remove(at: existingOffer)
                                                                     }
                                                                     
-                                                                    OffersTableViewController.offersArray.append(newOffer)
+                                                                    self.allOffers.append(newOffer)
                                                                     // Update the table
                                                                     self.tableView.reloadData()
                                                                 }
                                                             }
                                                         } else {
                                                             // Remove old Offer object if exists
-                                                            if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.documentID }) {
-                                                                OffersTableViewController.offersArray.remove(at: existingOffer)
+                                                            if let existingOffer = self.allOffers.firstIndex(where: { $0.uid == offer.documentID }) {
+                                                                self.allOffers.remove(at: existingOffer)
                                                             }
                                                             
-                                                            OffersTableViewController.offersArray.append(newOffer)
+                                                            self.allOffers.append(newOffer)
                                                             // Update the table
                                                             self.tableView.reloadData()
                                                         }
@@ -298,6 +303,12 @@ class OffersTableViewController: SortableTableViewController {
                     let selectedOffer = displayedOffers[selectedIndex.row]
                     vc.currentOffer = selectedOffer
                 }
+            case "showFilterOptions":
+                if let vc = segue.destination as? OfferPopOverController, let ppc = vc.popoverPresentationController {
+                    ppc.delegate = self
+                    vc.delegate = self
+                    vc.offers = isSorting ? searchedOffers : allOffers
+                }
             default:
                 break
             }
@@ -318,8 +329,23 @@ class OffersTableViewController: SortableTableViewController {
     
 }
 
+// MARK: - Extensions
+
 extension OffersTableViewController: SortTableViewControllerDelegate {
     func forward(data: SortOption?) {
         sortingOption = data
+    }
+}
+
+extension OffersTableViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension OffersTableViewController: OfferFilterControllerDelegate {
+    func forward(data: [Offer]) {
+        OffersTableViewController.offersArray = data
+        tableView.reloadData()
     }
 }

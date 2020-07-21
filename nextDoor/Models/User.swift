@@ -31,12 +31,14 @@ class User: UserService {
     var bio: String
     var skills: String
     var profileImage: UIImage
+    var school: String
+    var degreeProgram: String
     
     // MARK: - Methods
     
     init(uid: String, firstName: String, lastName: String, street: String,
          housenumber: String, zipcode: String, gpsCoordinates: GeoPoint,
-         radius: Int, bio: String, skills: String) {
+         radius: Int, bio: String, skills: String, school: String, degreeProgram: String) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
@@ -48,12 +50,14 @@ class User: UserService {
         self.bio = bio
         self.skills = skills
         self.profileImage = UIImage(named: "defaultProfilePicture")!
+        self.school = school
+        self.degreeProgram = degreeProgram
     }
     
     convenience init(){
         self.init(uid: "", firstName: "", lastName: "", street: "",
                   housenumber: "", zipcode: "", gpsCoordinates: GeoPoint(latitude: 0, longitude: 0),
-                  radius: 0, bio: "", skills: "")
+                  radius: 0, bio: "", skills: "", school: "", degreeProgram: "")
     }
     
     func mapData(uid: String, data: [String: Any]?) throws -> User {
@@ -67,7 +71,9 @@ class User: UserService {
             let gpsCoordinates = data?["gpsCoordinates"] as? GeoPoint,
             let radius = data?["radius"] as? Int,
             let bio = data?["bio"] as? String,
-            let skills = data?["skills"] as? String
+            let skills = data?["skills"] as? String,
+            let school = data?["school"] as? String,
+            let degreeProgram = data?["degreeProgram"] as? String
             else {
                 throw UserError.mapDataError
         }
@@ -81,8 +87,18 @@ class User: UserService {
                     gpsCoordinates: gpsCoordinates,
                     radius: radius,
                     bio: bio,
-                    skills: skills
+                    skills: skills,
+                    school: school,
+                    degreeProgram: degreeProgram
         )
     }
     
+}
+extension User: Equatable, Hashable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.uid == rhs.uid
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uid)
+    }
 }

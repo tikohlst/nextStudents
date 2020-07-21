@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -8,6 +8,50 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Offer Pop Over Controller-->
+        <scene sceneID="3yn-cQ-4At">
+            <objects>
+                <viewController id="PV9-9t-bir" customClass="OfferPopOverController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iTe-m3-aHZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="NHJ-Ol-Slv" userLabel="filterView">
+                                <rect key="frame" x="26" y="20" width="368" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anzeige" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53g-cd-0xn">
+                                        <rect key="frame" x="8" y="9" width="72" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="KVs-R6-DXX">
+                                        <rect key="frame" x="88" y="8" width="217" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Biete"/>
+                                            <segment title="Alles"/>
+                                            <segment title="Suche"/>
+                                        </segments>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="eNv-4T-Joi"/>
+                    </view>
+                    <connections>
+                        <outlet property="filterControl" destination="KVs-R6-DXX" id="5VM-fX-UBm"/>
+                        <outlet property="filterView" destination="NHJ-Ol-Slv" id="2NH-ou-Nf1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dJe-jm-wHJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1582.608695652174" y="-91.741071428571431"/>
+        </scene>
         <!--Angebote-->
         <scene sceneID="Xfn-oA-ZN3">
             <objects>
@@ -104,7 +148,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Angebote" id="B39-5W-llW">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="Mie-4S-WMj"/>
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3.decrease.circle" catalog="system" id="Mie-4S-WMj">
+                            <connections>
+                                <segue destination="PV9-9t-bir" kind="popoverPresentation" identifier="showFilterOptions" popoverAnchorBarButtonItem="Mie-4S-WMj" id="hQa-hf-PKl">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" left="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="tnT-4Z-JUT">
                                 <connections>

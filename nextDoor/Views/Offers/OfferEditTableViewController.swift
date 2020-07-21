@@ -117,12 +117,10 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 6
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 1
     }
     
@@ -221,6 +219,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         } else {
             createOffer()
         }
+        self.performSegue(withIdentifier: "backToOffers", sender: nil)
     }
     
     private func createOffer() {
@@ -349,6 +348,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
 }
+
+// MARK: - Extensions
+
 extension OfferEditTableViewController: ImagePickerDelegate {
     func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {}
     

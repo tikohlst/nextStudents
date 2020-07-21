@@ -251,6 +251,20 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 row.formatter = nil
             }
             
+            +++ Section("Weitere Informationen")
+            
+            <<< PickerRow<String>("Hochschule/Universität") {
+                $0.tag = "hs"
+                $0.options = ["keine Angabe", "Hochschule RheinMain", "Uni Mainz", "Uni2"]
+            }
+            
+            +++ Section("Studiengang")
+            
+            <<< TextRow() {
+                $0.tag = "degreeProgram"
+                $0.title = "Studiengang"
+            }
+            
             +++ Section()
             
             <<< ButtonRow() {
@@ -263,8 +277,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 if row.section?.form?.validate().isEmpty ?? false {
                     self.callGPSVailation()
                 }
-        }
-        
+            }
         if accountInfoMissing, let user = MainController.currentUser {
             form.rowBy(tag: "firstName")?.baseValue = user.firstName
             form.rowBy(tag: "lastName")?.baseValue = user.lastName
@@ -393,7 +406,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                         let lastName = dict["lastName"] as? String,
                         let street = dict["street"] as? String,
                         let housenumber = dict["housenumber"] as? String,
-                        let zipcode = dict["zipcode"] as? Int {
+                        let zipcode = dict["zipcode"] as? Int,
+                        let school = dict["hs"] as? String {
+                        let degreeProgram = dict["degreeProgram"] as? String ?? ""
                         
                         MainController.database.collection("users")
                             .document(Auth.auth().currentUser!.uid)
@@ -406,7 +421,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                 "radius": self.defaultRadius,
                                 "gpsCoordinates": self.formGpsCoordinates!,
                                 "bio": "",
-                                "skills": ""
+                                "skills": "",
+                                "school": school,
+                                "degreeProgram" : degreeProgram
                             ]) { err in
                                 if let err = err {
                                     print("Error adding document: \(err)")
@@ -431,7 +448,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             let name = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
-            let zipcode = dict["zipcode"] as? Int {
+            let zipcode = dict["zipcode"] as? Int,
+            let school = dict["hs"] as? String,
+            let degreeProgram = dict["degreeProgram"] as? String {
             
             MainController.database.collection("users")
                 .document(MainController.currentUser.uid)
@@ -442,7 +461,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                     "housenumber": housenumber,
                     "zipcode": String(zipcode),
                     "radius": self.defaultRadius,
-                    "gpsCoordinates": self.formGpsCoordinates!
+                    "gpsCoordinates": self.formGpsCoordinates!,
+                    "school": school,
+                    "degreeProgram": degreeProgram
                 ]) { err in
                     if let err = err {
                         print("Error adding document: \(err)")

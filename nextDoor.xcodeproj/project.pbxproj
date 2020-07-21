@@ -50,10 +50,11 @@
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
-		8F1F630524C0464600DF70BD /* FilterPopOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F630424C0464600DF70BD /* FilterPopOverController.swift */; };
+		8F1F630524C0464600DF70BD /* NeighborPopOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F630424C0464600DF70BD /* NeighborPopOverController.swift */; };
 		8F22337C24A62148003EC2D4 /* SortTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337B24A62148003EC2D4 /* SortTableViewController.swift */; };
 		8F22337E24A63057003EC2D4 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337D24A63057003EC2D4 /* ContainerViewController.swift */; };
 		8F22338024A8A03B003EC2D4 /* SortableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22337F24A8A03B003EC2D4 /* SortableTableViewController.swift */; };
+		8F24BCBC24C6F659002FF456 /* OfferPopOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F24BCBB24C6F659002FF456 /* OfferPopOverController.swift */; };
 		8F250FCD2494D33B00A6CD39 /* OfferEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */; };
 		8F5981D4248AAA7F0019C3BD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */; };
 		8F803B5D248BA0730026E9E7 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */; };
@@ -120,10 +121,11 @@
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F0B560D248FA60B00703F0A /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
-		8F1F630424C0464600DF70BD /* FilterPopOverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPopOverController.swift; sourceTree = "<group>"; };
+		8F1F630424C0464600DF70BD /* NeighborPopOverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborPopOverController.swift; sourceTree = "<group>"; };
 		8F22337B24A62148003EC2D4 /* SortTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTableViewController.swift; sourceTree = "<group>"; };
 		8F22337D24A63057003EC2D4 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		8F22337F24A8A03B003EC2D4 /* SortableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortableTableViewController.swift; sourceTree = "<group>"; };
+		8F24BCBB24C6F659002FF456 /* OfferPopOverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPopOverController.swift; sourceTree = "<group>"; };
 		8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditTableViewController.swift; sourceTree = "<group>"; };
 		8F5981D3248AAA7F0019C3BD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8F803B5C248BA0730026E9E7 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				221B088F2487A2F800CE8A9B /* OffersTableViewController.swift */,
 				2253260824753B1E00B35802 /* OfferTableViewController.swift */,
 				8F250FCC2494D33B00A6CD39 /* OfferEditTableViewController.swift */,
+				8F24BCBB24C6F659002FF456 /* OfferPopOverController.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -234,7 +237,7 @@
 		229694AC24AA3D040064FB75 /* Neighbors */ = {
 			isa = PBXGroup;
 			children = (
-				8F1F630424C0464600DF70BD /* FilterPopOverController.swift */,
+				8F1F630424C0464600DF70BD /* NeighborPopOverController.swift */,
 				22739EDA24AA614600D27D8A /* Neighbors.storyboard */,
 				221B088D2487098A00CE8A9B /* NeighborsTableViewController.swift */,
 				226F1C0A2490DA5F007F709D /* NeighborTableViewController.swift */,
@@ -601,9 +604,10 @@
 				2253260924753B1E00B35802 /* OfferTableViewController.swift in Sources */,
 				221B08922487A54C00CE8A9B /* Offer.swift in Sources */,
 				221B08902487A2F800CE8A9B /* OffersTableViewController.swift in Sources */,
-				8F1F630524C0464600DF70BD /* FilterPopOverController.swift in Sources */,
+				8F1F630524C0464600DF70BD /* NeighborPopOverController.swift in Sources */,
 				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
 				22AAADC02491654300542F5E /* Message.swift in Sources */,
+				8F24BCBC24C6F659002FF456 /* OfferPopOverController.swift in Sources */,
 				22ECD957249F6FAD002B8F82 /* Fonts.swift in Sources */,
 				8F22337C24A62148003EC2D4 /* SortTableViewController.swift in Sources */,
 				8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */,
