@@ -254,11 +254,15 @@ class OffersTableViewController: SortableTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
-        let usersToDisplay = isSorting ? searchedOffers : OffersTableViewController.offersArray
+        let offersToDisplay = isSorting ? searchedOffers : OffersTableViewController.offersArray
         
         // show all existing offers
-        if usersToDisplay.count > 0 {
-            let currentOffer = usersToDisplay[indexPath.row]
+        if offersToDisplay.count > 0 {
+            let currentOffer = offersToDisplay[indexPath.row]
+            
+            if currentOffer.ownerUID == MainController.currentUser.uid {
+                cell.offerView.backgroundColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+            }
             
             // Write the title of the current offer in the cell
             cell.titleLabel.text = currentOffer.title
