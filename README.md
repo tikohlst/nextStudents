@@ -1,4 +1,4 @@
-# nextDoor
+# nextStudents
 
 [![Swift Version][swift-image]][swift-url]
 [![Build Status][travis-image]][travis-url]
@@ -20,14 +20,14 @@ Applied Sciences](https://www.hs-rm.de/de/) in the summer semester 2020.
 * [Firebase](https://firebase.google.com)
 
 ## Initial setup, build tools and dependencies
-The nextDoor-App is built using Swift and [Firebase](https://firebase.google.com). The Dependencies are managed using [CocoaPods](https://cocoapods.org).
+The nextStudents-App is built using Swift and [Firebase](https://firebase.google.com). The Dependencies are managed using [CocoaPods](https://cocoapods.org).
 
-Install the pods and open the `nextDoor.xcworkspace` file to see the project in Xcode.
+Install the pods and open the `nextStudents.xcworkspace` file to see the project in Xcode.
 
 ```
-cd /path/to/nextDoor
+cd /path/to/nextStudents
 pod install
-open nextDoor.xcworkspace
+open nextStudents.xcworkspace
 ```
 
 ## Configuration
@@ -36,7 +36,7 @@ See the Google Firebase documentation how to build an firebase account. Download
 
 ## License
 
-nextDoor is licensed under the MIT license. See [LICENSE-file](./LICENSE) for details.
+nextStudents is licensed under the MIT license. See [LICENSE-file](./LICENSE) for details.
 
 ## Copyright
 

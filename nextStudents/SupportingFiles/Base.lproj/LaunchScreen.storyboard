@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qMM-Pd-3Cs">
+                                <rect key="frame" x="197" y="496.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f5l-3h-G9m">
+                                <rect key="frame" x="86" y="556" width="242" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="foC-82-8l4"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="nextStudents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22P-VS-ufP">
+                                <rect key="frame" x="32" y="125" width="351" height="72"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="22P-VS-ufP" firstAttribute="centerX" secondItem="f5l-3h-G9m" secondAttribute="centerX" id="2hu-Hz-NRl"/>
+                            <constraint firstItem="f5l-3h-G9m" firstAttribute="top" secondItem="qMM-Pd-3Cs" secondAttribute="bottom" constant="39.257763975155285" id="42b-Nu-XyU"/>
+                            <constraint firstItem="22P-VS-ufP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="90" id="AOn-QD-yB3"/>
+                            <constraint firstItem="f5l-3h-G9m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="86" id="BHC-h4-3eg"/>
+                            <constraint firstItem="22P-VS-ufP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="76" id="Efv-cc-eGN"/>
+                            <constraint firstItem="22P-VS-ufP" firstAttribute="centerX" secondItem="qMM-Pd-3Cs" secondAttribute="centerX" id="n4q-es-uyf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="f5l-3h-G9m" secondAttribute="bottom" constant="178" id="sj4-Mr-GHf"/>
+                            <constraint firstItem="22P-VS-ufP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="zk0-Iy-fsn"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+        </scene>
+    </scenes>
+</document>

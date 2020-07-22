@@ -1,11 +1,11 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '13.5'
 
-target 'nextDoor' do
+target 'nextStudents' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   
-  # Pods for nextDoor
+  # Pods for nextStudents
   pod 'MessageKit'
   
   # Programmatically load custom fonts
@@ -32,11 +32,11 @@ target 'nextDoor' do
   # https://firebase.google.com/docs/ios/setup#available-pods
 end
 
-target 'nextDoorTests' do
+target 'nextStudentsTests' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   
-  # Pods for nextDoor
+  # Pods for nextStudents
   pod 'MessageKit'
   
   # Programmatically load custom fonts
