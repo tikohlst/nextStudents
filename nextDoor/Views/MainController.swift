@@ -27,7 +27,9 @@ class MainController: UITabBarController {
     }
     
     override func viewDidLoad() {
-        selectedIndex = 1
+        // Do any additional setup after loading the view.
+        super.viewDidLoad()
+        
         MainController.currentUserAuth = Auth.auth().currentUser!
         
         MainController.database.collection("users")
@@ -55,6 +57,9 @@ class MainController: UITabBarController {
                         // check if userdata is complete
                         self.checkMissingUserData()
                         
+                        // show the offers screen after login
+                        self.selectedIndex = 1
+                        
                     } catch UserError.mapDataError {
                         print("Error while mapping User!")
                         let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
@@ -64,8 +69,6 @@ class MainController: UITabBarController {
                     }
                 }
         }
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     // MARK: - Helper methods
