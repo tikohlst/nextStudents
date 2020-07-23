@@ -171,9 +171,9 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     
     func currentSender() -> SenderType {
         if MainController.currentUser == nil {
-            return Sender(id: "User not found", displayName: "Name not found")
+            return Sender(senderId: "User not found")
         } else {
-            return Sender(id: MainController.currentUser.uid, displayName: (MainController.currentUser.firstName + " " + MainController.currentUser.lastName))
+            return Sender(senderId: MainController.currentUser.uid)
         }
     }
     

@@ -59,9 +59,8 @@ struct Message: MessageService {
 }
 
 extension Message: MessageType {
-    
     var sender: SenderType {
-        return Sender(id: senderUID, displayName: "")
+        return Sender(senderId: senderUID)
     }
     
     var messageId: String {
@@ -76,4 +75,9 @@ extension Message: MessageType {
         return .text(content)
     }
     
+}
+
+struct Sender: SenderType, Equatable {
+    var senderId: String
+    var displayName = ""
 }
