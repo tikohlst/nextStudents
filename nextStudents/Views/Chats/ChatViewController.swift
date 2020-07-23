@@ -34,7 +34,13 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         maintainPositionOnKeyboardFrameChanged = true
         
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
+        messageInputBar.inputTextView.placeholder = "Nachricht eingeben"
+        
         messageInputBar.sendButton.setTitleColor(UIColor.lightGray, for: .normal)
+        messageInputBar.sendButton.setSize(CGSize(width: 70, height: 36), animated: false)
+        messageInputBar.sendButton.title = "Senden"
+        messageInputBar.setRightStackViewWidthConstant(to: 70.0, animated: false)
+        
         messageInputBar.delegate = self
         
         messagesCollectionView.messagesDataSource = self
@@ -49,7 +55,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     func createNewChat() {
         let users = [MainController.currentUser.uid, self.chatPartnerUID]
         let data: [String: Any] = [
-            "users":users
+            "users": users
         ]
         
         MainController.database.collection("Chats")
