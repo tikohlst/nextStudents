@@ -11,7 +11,7 @@
         <!--Offer Pop Over Controller-->
         <scene sceneID="3yn-cQ-4At">
             <objects>
-                <viewController id="PV9-9t-bir" customClass="OfferPopOverController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="PV9-9t-bir" customClass="OfferPopOverController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iTe-m3-aHZ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,13 +55,13 @@
         <!--Angebote-->
         <scene sceneID="Xfn-oA-ZN3">
             <objects>
-                <tableViewController id="dkS-1f-0BS" customClass="OffersTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="dkS-1f-0BS" customClass="OffersTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="W3G-Vz-atu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="OfferCell" rowHeight="120" id="VrY-mR-uy1" customClass="OfferTableViewCell" customModule="nextDoor" customModuleProvider="target">
+                            <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="OfferCell" rowHeight="120" id="VrY-mR-uy1" customClass="OfferTableViewCell" customModule="nextStudents" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VrY-mR-uy1" id="WMp-WF-mGS">
@@ -180,26 +180,30 @@
         <!--Offer Table View Controller-->
         <scene sceneID="xRY-bg-Phw">
             <objects>
-                <tableViewController id="B26-Wc-uxA" customClass="OfferTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="B26-Wc-uxA" customClass="OfferTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Xqi-VO-EwB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="2Mc-SG-oLe">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="100" id="Ju9-6t-DSh">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="100" id="Ju9-6t-DSh">
                                         <rect key="frame" x="20" y="18" width="374" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ju9-6t-DSh" id="ggI-Rz-aOJ">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ju9-6t-DSh" id="ggI-Rz-aOJ">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Hi-4v-Hcw">
+                                                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Hi-4v-Hcw">
                                                     <rect key="frame" x="10" y="10" width="80" height="80"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="9VU-ry-P9x"/>
                                                         <constraint firstAttribute="height" constant="80" id="xrd-Xg-8eU"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="8n4-3W-140" appends="YES" id="Rld-y6-hJU"/>
+                                                    </connections>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name des Angebots" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vvT-Gn-Alo">
                                                     <rect key="frame" x="110" y="15" width="244" height="32"/>
@@ -340,7 +344,7 @@
                                                     <rect key="frame" x="10" y="5" width="354" height="114"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="defaultOfferImage" translatesAutoresizingMaskIntoConstraints="NO" id="Z0F-ib-wyM">
+                                                        <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="defaultOfferImage" translatesAutoresizingMaskIntoConstraints="NO" id="Z0F-ib-wyM">
                                                             <rect key="frame" x="8" y="4" width="115" height="106"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
@@ -412,13 +416,18 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y3M-C9-q4t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="8n4-3W-140">
+                    <connections>
+                        <action selector="showFullScreen:" destination="B26-Wc-uxA" id="i4f-KZ-SCw"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2550.7246376811595" y="721.875"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="9hs-w9-qzW">
             <objects>
-                <viewController storyboardIdentifier="chatviewvc3" id="jSd-bF-0BC" customClass="ChatViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatviewvc3" id="jSd-bF-0BC" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wtd-ag-u5p">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -434,7 +443,7 @@
         <!--Neues Angebot-->
         <scene sceneID="EMB-kf-xnK">
             <objects>
-                <tableViewController id="FfJ-Ih-jnY" customClass="OfferEditTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="FfJ-Ih-jnY" customClass="OfferEditTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="h8K-hm-Rhs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
