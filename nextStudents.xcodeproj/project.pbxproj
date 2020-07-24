@@ -50,6 +50,7 @@
 		22FC0FA824C49299008DA855 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
 		5362BD15FD256BA819AC56A9 /* Pods_nextStudents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0033BA71BBCB7AFF9FCF2C5D /* Pods_nextStudents.framework */; };
 		8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F031AC4248A967A00EC0F02 /* ChatViewController.swift */; };
+		8F03AEB124CB449A000D815D /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F03AEB024CB449A000D815D /* RequestsTableViewController.swift */; };
 		8F0B560A248C059700703F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8F0B5609248C059700703F0A /* GoogleService-Info.plist */; };
 		8F0B560E248FA60B00703F0A /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B560D248FA60B00703F0A /* MainController.swift */; };
 		8F1F630524C0464600DF70BD /* NeighborPopOverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1F630424C0464600DF70BD /* NeighborPopOverController.swift */; };
@@ -124,6 +125,7 @@
 		42D29CEC6655A563017987B6 /* Pods-nextStudents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextStudents.debug.xcconfig"; path = "Target Support Files/Pods-nextStudents/Pods-nextStudents.debug.xcconfig"; sourceTree = "<group>"; };
 		80861D8957637A7F5C4891CB /* Pods-nextStudentsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextStudentsTests.debug.xcconfig"; path = "Target Support Files/Pods-nextStudentsTests/Pods-nextStudentsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8F031AC4248A967A00EC0F02 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		8F03AEB024CB449A000D815D /* RequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
 		8F0B5609248C059700703F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F0B560D248FA60B00703F0A /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		8F1F630424C0464600DF70BD /* NeighborPopOverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborPopOverController.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 		229694A924AA3CCC0064FB75 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				8F03AEB024CB449A000D815D /* RequestsTableViewController.swift */,
 				22739ED224AA460E00D27D8A /* Settings.storyboard */,
 				8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */,
 				8FC6C4E82488E7A700572566 /* ProfileViewController.swift */,
@@ -633,6 +636,7 @@
 				226F1C0B2490DA5F007F709D /* NeighborTableViewController.swift in Sources */,
 				22AAADC22491657C00542F5E /* Chat.swift in Sources */,
 				221B088E2487098A00CE8A9B /* NeighborsTableViewController.swift in Sources */,
+				8F03AEB124CB449A000D815D /* RequestsTableViewController.swift in Sources */,
 				8F031AC5248A967A00EC0F02 /* ChatViewController.swift in Sources */,
 				2260843524700BD700D30E81 /* AppDelegate.swift in Sources */,
 				2260843724700BD700D30E81 /* SceneDelegate.swift in Sources */,

@@ -262,6 +262,8 @@ class OffersTableViewController: SortableTableViewController {
             
             if currentOffer.ownerUID == MainController.currentUser.uid {
                 cell.offerView.backgroundColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+            } else {
+                cell.offerView.backgroundColor = UIColor(named: "White-Grey")
             }
             
             // Write the title of the current offer in the cell

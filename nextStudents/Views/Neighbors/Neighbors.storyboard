@@ -305,6 +305,9 @@
                                                             <integer key="value" value="10"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="touchGetToKnow:" destination="gPu-6G-gn1" eventType="touchUpInside" id="X9y-If-ORB"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -348,6 +351,7 @@
                     <connections>
                         <outlet property="address" destination="RDm-wW-Ysh" id="wfj-PS-dvG"/>
                         <outlet property="bioTextView" destination="6Do-zh-uFQ" id="R9o-cD-oBC"/>
+                        <outlet property="getToKnowButton" destination="e15-Pk-36X" id="8WB-22-lex"/>
                         <outlet property="profileImageView" destination="LrN-eh-T7E" id="ECm-qE-mqn"/>
                         <outlet property="skillsTextView" destination="fnm-pm-WBf" id="VJR-6H-1d8"/>
                         <outlet property="userNameLabel" destination="CJ6-WC-UbY" id="Jei-WT-6gW"/>

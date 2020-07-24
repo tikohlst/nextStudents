@@ -15,7 +15,6 @@ class SettingsTableViewController: UITableViewController {
     
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var userBioLabel: UILabel!
     @IBOutlet weak var helpTableViewCell: UITableViewCell!
     @IBOutlet weak var signOutTableViewCell: UITableViewCell!
     
@@ -65,15 +64,13 @@ class SettingsTableViewController: UITableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         switch section {
-        case 0: return 1
         case 1: return 2
-        case 2: return 1
         default: return 1
         }
     }

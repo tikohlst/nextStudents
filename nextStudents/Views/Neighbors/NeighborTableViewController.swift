@@ -16,6 +16,7 @@ class NeighborTableViewController: UITableViewController {
     
     // currentNeighbor
     var user: User!
+    var friendList: Dictionary<String,Int>?
     
     // MARK: - IBOutlets
     
@@ -24,8 +25,62 @@ class NeighborTableViewController: UITableViewController {
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var skillsTextView: UITextView!
-    
-    // MARK: - UIViewController events
+    @IBOutlet weak var getToKnowButton: UIButton!
+       
+       @IBAction func touchGetToKnow(_ sender: UIButton) {
+           if friendList == nil {
+               friendList = Dictionary<String, Int>()
+           }
+           friendList![MainController.currentUser!.uid] = 0
+           var docData = [String:Any]()
+           docData["list"] = friendList
+           addRequest(with: docData, to: user.uid, completion: {
+               self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+               self.getToKnowButton.isEnabled = false
+               self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+           })
+       }
+       
+       private func addRequest(with data: [String:Any], to id: String, completion: @escaping () -> Void) {
+           MainController.database.collection("friends").document(id).setData(data) { error in
+               if let error = error {
+                   print("Error sending request: \(error.localizedDescription)")
+               } else {
+                   completion()
+               }
+           }
+       }
+        
+        // MARK: - UIViewController events
+        
+       override func viewDidLoad() {
+           super.viewDidLoad()
+           MainController.database.collection("friends").document(user.uid).getDocument { document, error in
+               if let error = error {
+                   print("Error getting friendlist: \(error.localizedDescription)")
+               } else if let document = document, document.exists {
+                   let docData = document.data()
+                   if let data = (docData?["list"] as! Dictionary<String, Int>?) {
+                       self.friendList = data
+                       if let status = data[MainController.currentUser!.uid] {
+                           switch status {
+                               case 0:
+                                   self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+                                   self.getToKnowButton.isEnabled = false
+                                   self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                                   // TODO: remove some visible information
+                               case 1:
+                                   self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
+                                   self.getToKnowButton.isEnabled = false
+                                   self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                               default:
+                                   break
+                           }
+                       }
+                   }
+               }
+           }
+       }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
