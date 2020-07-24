@@ -83,4 +83,14 @@ class NeighborTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func showFullScreen(_ sender: UITapGestureRecognizer) {
+        let iVC = FullScreenImageViewController()
+        iVC.imageToShow = user.profileImage
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Zurück"
+        navigationItem.backBarButtonItem = backItem
+        
+        self.navigationController?.pushViewController(iVC, animated: true)
+    }
 }

@@ -28,6 +28,8 @@
 		22739EE524AA673600D27D8A /* Offers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22739EE424AA673600D27D8A /* Offers.storyboard */; };
 		22AAADC02491654300542F5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADBF2491654300542F5E /* Message.swift */; };
 		22AAADC22491657C00542F5E /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAADC12491657C00542F5E /* Chat.swift */; };
+		22DDE23424CA1B3400232DF2 /* FullScreenImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DDE23324CA1B3400232DF2 /* FullScreenImageViewController.xib */; };
+		22DDE23624CA1F6600232DF2 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DDE23524CA1F6600232DF2 /* FullScreenImageViewController.swift */; };
 		22ECD957249F6FAD002B8F82 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ECD956249F6FAD002B8F82 /* Fonts.swift */; };
 		22ECD965249F860A002B8F82 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */; };
 		22ECD966249F860A002B8F82 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22ECD95C249F85FC002B8F82 /* OpenSans-BoldItalic.ttf */; };
@@ -102,6 +104,8 @@
 		22AAADC12491657C00542F5E /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		22CE93E724ADCF85001287C1 /* nextStudentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nextStudentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22CE93EB24ADCF85001287C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22DDE23324CA1B3400232DF2 /* FullScreenImageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullScreenImageViewController.xib; sourceTree = "<group>"; };
+		22DDE23524CA1F6600232DF2 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		22ECD956249F6FAD002B8F82 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		22ECD95B249F85FA002B8F82 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		22ECD95C249F85FC002B8F82 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -276,6 +280,7 @@
 				229694AA24AA3CDE0064FB75 /* Offers */,
 				229694A924AA3CCC0064FB75 /* Settings */,
 				229694AE24AA3D2F0064FB75 /* Sortable */,
+				22DDE23724CAD6B100232DF2 /* FullScreenImage */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -321,6 +326,15 @@
 				22FC0FA424C46950008DA855 /* MessageTests.swift */,
 			);
 			path = nextStudentsTests;
+			sourceTree = "<group>";
+		};
+		22DDE23724CAD6B100232DF2 /* FullScreenImage */ = {
+			isa = PBXGroup;
+			children = (
+				22DDE23524CA1F6600232DF2 /* FullScreenImageViewController.swift */,
+				22DDE23324CA1B3400232DF2 /* FullScreenImageViewController.xib */,
+			);
+			path = FullScreenImage;
 			sourceTree = "<group>";
 		};
 		22ECD95A249F85E0002B8F82 /* Fonts */ = {
@@ -462,6 +476,7 @@
 				22739ED324AA460E00D27D8A /* Settings.storyboard in Resources */,
 				2260844024700BDB00D30E81 /* Assets.xcassets in Resources */,
 				22739EE524AA673600D27D8A /* Offers.storyboard in Resources */,
+				22DDE23424CA1B3400232DF2 /* FullScreenImageViewController.xib in Resources */,
 				2260843E24700BD700D30E81 /* Main.storyboard in Resources */,
 				22ECD96B249F860A002B8F82 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				22ECD96E249F860A002B8F82 /* OpenSans-Semibold.ttf in Resources */,
@@ -625,6 +640,7 @@
 				8FCADB93249CC67000795221 /* SliderTextComponent.swift in Sources */,
 				221860ED24C1989000490A80 /* Utility.swift in Sources */,
 				8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */,
+				22DDE23624CA1F6600232DF2 /* FullScreenImageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
