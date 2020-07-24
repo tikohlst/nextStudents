@@ -281,6 +281,8 @@ class ChatsTableViewController: SortableTableViewController {
     
 }
 
+// MARK: - Extensions
+
 extension ChatsTableViewController: SortTableViewControllerDelegate {
     func forward(data: SortOption?) {
         sortingOption = data

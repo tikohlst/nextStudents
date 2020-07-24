@@ -251,7 +251,7 @@ class ProfileViewController: FormViewController {
                 row.formatter = nil
             }
             
-            +++ Section(){
+            +++ Section() {
                 $0.tag = "slider"
             }
             
@@ -387,7 +387,7 @@ class ProfileViewController: FormViewController {
                                      completionHandler: { (coordinates, error) in
                                         
                                         let numberRange = (-90.0)...(90.0)
-                                        if numberRange.contains(coordinates.latitude) && numberRange.contains(coordinates.longitude){
+                                        if numberRange.contains(coordinates.latitude) && numberRange.contains(coordinates.longitude) {
                                             let gpsCoordinates = GeoPoint(latitude: coordinates.latitude,
                                                                           longitude: coordinates.longitude)
                                             

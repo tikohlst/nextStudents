@@ -13,7 +13,7 @@ enum MessageError: Error {
 }
 
 protocol MessageService {
-    func mapData(data: [String:Any]?) throws -> Message?
+    func mapData(data: [String: Any]?) throws -> Message?
 }
 
 struct Message: MessageService {
@@ -27,18 +27,18 @@ struct Message: MessageService {
     
     // MARK: - Methods
     
-    init(id: String, senderUID: String, created: Timestamp, content: String){
+    init(id: String, senderUID: String, created: Timestamp, content: String) {
         self.id = id
         self.senderUID = senderUID
         self.created = created
         self.content = content
     }
     
-    init(){
+    init() {
         self.init(id: "", senderUID: "", created: Timestamp(), content: "")
     }
     
-    func mapData(data: [String:Any]?) throws -> Message? {
+    func mapData(data: [String: Any]?) throws -> Message? {
         
         // Data validation
         guard let id = data?["id"] as? String,
@@ -57,6 +57,8 @@ struct Message: MessageService {
     }
     
 }
+
+// MARK: - Extensions
 
 extension Message: MessageType {
     var sender: SenderType {

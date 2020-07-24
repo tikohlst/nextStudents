@@ -49,7 +49,7 @@ struct Offer: OfferService {
         self.offerImage = UIImage(named: "defaultOfferImage")!
     }
     
-    init(){
+    init() {
         self.init(uid: "", ownerUID: "", ownerFirstName: "", ownerLastName: "",
                   title: "", description: "", date: Date(),
                   duration: "15", type: "")

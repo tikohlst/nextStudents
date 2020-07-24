@@ -89,6 +89,8 @@ class NeighborPopOverController: UIViewController {
 
 }
 
+// MARK: - Extensions
+
 extension NeighborPopOverController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     override func didReceiveMemoryWarning() {

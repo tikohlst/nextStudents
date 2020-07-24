@@ -9,7 +9,7 @@
 import UIKit
 
 class FullScreenImageViewController: UIViewController , UIScrollViewDelegate {
-
+    
     // MARK: - Variables
     
     var imageUrl: String?

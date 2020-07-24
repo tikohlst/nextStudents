@@ -35,7 +35,7 @@ struct Chat: ChatService {
         self.timestampOfTheLatestMessage = timestampOfTheLatestMessage
     }
     
-    init(){
+    init() {
         self.init(localChatID: "", chatPartner: User(), latestMessage: "",
                   timestampOfTheLatestMessage: Timestamp())
     }

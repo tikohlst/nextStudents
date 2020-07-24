@@ -54,10 +54,10 @@ class User: UserService {
         self.degreeProgram = degreeProgram
     }
     
-    convenience init(){
+    convenience init() {
         self.init(uid: "", firstName: "", lastName: "", street: "",
                   housenumber: "", zipcode: "", gpsCoordinates: GeoPoint(latitude: 0, longitude: 0),
-                  radius: 0, bio: "", skills: "", school: "", degreeProgram: "")
+                  radius: 100, bio: "", skills: "", school: "", degreeProgram: "")
     }
     
     func mapData(uid: String, data: [String: Any]?) throws -> User {
@@ -94,6 +94,9 @@ class User: UserService {
     }
     
 }
+
+// MARK: - Extensions
+
 extension User: Equatable, Hashable {
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.uid == rhs.uid

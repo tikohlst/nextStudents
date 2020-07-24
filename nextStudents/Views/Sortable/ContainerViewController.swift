@@ -57,7 +57,7 @@ class ContainerViewController: UIViewController {
             if tabViewController is NeighborsTableViewController {
                 sortController.delegate = tabViewController as! NeighborsTableViewController
                 let options = [SortOption.firstName, SortOption.lastName, SortOption.distance]
-                if let indexPaths = sortController.tableView.indexPathsForRows(in: sortController.tableView.frame){
+                if let indexPaths = sortController.tableView.indexPathsForRows(in: sortController.tableView.frame) {
                     for i in 0..<indexPaths.count {
                         if let cell = sortController.tableView.cellForRow(at: indexPaths[i]) {
                             cell.textLabel?.text = options[i].rawValue
