@@ -85,7 +85,7 @@ class RequestsTableViewController: UITableViewController {
                                     .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
                                         if let error = error {
                                             print("Error while downloading profile image: \(error.localizedDescription)")
-                                            self.images.append(UIImage(named: "defaultProfilePicture")!)
+                                            self.images.append(UIImage(named: "DefaultProfilePicture")!)
                                         } else {
                                             // Data for "profilePicture.jpg" is returned
                                             self.images.append(UIImage(data: data!)!)
@@ -114,11 +114,12 @@ class RequestsTableViewController: UITableViewController {
             MainController.database.collection("friends").document(uid).getDocument { document, error in
                 if let error = error {
                     print("Error getting friendlist: \(error.localizedDescription)")
-                } else if let document = document, document.exists {
-                    let docData = document.data()
-                    if let data = (docData?["list"] as! Dictionary<String, Int>?) {
-                        completion(data)
-                    }
+                } else if let docData = document?.data(), let data = (docData["list"] as! Dictionary<String, Int>?) {
+                    completion(data)
+                } else {
+                    // no error but document doesn't exist right now -> create data for empty document
+                    let newData = Dictionary<String, Int>()
+                    completion(newData)
                 }
             }
         }
