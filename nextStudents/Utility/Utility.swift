@@ -22,9 +22,9 @@ enum SortOption: String {
 
 class Utility {
     
-    static func displayAlert(withMessage message: String?, withSignOut: Bool) -> UIAlertController {
+    static func displayAlert(withTitle title: String = "Interner Fehler", withMessage message: String?, withSignOut: Bool) -> UIAlertController {
         let alert = UIAlertController(
-            title: "Interner Fehler",
+            title: title,
             message: message ?? "Bitte wenden Sie sich an den Support.",
             preferredStyle: .alert)
         

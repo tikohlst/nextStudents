@@ -208,18 +208,27 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     @IBAction func touchCreate(_ sender: UIBarButtonItem) {
-        // Show an animated waiting circle
-        let indicatorView = self.activityIndicator(style: .medium,
-                                                   center: self.view.center)
-        self.view.addSubview(indicatorView)
-        indicatorView.startAnimating()
         
-        if currentOffer != nil {
-            saveOffer()
+        if titleTextField.text != nil &&
+            titleTextField.text != "" &&
+            descriptionTextField.text != nil &&
+            descriptionTextField.text != "" {
+            // Show an animated waiting circle
+            let indicatorView = self.activityIndicator(style: .medium,
+                                                       center: self.view.center)
+            self.view.addSubview(indicatorView)
+            indicatorView.startAnimating()
+            
+            if currentOffer != nil {
+                saveOffer()
+            } else {
+                createOffer()
+            }
+            self.performSegue(withIdentifier: "backToOffers", sender: nil)
         } else {
-            createOffer()
+            let alert = Utility.displayAlert(withTitle: "Fehler", withMessage: "Titel und Beschreibung müssen ausgefüllt sein.", withSignOut: false)
+            self.present(alert, animated: true, completion: nil)
         }
-        self.performSegue(withIdentifier: "backToOffers", sender: nil)
     }
     
     private func createOffer() {
