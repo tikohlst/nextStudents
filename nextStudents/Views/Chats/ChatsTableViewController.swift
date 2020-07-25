@@ -219,25 +219,39 @@ class ChatsTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let displayedChats = isSorting ? searchedChats : chatsArray
         if editingStyle == .delete {
             // Retrieve the selected chat
-            let currentChat = searchedChats[indexPath.row]
+            let currentChat = displayedChats[indexPath.row]
             
-            // Delete chat from the firebase database
-            MainController.database.collection("Chats")
-                .document(currentChat.localChatID)
-                .delete() { error in
-                    if let error = error {
-                        // An error happened.
-                        print(error)
-                    } else {
-                        let removedChat = self.searchedChats.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: .fade)
-                        self.chatsArray.remove(at: self.chatsArray.firstIndex(where: {
-                            return $0.localChatID  == removedChat.localChatID
-                        })!)
-                        print("Chat deleted successfully")
+            // get all chats of current user
+            MainController.database.collection("Chats").whereField("users", arrayContains: MainController.currentUser.uid).getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting chats: \(error.localizedDescription)")
+                } else if let snapshot = snapshot, !snapshot.isEmpty {
+                    for document in snapshot.documents {
+                        let data = document.data()["users"] as! Array<String>
+                        let chatRef = document.reference
+                        // get the current chat
+                        if data.contains(currentChat.chatPartner.uid) {
+                            // get the thread collection for the current chat
+                            chatRef.collection("thread").getDocuments { (threadQuery, error) in
+                                if let error = error {
+                                    print("Error gettin thread: \(error.localizedDescription)")
+                                } else if let threadQuery = threadQuery, !threadQuery.isEmpty {
+                                    // delete every chat message
+                                    for chatMessage in threadQuery.documents {
+                                        let messageRef = chatMessage.reference
+                                        messageRef.delete()
+                                    }
+                                    // delete the chat document (Chats/{chatId})
+                                    chatRef.delete()
+                                    self.tableView.deleteRows(at: [indexPath], with: .left)
+                                }
+                            }
+                        }
                     }
+                }
             }
         }
     }
