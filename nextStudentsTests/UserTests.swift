@@ -28,7 +28,9 @@ class UserTests: XCTestCase {
                             "gpsCoordinates": GeoPoint(latitude: 0, longitude: 0),
                             "radius": 100,
                             "bio": "testBio",
-                            "skills": "testSkills"] as [String: Any]?
+                            "skills": "testSkills",
+                            "school": "testSchool",
+                            "degreeProgram": "testDegreeProgram"] as [String: Any]?
         
         var user = User()
         
@@ -49,6 +51,8 @@ class UserTests: XCTestCase {
         XCTAssertTrue(user.radius == 100, "Error user.radius Test")
         XCTAssertTrue(user.bio == "testBio", "Error user.bio Test")
         XCTAssertTrue(user.skills == "testSkills", "Error user.skills Test")
+        XCTAssertTrue(user.school == "testSchool", "Error user.school Test")
+        XCTAssertTrue(user.degreeProgram == "testDegreeProgram", "Error user.degreeProgram Test")
     }
     
     func testMappingWithError() throws {
@@ -60,7 +64,9 @@ class UserTests: XCTestCase {
                             "zipcode": "12345",
                             "gpsCoordinates": GeoPoint(latitude: 0, longitude: 0),
                             "bio": "testBio",
-                            "skills": "testSkills"] as [String: Any]?
+                            "skills": "testSkills",
+                            "school": "testSchool",
+                            "degreeProgram": "testDegreeProgram"] as [String: Any]?
         
         XCTAssertThrowsError(try User().mapData(uid: "testUID", data: testRawData),
                              "User().mapData() should have thrown an error if 'radius' is missing") { (errorThrown) in
