@@ -10,13 +10,13 @@
         <!--Nachrichten-->
         <scene sceneID="d9T-gi-6xL">
             <objects>
-                <tableViewController id="yyK-9g-SXt" customClass="ChatsTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="yyK-9g-SXt" customClass="ChatsTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="36c-pr-ubI">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ChatCell" textLabel="zow-kp-oe0" detailTextLabel="Mh3-E7-gH2" imageView="RPd-kY-Tlx" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="Zvv-xO-VVZ" customClass="ChatTableViewCell" customModule="nextDoor" customModuleProvider="target">
+                            <tableViewCell autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ChatCell" textLabel="zow-kp-oe0" detailTextLabel="Mh3-E7-gH2" imageView="RPd-kY-Tlx" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="Zvv-xO-VVZ" customClass="ChatTableViewCell" customModule="nextStudents" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zvv-xO-VVZ" id="TtB-V5-40b">
@@ -91,14 +91,19 @@
         <!--Chat View Controller-->
         <scene sceneID="2Gr-VT-WRG">
             <objects>
-                <viewController storyboardIdentifier="chatviewvc" id="vYH-13-Yvz" customClass="ChatViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatVC" id="vYH-13-Yvz" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="x19-Cj-BAB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="xzs-0r-9al"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6Cz-Ee-ScZ"/>
+                    <navigationItem key="navigationItem" id="6Cz-Ee-ScZ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="0h0-f6-LUc"/>
+                        <connections>
+                            <outlet property="rightBarButtonItem" destination="0h0-f6-LUc" id="nhZ-p2-t5b"/>
+                        </connections>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y78-zP-j2W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

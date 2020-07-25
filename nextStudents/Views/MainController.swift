@@ -17,6 +17,13 @@ class MainController: UITabBarController {
     static var currentUser: User!
     static var currentUserUpdated = true
     
+    static var usersInRangeArray = [User]()
+    static var allUsers = [User]() {
+        didSet {
+            usersInRangeArray = allUsers
+        }
+    }
+    
     // MARK: - UIViewController events
     
     override func viewWillAppear(_ animated: Bool) {

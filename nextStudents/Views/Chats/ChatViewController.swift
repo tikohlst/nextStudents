@@ -28,10 +28,37 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.title = chatPartnerName
+        let imageView = UIImageView(image: chatPartnerProfileImage)
+        
+        // Show the profile image without whitespace
+        if imageView.frame.width > imageView.frame.height {
+            imageView.contentMode = .scaleAspectFit
+        } else {
+            imageView.contentMode = .scaleAspectFill
+        }
+        
+        // Show profile image rounded
+        imageView.layer.cornerRadius = 10
+        imageView.layer.masksToBounds = false
+        imageView.layer.shouldRasterize = true
+        imageView.layer.rasterizationScale = UIScreen.main.scale
+        
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+               // add it to the image view
+               imageView.addGestureRecognizer(tapGesture)
+               // make sure imageView can be interacted with by user
+               imageView.isUserInteractionEnabled = true
+        
+        let buttonItem = UIBarButtonItem(customView: imageView)
+        buttonItem.customView?.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        buttonItem.customView?.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        navigationItem.rightBarButtonItem = buttonItem
         navigationItem.title = chatPartnerName
         navigationItem.largeTitleDisplayMode = .never
-        maintainPositionOnKeyboardFrameChanged = true
         
         messageInputBar.inputTextView.tintColor = UIColor.lightGray
         messageInputBar.inputTextView.placeholder = "Nachricht eingeben"
@@ -47,7 +74,65 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         
+        maintainPositionOnKeyboardFrameChanged = true
+        
         self.loadChat()
+    }
+        
+    // MARK: - Methods
+    
+    @objc func imageTapped(gesture: UIGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            let backItem = UIBarButtonItem()
+            backItem.title = "Zurück"
+            navigationItem.backBarButtonItem = backItem
+            
+            let storyboard = UIStoryboard(name: "Neighbors", bundle: nil)
+            let neighborTableViewController = storyboard.instantiateViewController(withIdentifier: "neighborTableVC") as! NeighborTableViewController
+            
+            let chatPartner = MainController.allUsers.first(where: { $0.uid == chatPartnerUID})
+            
+            if chatPartner == nil {
+                MainController.database.collection("users")
+                    .document(chatPartnerUID!)
+                    .addSnapshotListener { (querySnapshot, error) in
+                        if error != nil {
+                            print("Error getting document: \(error!.localizedDescription)")
+                        } else {
+                            do {
+                                // get current user
+                                neighborTableViewController.user = try User().mapData(uid: querySnapshot!.documentID, data: querySnapshot!.data()!)
+                                
+                                // get profile image if it exists
+                                MainController.storage
+                                    .reference(withPath: "profilePictures/\(String(describing: self.chatPartnerUID!))/profilePicture.jpg")
+                                    .getData(maxSize: 4 * 1024 * 1024) { data, error in
+                                        if let error = error {
+                                            print("Error while downloading profile image: \(error.localizedDescription)")
+                                            // Using default image
+                                            neighborTableViewController.user.profileImage = UIImage(named: "defaultProfilePicture")!
+                                        } else {
+                                            // Data for "profilePicture.jpg" is returned
+                                            neighborTableViewController.user.profileImage = UIImage(data: data!)!
+                                        }
+                                        
+                                        self.navigationController?.pushViewController(neighborTableViewController, animated: true)
+                                }
+                                
+                            } catch UserError.mapDataError {
+                                print("Error while mapping User!")
+                                let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
+                                self.present(alert, animated: true, completion: nil)
+                            } catch {
+                                print("Unexpected error: \(error)")
+                            }
+                        }
+                }
+            } else {
+                neighborTableViewController.user = chatPartner
+                self.navigationController?.pushViewController(neighborTableViewController, animated: true)
+            }
+        }
     }
     
     // MARK: - Custom messages handlers

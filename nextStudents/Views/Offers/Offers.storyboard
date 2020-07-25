@@ -427,7 +427,7 @@
         <!--Chat View Controller-->
         <scene sceneID="9hs-w9-qzW">
             <objects>
-                <viewController storyboardIdentifier="chatviewvc3" id="jSd-bF-0BC" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatVC3" id="jSd-bF-0BC" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wtd-ag-u5p">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

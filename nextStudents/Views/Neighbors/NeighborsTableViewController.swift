@@ -54,12 +54,6 @@ class NeighborsTableViewController: SortableTableViewController {
     // MARK: - Variables
     
     private let showNeighborDetailSegue = "showNeighborDetail"
-    var usersInRangeArray = [User]()
-    var allUsers = [User]() {
-        didSet {
-            usersInRangeArray = allUsers
-        }
-    }
     var searchedUsers = [User]()
     
     override var sortingOption: SortOption? {
@@ -68,7 +62,7 @@ class NeighborsTableViewController: SortableTableViewController {
                 if isSorting {
                     searchedUsers = super.sort(searchedUsers, by: sortingOption)
                 } else {
-                    usersInRangeArray = super.sort(usersInRangeArray, by: sortingOption)
+                    MainController.usersInRangeArray = super.sort(MainController.usersInRangeArray, by: sortingOption)
                 }
                 self.tableView.reloadData()
             }
@@ -91,7 +85,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     func getNeighbors() {
-        self.allUsers = []
+        MainController.allUsers = []
         // Update the table if there are no neighbors in range
         self.tableView.reloadData()
         
@@ -121,10 +115,10 @@ class NeighborsTableViewController: SortableTableViewController {
                                                 newUser.profileImage = UIImage(data: data!)!
                                             }
                                             
-                                            self.allUsers.append(newUser)
+                                            MainController.allUsers.append(newUser)
                                             
                                             // Sort the user by first name
-                                            self.allUsers.sort(by: { (firstUser: User, secondUser: User) in
+                                            MainController.allUsers.sort(by: { (firstUser: User, secondUser: User) in
                                                 firstUser.firstName < secondUser.firstName
                                             })
                                             
@@ -165,7 +159,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     func filterContentForSearchText(_ searchText: String) {
-        searchedUsers = usersInRangeArray.filter { (user: User) -> Bool in
+        searchedUsers = MainController.usersInRangeArray.filter { (user: User) -> Bool in
             return user.firstName.localizedCaseInsensitiveContains(searchText) ||
                 user.lastName.localizedCaseInsensitiveContains(searchText)
         }
@@ -173,7 +167,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isSorting ? searchedUsers.count : usersInRangeArray.count
+        return isSorting ? searchedUsers.count : MainController.usersInRangeArray.count
     }
     
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -182,7 +176,7 @@ class NeighborsTableViewController: SortableTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
-        let usersToDisplay = isSorting ? searchedUsers : usersInRangeArray
+        let usersToDisplay = isSorting ? searchedUsers : MainController.usersInRangeArray
         
         // Show all existing users
         if usersToDisplay.count > 0 {
@@ -210,7 +204,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if let identifier = segue.identifier {
-            let displayedUsers = isSorting ? searchedUsers : usersInRangeArray
+            let displayedUsers = isSorting ? searchedUsers : MainController.usersInRangeArray
             switch identifier {
             case showNeighborDetailSegue:
                 if let vc = containerController, vc.sortMenuVisible {
@@ -231,7 +225,7 @@ class NeighborsTableViewController: SortableTableViewController {
                 if let vc = segue.destination as? NeighborPopOverController, let ppc = vc.popoverPresentationController {
                     ppc.delegate = self
                     vc.delegate = self
-                    vc.users = isSorting ? searchedUsers : allUsers
+                    vc.users = isSorting ? searchedUsers : MainController.allUsers
                 }
             default:
                 break
@@ -285,7 +279,7 @@ extension NeighborsTableViewController: UIPopoverPresentationControllerDelegate 
 
 extension NeighborsTableViewController: NeighborFilterControllerDelegate {
     func forward(data: [User]) {
-        usersInRangeArray = data
+        MainController.usersInRangeArray = data
         tableView.reloadData()
     }
 }

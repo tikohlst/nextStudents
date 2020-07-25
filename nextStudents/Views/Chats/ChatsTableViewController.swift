@@ -270,6 +270,10 @@ class ChatsTableViewController: SortableTableViewController {
             
             // Set the user image
             detailViewController.chatPartnerProfileImage = currentChat.chatPartner.profileImage
+            
+            let backItem = UIBarButtonItem()
+            backItem.title = "Zurück"
+            navigationItem.backBarButtonItem = backItem
         }
     }
     

@@ -179,7 +179,7 @@
         <!--Neighbor Table View Controller-->
         <scene sceneID="Bnd-qr-q0c">
             <objects>
-                <tableViewController id="gPu-6G-gn1" customClass="NeighborTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="neighborTableVC" id="gPu-6G-gn1" customClass="NeighborTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="aOs-ep-xhk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -369,7 +369,7 @@
         <!--Chat View Controller-->
         <scene sceneID="gfx-sG-4cD">
             <objects>
-                <viewController storyboardIdentifier="chatviewvc2" id="Lup-0B-BaX" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatVC2" id="Lup-0B-BaX" customClass="ChatViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dAr-jF-G24">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
