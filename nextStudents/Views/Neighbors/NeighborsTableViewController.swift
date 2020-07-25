@@ -283,14 +283,3 @@ extension NeighborsTableViewController: NeighborFilterControllerDelegate {
         tableView.reloadData()
     }
 }
-
-enum SortOption: String {
-    case firstName = "Vorname"
-    case lastName = "Nachname"
-    case distance = "Entfernung"
-    case title = "Titel"
-    case type = "Typ"
-    case time = "Zeit"
-    case duration = "Dauer"
-    case date = "Datum"
-}

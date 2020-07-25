@@ -67,7 +67,7 @@ class ContainerViewController: UIViewController {
             } else if tabViewController is ChatsTableViewController {
                 sortController.delegate = tabViewController as! ChatsTableViewController
                 let cells = sortController.tableView.visibleCells
-                let options = [SortOption.firstName, SortOption.lastName, SortOption.time]
+                let options = [SortOption.firstName, SortOption.lastName, SortOption.date]
                 for i in 0..<cells.count {
                     cells[i].textLabel?.text = options[i].rawValue
                 }

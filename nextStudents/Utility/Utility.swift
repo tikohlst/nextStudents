@@ -10,6 +10,16 @@ import CoreLocation
 import Firebase
 import UIKit
 
+enum SortOption: String {
+    case firstName = "Vorname"
+    case lastName = "Nachname"
+    case distance = "Entfernung"
+    case title = "Alphabetisch"
+    case date = "Neuste zuerst"
+    case duration = "Kürzeste Dauer"
+    case type = "Typ"
+}
+
 class Utility {
     
     static func displayAlert(withMessage message: String?, withSignOut: Bool) -> UIAlertController {

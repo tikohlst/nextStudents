@@ -65,12 +65,6 @@ class SortableTableViewController: UITableViewController {
                     return type1.localizedCaseInsensitiveCompare(type2) == .orderedAscending
                 }) as! T
             }
-        case .time:
-            if entities is [Chat] {
-                result = (entities as! [Chat]).sorted(by: { (c1, c2) -> Bool in
-                    return c1.timestampOfTheLatestMessage.compare(c2.timestampOfTheLatestMessage) == .orderedAscending
-                }) as! T
-            }
         case .duration:
             if entities is [Offer] {
                 result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
@@ -84,7 +78,11 @@ class SortableTableViewController: UITableViewController {
                 result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
                     let date1 = o1.date
                     let date2 = o2.date
-                    return date1.compare(date2) == .orderedDescending
+                    return date1.compare(date2) == .orderedAscending
+                }) as! T
+            } else if entities is [Chat] {
+                result = (entities as! [Chat]).sorted(by: { (c1, c2) -> Bool in
+                    return c1.timestampOfTheLatestMessage.compare(c2.timestampOfTheLatestMessage) == .orderedDescending
                 }) as! T
             }
         case nil:
