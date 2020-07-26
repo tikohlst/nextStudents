@@ -37,6 +37,10 @@ class MainController: UITabBarController {
         // Do any additional setup after loading the view.
         super.viewDidLoad()
         
+        // This variable is set to true the first time the app is loaded, so
+        // that all current users in the area are updated when you log in again
+        MainController.currentUserUpdated = true
+        
         MainController.currentUserAuth = Auth.auth().currentUser!
         
         MainController.database.collection("users")
