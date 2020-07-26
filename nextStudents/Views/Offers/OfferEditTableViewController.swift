@@ -114,6 +114,21 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         return pickerData[row]
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier {
+            switch identifier {
+                case "backToOffers":
+                    let vc = segue.destination as! OffersTableViewController
+                    if vc.allOffers.count > OffersTableViewController.offersArray.count {
+                        vc.allOffers = OffersTableViewController.offersArray
+                    }
+                    //vc.tableView.reloadData()
+                default:
+                    break
+            }
+        }
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {

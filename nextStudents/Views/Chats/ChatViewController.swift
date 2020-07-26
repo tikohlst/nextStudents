@@ -23,6 +23,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     
     var messages: [Message] = []
     
+    var listener: ListenerRegistration?
+    
     // MARK: - UIViewController events
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +80,13 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         
         self.loadChat()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if listener != nil {
+            listener!.remove()
+        }
+    }
         
     // MARK: - Methods
     
@@ -95,7 +104,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             if chatPartner == nil {
                 MainController.database.collection("users")
                     .document(chatPartnerUID!)
-                    .addSnapshotListener { (querySnapshot, error) in
+                    .getDocument { (querySnapshot, error) in
                         if error != nil {
                             print("Error getting document: \(error!.localizedDescription)")
                         } else {
@@ -177,7 +186,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                             if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
                                 self.docReference = loadedChat.reference
                                 // fetch it's thread collection
-                                loadedChat.reference.collection("thread")
+                                self.listener = loadedChat.reference.collection("thread")
                                     .order(by: "created", descending: false)
                                     .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
                                         if let error = error {

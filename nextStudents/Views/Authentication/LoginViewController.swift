@@ -79,7 +79,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
-        if segue.identifier == showRegistrationSegue {
+        if let identifier = segue.identifier, identifier == showRegistrationSegue {
             let backItem = UIBarButtonItem()
             backItem.title = "Zurück"
             navigationItem.backBarButtonItem = backItem

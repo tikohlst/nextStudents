@@ -6,6 +6,9 @@
 //
 
 import Firebase
+import FirebaseFirestore
+import FirebaseStorage
+import FirebaseAuth
 
 class MainController: UITabBarController {
     
@@ -13,7 +16,7 @@ class MainController: UITabBarController {
     
     static let database = Firestore.firestore()
     static let storage = Storage.storage()
-    static var currentUserAuth: Firebase.User!
+    static var currentUserAuth: FirebaseAuth.User!
     static var currentUser: User!
     static var currentUserUpdated = true
     
@@ -23,6 +26,8 @@ class MainController: UITabBarController {
             usersInRangeArray = allUsers
         }
     }
+    
+    static var listeners = [ListenerRegistration]()
     
     // MARK: - UIViewController events
     
@@ -43,7 +48,7 @@ class MainController: UITabBarController {
         
         MainController.currentUserAuth = Auth.auth().currentUser!
         
-        MainController.database.collection("users")
+        MainController.listeners.append(MainController.database.collection("users")
             .document(MainController.currentUserAuth.uid)
             .addSnapshotListener { (querySnapshot, error) in
                 if error != nil {
@@ -79,7 +84,7 @@ class MainController: UITabBarController {
                         print("Unexpected error: \(error)")
                     }
                 }
-        }
+        })
     }
     
     // MARK: - Helper methods

@@ -94,6 +94,10 @@ class SettingsTableViewController: UITableViewController {
     
     static func signOut() {
         do {
+            // remove all active listeners
+            for listener in MainController.listeners {
+                listener.remove()
+            }
             try Auth.auth().signOut()
             MainController.currentUserAuth = nil
             MainController.currentUser = nil

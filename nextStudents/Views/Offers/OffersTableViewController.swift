@@ -92,7 +92,7 @@ class OffersTableViewController: SortableTableViewController {
                         // Only show neighbors in the defined range
                         if (differenceInMeter) < Double(MainController.currentUser.radius) {
                             // Create User object for every neighbor in the radius and write it into an array
-                            MainController.database.collection("offers")
+                            MainController.listeners.append(MainController.database.collection("offers")
                                 .document(currentNeighbor.documentID)
                                 .collection("offer")
                                 .addSnapshotListener() { (querySnapshot, error) in
@@ -157,7 +157,7 @@ class OffersTableViewController: SortableTableViewController {
                                             self.present(alert, animated: true, completion: nil)
                                         }
                                     }
-                            }
+                            })
                         }
                     }
                 }
@@ -165,51 +165,6 @@ class OffersTableViewController: SortableTableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        // Create Offer object and write it into an array
-        for var offer in OffersTableViewController.offersArray {
-            // Get image of the offer
-            MainController.storage
-                .reference().child("offers/\(offer.uid)")
-                .listAll { (result, error) in
-                    if let error = error {
-                        print("Error while listing data: \(error.localizedDescription)")
-                    } else {
-                        if result.items.count > 0 {
-                            // Only show the first picture of the offer in the overview
-                            result.items[0].getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                if let error = error {
-                                    print("Error while downloading profile image: \(error.localizedDescription)")
-                                    offer.offerImage = UIImage(named: "defaultOfferImage")!
-                                } else {
-                                    // Data for "OfferImage" is returned
-                                    offer.offerImage = UIImage(data: data!)!
-                                }
-                                
-                                // Remove old Offer object if exists
-                                if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.uid }) {
-                                    OffersTableViewController.offersArray.remove(at: existingOffer)
-                                }
-                                
-                                OffersTableViewController.offersArray.append(offer)
-                                // Update the table
-                                self.tableView.reloadData()
-                            }
-                        } else {
-                            offer.offerImage = UIImage(named: "defaultOfferImage")!
-                            
-                            // Remove old Offer object if exists
-                            if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == offer.uid }) {
-                                OffersTableViewController.offersArray.remove(at: existingOffer)
-                            }
-                            
-                            OffersTableViewController.offersArray.append(offer)
-                            // Update the table
-                            self.tableView.reloadData()
-                        }
-                    }
-            }
-        }
         
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
