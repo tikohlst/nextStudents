@@ -115,25 +115,23 @@ class OffersTableViewController: SortableTableViewController {
                                                         print("Error while listing data: \(error.localizedDescription)")
                                                     } else {
                                                         if result.items.count > 0 {
-                                                            for item in result.items {
-                                                                item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                                                    if let error = error {
-                                                                        print("Error while downloading profile image: \(error.localizedDescription)")
-                                                                        newOffer.offerImage = UIImage(named: "defaultOfferImage")!
-                                                                    } else {
-                                                                        // Data for "profilePicture.jpg" is returned
-                                                                        newOffer.offerImage = UIImage(data: data!)!
-                                                                    }
-                                                                    
-                                                                    // Remove old Offer object if exists
-                                                                    if let existingOffer = self.allOffers.firstIndex(where: { $0.uid == offer.documentID }) {
-                                                                        self.allOffers.remove(at: existingOffer)
-                                                                    }
-                                                                    
-                                                                    self.allOffers.append(newOffer)
-                                                                    // Update the table
-                                                                    self.tableView.reloadData()
+                                                            let item = result.items[0]
+                                                            item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
+                                                                if let error = error {
+                                                                    print("Error while downloading profile image: \(error.localizedDescription)")
+                                                                    newOffer.offerImage = UIImage(named: "defaultOfferImage")!
+                                                                } else {
+                                                                    // Data for "profilePicture.jpg" is returned
+                                                                    newOffer.offerImage = UIImage(data: data!)!
                                                                 }
+                                                                
+                                                                // Remove old Offer object if exists
+                                                                if let existingOffer = self.allOffers.firstIndex(where: { $0.uid == offer.documentID }) {
+                                                                    self.allOffers.remove(at: existingOffer)
+                                                                }
+                                                                self.allOffers.append(newOffer)
+                                                                // Update the table
+                                                                self.tableView.reloadData()
                                                             }
                                                         } else {
                                                             // Remove old Offer object if exists
