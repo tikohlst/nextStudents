@@ -1,0 +1,45 @@
+
+/* Class = "UIButton"; normalTitle = "Passwort vergessen?"; ObjectID = "1g7-sA-hL6"; */
+"1g7-sA-hL6.normalTitle" = "Passwort vergessen?";
+
+/* Class = "UIButton"; normalTitle = "Anmelden"; ObjectID = "6zV-wl-ioi"; */
+"6zV-wl-ioi.normalTitle" = "Anmelden";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "Dwa-Aa-Iea"; */
+"Dwa-Aa-Iea.title" = "Item";
+
+/* Class = "UITextField"; placeholder = "E-Mail"; ObjectID = "HPu-5k-oV8"; */
+"HPu-5k-oV8.placeholder" = "E-Mail";
+
+/* Class = "UIButton"; normalTitle = "Registrieren"; ObjectID = "JZo-lH-5w2"; */
+"JZo-lH-5w2.normalTitle" = "Registrieren";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "MCj-la-Fdm"; */
+"MCj-la-Fdm.title" = "Item";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "Rc7-91-e7T"; */
+"Rc7-91-e7T.title" = "Item";
+
+/* Class = "UIButton"; normalTitle = "Mit Google anmelden"; ObjectID = "S74-VX-zZa"; */
+"S74-VX-zZa.normalTitle" = "Mit Google anmelden";
+
+/* Class = "UITextField"; placeholder = "Passwort"; ObjectID = "Syn-SI-mro"; */
+"Syn-SI-mro.placeholder" = "Passwort";
+
+/* Class = "UINavigationItem"; title = "Registrierung"; ObjectID = "Vnw-nk-Ub0"; */
+"Vnw-nk-Ub0.title" = "Registrierung";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "XG6-Bw-0cs"; */
+"XG6-Bw-0cs.title" = "Item";
+
+/* Class = "UIBarButtonItem"; title = "Einstellungen"; ObjectID = "Y4c-E0-bSY"; */
+"Y4c-E0-bSY.title" = "Einstellungen";
+
+/* Class = "UILabel"; text = "- oder -"; ObjectID = "cfQ-Qy-4h2"; */
+"cfQ-Qy-4h2.text" = "- oder -";
+
+/* Class = "UILabel"; text = "Du hast noch keinen Account?"; ObjectID = "oUj-UP-ueo"; */
+"oUj-UP-ueo.text" = "Du hast noch keinen Account?";
+
+/* Class = "UILabel"; text = "nextStudents"; ObjectID = "sbL-ih-4Ts"; */
+"sbL-ih-4Ts.text" = "nextStudents";
