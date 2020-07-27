@@ -53,61 +53,59 @@ class NeighborTableViewController: UITableViewController {
         
         // MARK: - UIViewController events
         
-       override func viewDidLoad() {
-           super.viewDidLoad()
-           MainController.database.collection("friends").document(user.uid).getDocument { document, error in
-               if let error = error {
-                   print("Error getting friendlist: \(error.localizedDescription)")
-               } else if let document = document, document.exists {
-                   let docData = document.data()
-                   if let data = (docData?["list"] as! Dictionary<String, Int>?) {
-                       self.friendList = data
-                       if let status = data[MainController.currentUser!.uid] {
-                           switch status {
-                               case 0:
-                                   self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
-                                   self.getToKnowButton.isEnabled = false
-                                   self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-                                   // TODO: remove some visible information
-                               case 1:
-                                   self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
-                                   self.getToKnowButton.isEnabled = false
-                                   self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-                               default:
-                                   break
-                           }
-                       }
-                   }
-               }
-           }
-       }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        MainController.database.collection("friends").document(user.uid).getDocument { document, error in
+            if let error = error {
+                print("Error getting friendlist: \(error.localizedDescription)")
+            } else if let document = document, document.exists {
+                let docData = document.data()
+                if let data = (docData?["list"] as! Dictionary<String, Int>?) {
+                    self.friendList = data
+                    if let status = data[MainController.currentUser!.uid] {
+                        
+                        switch status {
+                            case 0:
+                                self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+                                self.getToKnowButton.isEnabled = false
+                                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                                
+                            case 1:
+                                self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
+                                self.getToKnowButton.isEnabled = false
+                                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                                
+                                self.userNameLabel.text = "\(self.user.firstName) \(self.user.lastName)"
+                                
+                                // show user bio
+                                self.bioTextView.text = self.user.bio
+                                
+                                // show user skills
+                                self.skillsTextView.text = self.user.skills
+                            
+                            default:
+                                break
+                        }
+                    }
+                }
+            }
+        }
         
-        userNameLabel.text = "\(user.firstName) \(user.lastName)"
-        
+        self.userNameLabel.text = "\(self.user.firstName)"
         // show user profile Image
-        profileImageView.image = user.profileImage
-        
+        self.profileImageView.image = self.user.profileImage
         // Show the profile image without whitespace
-        if profileImageView.frame.width > profileImageView.frame.height {
-            profileImageView.contentMode = .scaleAspectFit
+        if self.profileImageView.frame.width > self.profileImageView.frame.height {
+            self.profileImageView.contentMode = .scaleAspectFit
         } else {
-            profileImageView.contentMode = .scaleAspectFill
+            self.profileImageView.contentMode = .scaleAspectFill
         }
         
         // Show profile image rounded
-        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
-        
-        // show user bio
-        bioTextView.text = user.bio
+        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height/2
         
         // show user address
-        address.text = "\(user.street) \(user.housenumber), \(user.zipcode)"
-        
-        // show user skills
-        skillsTextView.text = user.skills
+        self.address.text = "\(self.user.street) \(self.user.housenumber), \(self.user.zipcode)"
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
