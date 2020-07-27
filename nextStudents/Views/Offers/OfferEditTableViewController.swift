@@ -277,7 +277,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 "title": titleTextField.text ?? "",
                 "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
                 "description": descriptionTextField.text ?? "",
-                "duration": pickerData[0][timePickerView.selectedRow(inComponent: 0)],
+                "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
                 "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
             ]) { err in
                 if let err = err {
@@ -297,7 +297,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 "title": titleTextField.text ?? "",
                 "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
                 "description": descriptionTextField.text ?? "",
-                "duration": pickerData[timePickerView.selectedRow(inComponent: 0)],
+                "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
                 "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
             ]) { err in
                 if let err = err {
