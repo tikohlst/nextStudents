@@ -13,7 +13,10 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     
     // MARK: - Variables
     
-    var pickerData = [String]()
+    var pickerData = [["5", "10", "15", "30", "60"],
+                      ["1", "2", "3", "4", "5", "10", "15", "20", "24"],
+                      ["Min.", "Std."]]
+    var pickerDataShown = [String]()
     var currentOffer: Offer?
     var imageViews = [UIImageView]()
     var deletedImages = [String]()
@@ -46,7 +49,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             navigationItem.title = currentOffer!.title
             offerNeedControl.selectedSegmentIndex = currentOffer!.type == "Biete" ? 0 : 1
             descriptionTextField.text = currentOffer!.description
-            timePickerView.selectRow(pickerData.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
+            timePickerView.selectRow(pickerData[2].firstIndex(of: currentOffer!.timeFormat)!, inComponent: 1, animated: true)
+            self.pickerView(self.timePickerView, didSelectRow: pickerData[2].firstIndex(of: currentOffer!.timeFormat)!, inComponent: 1)
+            timePickerView.selectRow(pickerDataShown.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
             deleteOfferCell.isHidden = false
             
             MainController.storage
@@ -92,7 +97,6 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        pickerData = ["5", "10", "15", "30", "60"]
         timePickerView.delegate = self
         timePickerView.dataSource = self
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTapped(gesture:)))
@@ -103,16 +107,32 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        return 2
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        pickerData.count
+        if component == 0 {
+            return pickerDataShown.count
+        } else {
+            return pickerData[2].count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
+        if component == 0 {
+           return pickerDataShown[row]
+        } else {
+            return pickerData[2][row]
+        }
     }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if component == 1 {
+            pickerDataShown = pickerData[pickerView.selectedRow(inComponent: component)]
+            pickerView.reloadComponent(0)
+        }
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
@@ -257,7 +277,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 "title": titleTextField.text ?? "",
                 "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
                 "description": descriptionTextField.text ?? "",
-                "duration": pickerData[timePickerView.selectedRow(inComponent: 0)]
+                "duration": pickerData[0][timePickerView.selectedRow(inComponent: 0)],
+                "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
             ]) { err in
                 if let err = err {
                     print("Error creating document: \(err.localizedDescription)")
@@ -276,7 +297,8 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                 "title": titleTextField.text ?? "",
                 "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
                 "description": descriptionTextField.text ?? "",
-                "duration": pickerData[timePickerView.selectedRow(inComponent: 0)]
+                "duration": pickerData[timePickerView.selectedRow(inComponent: 0)],
+                "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
             ]) { err in
                 if let err = err {
                     print("Error editing document: \(err.localizedDescription)")

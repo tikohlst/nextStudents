@@ -262,6 +262,10 @@ class OffersTableViewController: SortableTableViewController {
                     let selectedOffer = displayedOffers[selectedIndex.row]
                     vc.currentOffer = selectedOffer
                 }
+            case "createNewOffer":
+                if let vc = segue.destination as? OfferEditTableViewController {
+                    vc.pickerDataShown = vc.pickerData[0]
+                }
             case "showFilterOptions":
                 if let vc = segue.destination as? OfferPopOverController, let ppc = vc.popoverPresentationController {
                     ppc.delegate = self

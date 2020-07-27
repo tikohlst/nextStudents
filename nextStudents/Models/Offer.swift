@@ -25,6 +25,7 @@ struct Offer: OfferService {
     var title: String
     var description: String
     var duration: String
+    var timeFormat: String
     var date: Date
     var type: String
     var ownerUID: String
@@ -36,7 +37,7 @@ struct Offer: OfferService {
     
     init(uid: String, ownerUID: String, ownerFirstName: String,
          ownerLastName: String, title: String, description: String,
-         date: Date, duration: String, type: String) {
+         date: Date, duration: String, type: String, timeFormat: String) {
         self.uid = uid
         self.ownerUID = ownerUID
         self.ownerFirstName = ownerFirstName
@@ -47,12 +48,13 @@ struct Offer: OfferService {
         self.duration = duration
         self.type = type
         self.offerImage = UIImage(named: "defaultOfferImage")!
+        self.timeFormat = timeFormat
     }
     
     init() {
         self.init(uid: "", ownerUID: "", ownerFirstName: "", ownerLastName: "",
                   title: "", description: "", date: Date(),
-                  duration: "15", type: "")
+                  duration: "15", type: "", timeFormat: "Min.")
     }
     
     func mapData(uidOffer: String, dataOffer: [String:Any]?,
@@ -63,7 +65,8 @@ struct Offer: OfferService {
             let description = dataOffer?["description"] as? String,
             let date = dataOffer?["date"] as? Timestamp,
             let duration = dataOffer?["duration"] as? String,
-            let type = dataOffer?["type"] as? String
+            let type = dataOffer?["type"] as? String,
+            let timeFormat = dataOffer?["timeFormat"] as? String
             else {
                 throw OfferError.mapDataError
         }
@@ -83,7 +86,8 @@ struct Offer: OfferService {
                      description: description,
                      date: date.dateValue(),
                      duration: duration,
-                     type: type
+                     type: type,
+                     timeFormat: timeFormat
         )
     }
     
