@@ -23,6 +23,7 @@ target 'nextStudents' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
+  pod 'Firebase/Functions'
   pod 'Firebase/Storage'
   pod 'GoogleSignIn'
   pod 'Firebase/Core'
