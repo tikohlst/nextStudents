@@ -16,7 +16,7 @@ class RequestTableViewCell: UITableViewCell {
     func animateSwipeHint() {
         slideInFromRight()
     }
-
+    
     private func slideInFromRight() {
         UIView.animate(withDuration: 0.5, delay: 0.3, options: [.curveEaseOut], animations: {
             if self.backgroundView != nil {
@@ -34,7 +34,7 @@ class RequestTableViewCell: UITableViewCell {
             })
         }
     }
-
+    
     private func slideInFromLeft() {
         UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseOut], animations: {
             if self.backgroundView != nil {
@@ -51,7 +51,7 @@ class RequestTableViewCell: UITableViewCell {
 }
 
 class RequestsTableViewController: UITableViewController {
-
+    
     var rawRequests = Dictionary<String, Int>()
     var names = [String]()
     var ids = [String]()
@@ -60,7 +60,7 @@ class RequestsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // TODO: load friend requests
         
         
@@ -109,20 +109,20 @@ class RequestsTableViewController: UITableViewController {
     }
     
     // MARK: - Methods
-
+    
     private func getFriendList(uid: String, completion: @escaping (_ data: Dictionary<String, Int>) -> Void) {
-            MainController.database.collection("friends").document(uid).getDocument { document, error in
-                if let error = error {
-                    print("Error getting friendlist: \(error.localizedDescription)")
-                } else if let docData = document?.data(), let data = (docData["list"] as! Dictionary<String, Int>?) {
-                    completion(data)
-                } else {
-                    // no error but document doesn't exist right now -> create data for empty document
-                    let newData = Dictionary<String, Int>()
-                    completion(newData)
-                }
+        MainController.database.collection("friends").document(uid).getDocument { document, error in
+            if let error = error {
+                print("Error getting friendlist: \(error.localizedDescription)")
+            } else if let docData = document?.data(), let data = (docData["list"] as! Dictionary<String, Int>?) {
+                completion(data)
+            } else {
+                // no error but document doesn't exist right now -> create data for empty document
+                let newData = Dictionary<String, Int>()
+                completion(newData)
             }
         }
+    }
     
     private func setFriendList(uid: String, data: Dictionary<String, Int>, completion: @escaping (Bool) -> Void) {
         var docData = [String:Any]()
@@ -137,22 +137,22 @@ class RequestsTableViewController: UITableViewController {
         }
     }
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return names.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "requestCell", for: indexPath) as! RequestTableViewCell
         
-
+        
         // Configure the cell...
         cell.nameLabel.text = names[indexPath.row]
         if indexPath.row < images.count {
@@ -160,7 +160,7 @@ class RequestsTableViewController: UITableViewController {
         } else {
             cell.profileImageView.image = UIImage(named: "DefaultProfilePicture")
         }
-
+        
         return cell
     }
     

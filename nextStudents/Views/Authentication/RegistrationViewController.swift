@@ -277,7 +277,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 if row.section?.form?.validate().isEmpty ?? false {
                     self.callGPSValidation()
                 }
-            }
+        }
+        
         if accountInfoMissing, let user = MainController.currentUser {
             form.rowBy(tag: "firstName")?.baseValue = user.firstName
             form.rowBy(tag: "lastName")?.baseValue = user.lastName
@@ -309,39 +310,39 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         
         if popUpShown != true {
             Utility.lookUpCurrentLocation(locationManager: locationManager,
-                                                 completionHandler: { (placemark) in
-                                                    
-                                                    // Just show this pop up once
-                                                    self.popUpShown = true
-                                                    
-                                                    let street = (placemark?.thoroughfare)! as String
-                                                    let housenumber = (placemark?.subThoroughfare)! as String
-                                                    let zipcode = (placemark?.postalCode)! as String
-                                                    let city = (placemark?.locality)! as String
-                                                    
-                                                    let message = "Is this your actual address?\n\n"
-                                                        + "\(street) \(housenumber)\n"
-                                                        + "\(zipcode) \(city)"
-                                                    
-                                                    let alert = UIAlertController(title: "Actual address",
-                                                                                  message: message,
-                                                                                  preferredStyle: .alert)
-                                                    
-                                                    let acceptAction = UIAlertAction(title: "Yes", style: .default) { _ in
-                                                        // Write address in textfields
-                                                        self.form.rowBy(tag: "street")?.value = street
-                                                        self.form.rowBy(tag: "street")?.reload()
-                                                        self.form.rowBy(tag: "housenumber")?.value = housenumber
-                                                        self.form.rowBy(tag: "housenumber")?.reload()
-                                                        self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
-                                                        self.form.rowBy(tag: "zipcode")?.reload()
-                                                    }
-                                                    let rejectAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
-                                                    
-                                                    alert.addAction(acceptAction)
-                                                    alert.addAction(rejectAction)
-                                                    
-                                                    self.present(alert, animated: true, completion: nil)
+                                          completionHandler: { (placemark) in
+                                            
+                                            // Just show this pop up once
+                                            self.popUpShown = true
+                                            
+                                            let street = (placemark?.thoroughfare)! as String
+                                            let housenumber = (placemark?.subThoroughfare)! as String
+                                            let zipcode = (placemark?.postalCode)! as String
+                                            let city = (placemark?.locality)! as String
+                                            
+                                            let message = "Is this your actual address?\n\n"
+                                                + "\(street) \(housenumber)\n"
+                                                + "\(zipcode) \(city)"
+                                            
+                                            let alert = UIAlertController(title: "Actual address",
+                                                                          message: message,
+                                                                          preferredStyle: .alert)
+                                            
+                                            let acceptAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                                                // Write address in textfields
+                                                self.form.rowBy(tag: "street")?.value = street
+                                                self.form.rowBy(tag: "street")?.reload()
+                                                self.form.rowBy(tag: "housenumber")?.value = housenumber
+                                                self.form.rowBy(tag: "housenumber")?.reload()
+                                                self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
+                                                self.form.rowBy(tag: "zipcode")?.reload()
+                                            }
+                                            let rejectAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+                                            
+                                            alert.addAction(acceptAction)
+                                            alert.addAction(rejectAction)
+                                            
+                                            self.present(alert, animated: true, completion: nil)
             })
         }
         
@@ -359,21 +360,21 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         let addressString = "\(street) \(housenumber), \(zipcode), Deutschland"
         
         Utility.getCoordinate(addressString: addressString,
-                                     completionHandler: { (coordinates, error) in
-                                        
-                                        self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                                                           longitude: coordinates.longitude)
-                                        
-                                        if self.checkAddress() {
-                                            if self.accountInfoMissing {
-                                                self.updateAccount()
-                                            } else {
-                                                self.createAccount()
-                                            }
-                                        } else {
-                                            let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
-                                            self.present(alert, animated: true, completion: nil)
-                                        }
+                              completionHandler: { (coordinates, error) in
+                                
+                                self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
+                                                                   longitude: coordinates.longitude)
+                                
+                                if self.checkAddress() {
+                                    if self.accountInfoMissing {
+                                        self.updateAccount()
+                                    } else {
+                                        self.createAccount()
+                                    }
+                                } else {
+                                    let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                                    self.present(alert, animated: true, completion: nil)
+                                }
         })
     }
     

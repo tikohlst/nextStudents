@@ -51,10 +51,10 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         imageView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-               // add it to the image view
-               imageView.addGestureRecognizer(tapGesture)
-               // make sure imageView can be interacted with by user
-               imageView.isUserInteractionEnabled = true
+        // add it to the image view
+        imageView.addGestureRecognizer(tapGesture)
+        // make sure imageView can be interacted with by user
+        imageView.isUserInteractionEnabled = true
         
         let buttonItem = UIBarButtonItem(customView: imageView)
         buttonItem.customView?.widthAnchor.constraint(equalToConstant: 25).isActive = true
@@ -89,7 +89,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             listener!.remove()
         }
     }
-        
+    
     // MARK: - Methods
     
     @objc func imageTapped(gesture: UIGestureRecognizer) {
@@ -211,6 +211,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                                 return
                             }
                         }
+                        // Only gets called, when the searched chat doesn't already exists
                         self.createNewChat()
                     } else {
                         print("Let's hope this error never prints!")
@@ -244,8 +245,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         
     }
     
-    func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
-    {
+    func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return isFromCurrentSender(message: message) ? .white : .darkText
     }
     

@@ -29,32 +29,32 @@ class NeighborTableViewController: UITableViewController {
     @IBOutlet weak var getToKnowButton: UIButton!
     @IBOutlet weak var contactButton: UIButton!
     
-       @IBAction func touchGetToKnow(_ sender: UIButton) {
-           if friendList == nil {
-               friendList = Dictionary<String, Int>()
-           }
-           friendList![MainController.currentUser!.uid] = 0
-           var docData = [String:Any]()
-           docData["list"] = friendList
-           addRequest(with: docData, to: user.uid, completion: {
-               self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
-               self.getToKnowButton.isEnabled = false
-               self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-           })
-       }
-       
-       private func addRequest(with data: [String:Any], to id: String, completion: @escaping () -> Void) {
-           MainController.database.collection("friends").document(id).setData(data) { error in
-               if let error = error {
-                   print("Error sending request: \(error.localizedDescription)")
-               } else {
-                   completion()
-               }
-           }
-       }
-        
-        // MARK: - UIViewController events
-        
+    @IBAction func touchGetToKnow(_ sender: UIButton) {
+        if friendList == nil {
+            friendList = Dictionary<String, Int>()
+        }
+        friendList![MainController.currentUser!.uid] = 0
+        var docData = [String:Any]()
+        docData["list"] = friendList
+        addRequest(with: docData, to: user.uid, completion: {
+            self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+            self.getToKnowButton.isEnabled = false
+            self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+        })
+    }
+    
+    private func addRequest(with data: [String:Any], to id: String, completion: @escaping () -> Void) {
+        MainController.database.collection("friends").document(id).setData(data) { error in
+            if let error = error {
+                print("Error sending request: \(error.localizedDescription)")
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    // MARK: - UIViewController events
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -73,26 +73,26 @@ class NeighborTableViewController: UITableViewController {
                     if let status = data[MainController.currentUser!.uid] {
                         
                         switch status {
-                            case 0:
-                                self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
-                                self.getToKnowButton.isEnabled = false
-                                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-                                
-                            case 1:
-                                self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
-                                self.getToKnowButton.isEnabled = false
-                                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-                                
-                                self.userNameLabel.text = "\(self.user.firstName) \(self.user.lastName)"
-                                
-                                // show user bio
-                                self.bioTextView.text = self.user.bio
-                                
-                                // show user skills
-                                self.skillsTextView.text = self.user.skills
+                        case 0:
+                            self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+                            self.getToKnowButton.isEnabled = false
+                            self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
                             
-                            default:
-                                break
+                        case 1:
+                            self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
+                            self.getToKnowButton.isEnabled = false
+                            self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                            
+                            self.userNameLabel.text = "\(self.user.firstName) \(self.user.lastName)"
+                            
+                            // show user bio
+                            self.bioTextView.text = self.user.bio
+                            
+                            // show user skills
+                            self.skillsTextView.text = self.user.skills
+                            
+                        default:
+                            break
                         }
                     }
                 }

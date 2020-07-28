@@ -120,7 +120,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-           return pickerDataShown[row]
+            return pickerDataShown[row]
         } else {
             return pickerData[2][row]
         }
@@ -137,14 +137,13 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier {
             switch identifier {
-                case "backToOffers":
-                    let vc = segue.destination as! OffersTableViewController
-                    if vc.allOffers.count > OffersTableViewController.offersArray.count {
-                        vc.allOffers = OffersTableViewController.offersArray
-                    }
-                    //vc.tableView.reloadData()
-                default:
-                    break
+            case "backToOffers":
+                let vc = segue.destination as! OffersTableViewController
+                if vc.allOffers.count > OffersTableViewController.offersArray.count {
+                    vc.allOffers = OffersTableViewController.offersArray
+                }
+            default:
+                break
             }
         }
     }

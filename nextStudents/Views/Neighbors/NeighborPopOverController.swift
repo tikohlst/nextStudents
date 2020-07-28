@@ -21,10 +21,10 @@ class NeighborPopOverController: UIViewController {
     var users: [User]?
     var filteredUsers: [User]?
     weak var delegate: NeighborFilterControllerDelegate?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         schoolPickerView.delegate = self
         schoolPickerView.dataSource = self
         schoolPickerView.tag = 0
@@ -71,22 +71,22 @@ class NeighborPopOverController: UIViewController {
         let result = Set<User>(filteredBySchool).intersection(Set<User>(filteredByDegree))
         filteredUsers = Array(result)
     }
-
+    
     private func setDelegate() {
         if let delegate = delegate {
             delegate.forward(data: filteredUsers!)
         }
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 // MARK: - Extensions

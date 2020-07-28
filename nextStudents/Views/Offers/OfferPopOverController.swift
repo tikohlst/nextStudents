@@ -9,7 +9,7 @@
 import UIKit
 
 class OfferPopOverController: UIViewController {
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var filterView: UIView!
     @IBOutlet weak var filterControl: UISegmentedControl!
@@ -39,18 +39,18 @@ class OfferPopOverController: UIViewController {
     @objc private func filterOffers() {
         
         switch filterControl.selectedSegmentIndex {
-            case 0:
-                // Biete
-                filteredOffers = offers?.filter({ offer -> Bool in
-                    offer.type == "Biete"
-                })
-            case 2:
-                // Suche
-                filteredOffers = offers?.filter({ offer -> Bool in
-                    offer.type == "Suche"
-                })
-            default:
-                filteredOffers = offers
+        case 0:
+            // Biete
+            filteredOffers = offers?.filter({ offer -> Bool in
+                offer.type == "Biete"
+            })
+        case 2:
+            // Suche
+            filteredOffers = offers?.filter({ offer -> Bool in
+                offer.type == "Suche"
+            })
+        default:
+            filteredOffers = offers
         }
     }
     
@@ -59,17 +59,17 @@ class OfferPopOverController: UIViewController {
             delegate.forward(data: filteredOffers!)
         }
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 protocol OfferFilterControllerDelegate: NSObjectProtocol {
     func forward(data: [Offer])
