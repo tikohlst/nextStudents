@@ -17,6 +17,7 @@ class NeighborTableViewController: UITableViewController {
     // currentNeighbor
     var user: User!
     var friendList: Dictionary<String,Int>?
+    var cameFromChat = false
     
     // MARK: - IBOutlets
     
@@ -26,7 +27,8 @@ class NeighborTableViewController: UITableViewController {
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var skillsTextView: UITextView!
     @IBOutlet weak var getToKnowButton: UIButton!
-       
+    @IBOutlet weak var contactButton: UIButton!
+    
        @IBAction func touchGetToKnow(_ sender: UIButton) {
            if friendList == nil {
                friendList = Dictionary<String, Int>()
@@ -55,6 +57,12 @@ class NeighborTableViewController: UITableViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if cameFromChat {
+            contactButton.isEnabled = false
+            contactButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+        }
+        
         MainController.database.collection("friends").document(user.uid).getDocument { document, error in
             if let error = error {
                 print("Error getting friendlist: \(error.localizedDescription)")
