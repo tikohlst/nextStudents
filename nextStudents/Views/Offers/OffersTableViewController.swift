@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class OfferTableViewCell: UITableViewCell {
     
@@ -100,6 +101,14 @@ class OffersTableViewController: SortableTableViewController {
                                         print("Error fetching documents: \(error!.localizedDescription)")
                                         return
                                     }
+                                    
+                                    // Remove all existing Offer objects from this user
+                                    if let existingOffer = self.allOffers.firstIndex(where: { $0.ownerUID == currentNeighbor.documentID }) {
+                                        self.allOffers.remove(at: existingOffer)
+                                    }
+                                    // Update the table
+                                    self.tableView.reloadData()
+                                    
                                     // Create Offer object and write it into an array
                                     for offer in documents {
                                         do {
