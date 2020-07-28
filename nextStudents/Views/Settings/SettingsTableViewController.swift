@@ -98,6 +98,9 @@ class SettingsTableViewController: UITableViewController {
             for listener in MainController.listeners {
                 listener.remove()
             }
+            for listener in ChatsTableViewController.threadListeners.values {
+                listener.remove()
+            }
             try Auth.auth().signOut()
             MainController.currentUserAuth = nil
             MainController.currentUser = nil

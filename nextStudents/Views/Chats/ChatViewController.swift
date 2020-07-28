@@ -25,6 +25,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     
     var listener: ListenerRegistration?
     
+    var batch = MainController.database.batch()
+    
     // MARK: - UIViewController events
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +100,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             
             let storyboard = UIStoryboard(name: "Neighbors", bundle: nil)
             let neighborTableViewController = storyboard.instantiateViewController(withIdentifier: "neighborTableVC") as! NeighborTableViewController
+            neighborTableViewController.cameFromChat = true
             
             let chatPartner = MainController.allUsers.first(where: { $0.uid == chatPartnerUID})
             
@@ -152,15 +155,8 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             "users": users
         ]
         
-        MainController.database.collection("Chats")
-            .addDocument(data: data) { (error) in
-                if let error = error {
-                    print("Unable to create chat! \(error)")
-                    return
-                } else {
-                    self.loadChat()
-                }
-        }
+        docReference = MainController.database.collection("Chats").document()
+        batch.setData(data, forDocument: docReference!)
     }
     
     func loadChat() {
@@ -239,14 +235,13 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             "id": message.id,
             "senderID": message.senderUID
         ]
+        if let docReference = docReference {
+            let messageRef = docReference.collection("thread").document()
+            batch.setData(data, forDocument: messageRef)
+            batch.commit()
+            batch = MainController.database.batch()
+        }
         
-        docReference?.collection("thread").addDocument(data: data, completion: { (error) in
-            if let error = error {
-                print("Error sending message: \(error)")
-                return
-            }
-            self.messagesCollectionView.scrollToBottom()
-        })
     }
     
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
