@@ -382,7 +382,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         // Compare the current GPS position of the mobile phone with the GPS data of the entered address for a difference of more than 50m
         let gpsDifferenceInMeter = Utility.getGPSDifference(self.userGpsCoordinates!, self.formGpsCoordinates!)
         
-        if gpsDifferenceInMeter < 50 {
+        if gpsDifferenceInMeter < 100 {
             return true
         } else {
             return false
