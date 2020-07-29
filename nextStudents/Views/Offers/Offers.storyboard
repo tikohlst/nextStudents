@@ -519,15 +519,15 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Dauer des Angebots" id="iRW-qI-Zgc">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="60" id="NJZ-85-IJN">
-                                        <rect key="frame" x="20" y="338" width="374" height="60"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="90" id="NJZ-85-IJN">
+                                        <rect key="frame" x="20" y="338" width="374" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NJZ-85-IJN" id="woT-Df-OQF">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qow-mU-ANG">
-                                                    <rect key="frame" x="106" y="0.0" width="154" height="60"/>
+                                                    <rect key="frame" x="106" y="0.0" width="154" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 </pickerView>
                                             </subviews>
@@ -539,7 +539,7 @@
                             <tableViewSection headerTitle="Bilder hinzufügen" id="dMK-pt-jpX">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="124" id="W3u-vK-gvo">
-                                        <rect key="frame" x="20" y="454" width="374" height="124"/>
+                                        <rect key="frame" x="20" y="484" width="374" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W3u-vK-gvo" id="ECK-tB-ExM">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="124"/>
@@ -567,7 +567,7 @@
                             <tableViewSection id="ZbC-f3-sZk" userLabel="Angebot löschen">
                                 <cells>
                                     <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="IOP-Ab-9UQ">
-                                        <rect key="frame" x="20" y="614" width="374" height="43.5"/>
+                                        <rect key="frame" x="20" y="644" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IOP-Ab-9UQ" id="uSm-0o-WMG">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
