@@ -38,4 +38,5 @@ DerivedData/
 # End of https://www.toptal.com/developers/gitignore/api/xcode
 
 .DS_Store
+nextStudents/SupportingFiles/GoogleService-Info.plist
 
