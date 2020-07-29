@@ -320,11 +320,11 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                             let zipcode = (placemark?.postalCode)! as String
                                             let city = (placemark?.locality)! as String
                                             
-                                            let message = "Is this your actual address?\n\n"
+                                            let message = "Ist dies deine aktuelle Adresse?\n\n"
                                                 + "\(street) \(housenumber)\n"
                                                 + "\(zipcode) \(city)"
                                             
-                                            let alert = UIAlertController(title: "Actual address",
+                                            let alert = UIAlertController(title: "Aktuelle Adresse?",
                                                                           message: message,
                                                                           preferredStyle: .alert)
                                             
