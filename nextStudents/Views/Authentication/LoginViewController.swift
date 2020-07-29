@@ -91,9 +91,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     @IBAction func forgotPassword(_ sender: Any) {
         if let email = emailText.text {
             Auth.auth().sendPasswordReset(withEmail: email) { error in
-                print("Error while resetting password!")
-                let alert = Utility.displayAlert(withMessage: "Es wurde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet.", withSignOut: false)
-                self.present(alert, animated: true, completion: nil)
+                if let error = error {
+                    print("Error while resetting password: \(error)")
+                    let alert = Utility.displayAlert(withTitle: "Zurücksetzen des Passworts fehlgeschlagen", withMessage: "Bitte überprüfe nochmal deine E-Mail-Adresse.", withSignOut: false)
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    let alert = Utility.displayAlert(withTitle: "Passwort zurücksetzen", withMessage: "Es wurde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet.", withSignOut: false)
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }
