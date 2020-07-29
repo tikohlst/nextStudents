@@ -126,7 +126,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         if let email = emailText.text, let password = passwordText.text {
             Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
                 guard let strongSelf = self else { return }
-                self!.switchScreens(authResult, error, strongSelf)
+                
+                if let error = error {
+                    print("Error while login: \(error)")
+                    let alert = Utility.displayAlert(withTitle: "Anmeldung fehlgeschlagen", withMessage: "Bitte überprüfe nochmal deine E-Mail-Adresse und dein Passwort.", withSignOut: false)
+                    self!.present(alert, animated: true, completion: nil)
+                } else {
+                    self!.switchScreens(authResult, error, strongSelf)
+                }
             }
         }
     }
