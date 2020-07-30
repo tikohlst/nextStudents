@@ -63,7 +63,7 @@ class NeighborsTableViewController: SortableTableViewController {
                 if isSorting {
                     searchedUsers = super.sort(searchedUsers, by: sortingOption)
                 } else {
-                    MainController.usersInRangeArray = super.sort(MainController.usersInRangeArray, by: sortingOption)
+                    MainController.dataService.usersInRangeArray = super.sort(MainController.dataService.usersInRangeArray, by: sortingOption)
                 }
                 self.tableView.reloadData()
             }
@@ -85,61 +85,6 @@ class NeighborsTableViewController: SortableTableViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
     }
     
-    func getNeighbors() {
-        MainController.allUsers = []
-        // Update the table if there are no neighbors in range
-        self.tableView.reloadData()
-        
-        MainController.database.collection("users")
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = Utility.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, MainController.currentUser.gpsCoordinates)
-                        // Only show neighbors in the defined range
-                        if (differenceInMeter) < Double(MainController.currentUser.radius) {
-                            // Don't show currentUser as its own neighbor
-                            if currentNeighbor.documentID != MainController.currentUser.uid {
-                                // Create User object for every neighbor in the radius and write it into an array
-                                do {
-                                    let newUser = try User().mapData(uid: currentNeighbor.documentID, data: currentNeighbor.data())
-                                    // Get profile image of the neighbor
-                                    MainController.storage
-                                        .reference(withPath: "profilePictures/\(newUser.uid)/profilePicture.jpg")
-                                        .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                            if let error = error {
-                                                print("Error while downloading profile image: \(error.localizedDescription)")
-                                                newUser.profileImage = UIImage(named: "defaultProfilePicture")!
-                                            } else {
-                                                // Data for "profilePicture.jpg" is returned
-                                                newUser.profileImage = UIImage(data: data!)!
-                                            }
-                                            
-                                            MainController.allUsers.append(newUser)
-                                            
-                                            // Sort the user by first name
-                                            MainController.allUsers.sort(by: { (firstUser: User, secondUser: User) in
-                                                firstUser.firstName < secondUser.firstName
-                                            })
-                                            
-                                            // Update the table
-                                            self.tableView.reloadData()
-                                    }
-                                } catch UserError.mapDataError {
-                                    print("Error while mapping User!")
-                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
-                                    self.present(alert, animated: true, completion: nil)
-                                } catch {
-                                    print("Unexpected error: \(error)")
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         setupSearch()
         if let container = self.navigationController?.tabBarController?.parent as? ContainerViewController {
@@ -148,9 +93,31 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController!.setupSortingCellsAndDelegate()
         }
         
-        if MainController.currentUserUpdated {
-            MainController.currentUserUpdated = false
-            self.getNeighbors()
+        if MainController.dataService.currentUserUpdated {
+            MainController.dataService.currentUserUpdated = false
+            MainController.dataService.allUsers = []
+            // Update the table if there are no neighbors in range
+            self.tableView.reloadData()
+            MainController.dataService.getNeighbors {newUser in
+                // Get profile image of the neighbor
+                if let newUser = newUser {
+                    MainController.dataService.getProfilePicture(for: newUser.uid, completion: { image in
+                        newUser.profileImage = image
+                        
+                        MainController.dataService.allUsers.append(newUser)
+                        
+                        // Sort the user by first name
+                        MainController.dataService.allUsers.sort(by: { (firstUser: User, secondUser: User) in
+                            firstUser.firstName < secondUser.firstName
+                        })
+                        // Update the table
+                        self.tableView.reloadData()
+                    })
+                } else {
+                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
         }
     }
     
@@ -160,7 +127,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     func filterContentForSearchText(_ searchText: String) {
-        searchedUsers = MainController.usersInRangeArray.filter { (user: User) -> Bool in
+        searchedUsers = MainController.dataService.usersInRangeArray.filter { (user: User) -> Bool in
             return user.firstName.localizedCaseInsensitiveContains(searchText) ||
                 user.lastName.localizedCaseInsensitiveContains(searchText)
         }
@@ -168,7 +135,7 @@ class NeighborsTableViewController: SortableTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isSorting ? searchedUsers.count : MainController.usersInRangeArray.count
+        return isSorting ? searchedUsers.count : MainController.dataService.usersInRangeArray.count
     }
     
     // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
@@ -177,7 +144,7 @@ class NeighborsTableViewController: SortableTableViewController {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
         let cell = tableView.dequeueReusableCell(withIdentifier: "NeighborCell", for: indexPath) as! NeighborTableViewCell
-        let usersToDisplay = isSorting ? searchedUsers : MainController.usersInRangeArray
+        let usersToDisplay = isSorting ? searchedUsers : MainController.dataService.usersInRangeArray
         
         // Show all existing users
         if usersToDisplay.count > 0 {
@@ -205,7 +172,7 @@ class NeighborsTableViewController: SortableTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Implement a switch over the segue identifiers to distinct which segue get's called.
         if let identifier = segue.identifier {
-            let displayedUsers = isSorting ? searchedUsers : MainController.usersInRangeArray
+            let displayedUsers = isSorting ? searchedUsers : MainController.dataService.usersInRangeArray
             switch identifier {
             case showNeighborDetailSegue:
                 if let vc = containerController, vc.sortMenuVisible {
@@ -226,7 +193,7 @@ class NeighborsTableViewController: SortableTableViewController {
                 if let vc = segue.destination as? NeighborPopOverController, let ppc = vc.popoverPresentationController {
                     ppc.delegate = self
                     vc.delegate = self
-                    vc.users = isSorting ? searchedUsers : MainController.allUsers
+                    vc.users = isSorting ? searchedUsers : MainController.dataService.allUsers
                 }
             default:
                 break
@@ -280,7 +247,7 @@ extension NeighborsTableViewController: UIPopoverPresentationControllerDelegate 
 
 extension NeighborsTableViewController: NeighborFilterControllerDelegate {
     func forward(data: [User]) {
-        MainController.usersInRangeArray = data
+        MainController.dataService.usersInRangeArray = data
         tableView.reloadData()
     }
 }

@@ -64,6 +64,7 @@
 		8FC6C4E7248808A900572566 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */; };
 		8FC6C4E92488E7A700572566 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4E82488E7A700572566 /* ProfileViewController.swift */; };
 		8FC6C4EB2488E7C200572566 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */; };
+		8FC7962024D2BA2A005B5BBC /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC7961F24D2BA2A005B5BBC /* DataService.swift */; };
 		8FCADB93249CC67000795221 /* SliderTextComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCADB92249CC67000795221 /* SliderTextComponent.swift */; };
 		EBFE10C02CCDB5D40AC41603 /* Pods_nextStudentsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1F7033B8A0D31863A6A898 /* Pods_nextStudentsTests.framework */; };
 /* End PBXBuildFile section */
@@ -141,6 +142,7 @@
 		8FC6C4E6248808A900572566 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		8FC6C4E82488E7A700572566 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8FC6C4EA2488E7C200572566 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
+		8FC7961F24D2BA2A005B5BBC /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		8FCADB92249CC67000795221 /* SliderTextComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTextComponent.swift; sourceTree = "<group>"; };
 		FA1F7033B8A0D31863A6A898 /* Pods_nextStudentsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nextStudentsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF4BA74089841653DF8E5AFB /* Pods-nextStudents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextStudents.release.xcconfig"; path = "Target Support Files/Pods-nextStudents/Pods-nextStudents.release.xcconfig"; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 		22CB9D61248E70F200D87E3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8FC7961F24D2BA2A005B5BBC /* DataService.swift */,
 				221A0CD424781BF700A46E1E /* User.swift */,
 				221B08912487A54C00CE8A9B /* Offer.swift */,
 				22AAADC12491657C00542F5E /* Chat.swift */,
@@ -628,6 +631,7 @@
 				8F1F630524C0464600DF70BD /* NeighborPopOverController.swift in Sources */,
 				8F0B560E248FA60B00703F0A /* MainController.swift in Sources */,
 				22AAADC02491654300542F5E /* Message.swift in Sources */,
+				8FC7962024D2BA2A005B5BBC /* DataService.swift in Sources */,
 				8F24BCBC24C6F659002FF456 /* OfferPopOverController.swift in Sources */,
 				22ECD957249F6FAD002B8F82 /* Fonts.swift in Sources */,
 				8F22337C24A62148003EC2D4 /* SortTableViewController.swift in Sources */,

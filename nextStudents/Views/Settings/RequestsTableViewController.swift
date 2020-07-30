@@ -61,41 +61,27 @@ class RequestsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: load friend requests
         
         
-        getFriendList(uid: MainController.currentUser!.uid, completion: { (data) in
+        MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (data) in
             self.rawRequests = data
             for uid in data.keys {
                 if data[uid] == 0 {
-                    MainController.database.collection("users").document(uid).getDocument { (neighbor, error) in
-                        if let error = error {
-                            print("Error getting neighbor information: \(error.localizedDescription)")
-                        } else if let neighbor = neighbor {
-                            let neighborData = neighbor.data()
-                            if let firstName = neighborData?["firstName"] as! String?,
-                                let lastName = neighborData?["lastName"] as! String? {
-                                self.names.append("\(firstName) \(lastName)")
-                                self.requestStatuses.append(data[uid]!)
-                                self.ids.append(uid)
-                                self.tableView.reloadData()
-                                
-                                MainController.storage
-                                    .reference(withPath: "profilePictures/\(uid)/profilePicture.jpg")
-                                    .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                        if let error = error {
-                                            print("Error while downloading profile image: \(error.localizedDescription)")
-                                            self.images.append(UIImage(named: "DefaultProfilePicture")!)
-                                        } else {
-                                            // Data for "profilePicture.jpg" is returned
-                                            self.images.append(UIImage(data: data!)!)
-                                            self.tableView.reloadData()
-                                        }
-                                }
-                            }
+                    
+                    MainController.dataService.getNeighbor(with: uid, completion: { neighborData, _ in
+                        if let firstName = neighborData["firstName"] as! String?,
+                            let lastName = neighborData["lastName"] as! String? {
+                            self.names.append("\(firstName) \(lastName)")
+                            self.requestStatuses.append(data[uid]!)
+                            self.ids.append(uid)
+                            self.tableView.reloadData()
                             
+                            MainController.dataService.getProfilePicture(for: uid, completion: { image in
+                                self.images.append(image)
+                                self.tableView.reloadData()
+                            })
                         }
-                    }
+                    })
                 }
             }
         })
@@ -108,34 +94,6 @@ class RequestsTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - Methods
-    
-    private func getFriendList(uid: String, completion: @escaping (_ data: Dictionary<String, Int>) -> Void) {
-        MainController.database.collection("friends").document(uid).getDocument { document, error in
-            if let error = error {
-                print("Error getting friendlist: \(error.localizedDescription)")
-            } else if let docData = document?.data(), let data = (docData["list"] as! Dictionary<String, Int>?) {
-                completion(data)
-            } else {
-                // no error but document doesn't exist right now -> create data for empty document
-                let newData = Dictionary<String, Int>()
-                completion(newData)
-            }
-        }
-    }
-    
-    private func setFriendList(uid: String, data: Dictionary<String, Int>, completion: @escaping (Bool) -> Void) {
-        var docData = [String:Any]()
-        docData["list"] = data
-        MainController.database.collection("friends").document(uid).setData(docData) { error in
-            if let error = error {
-                print("Error setting data: \(error.localizedDescription)")
-                completion(false)
-            } else {
-                completion(true)
-            }
-        }
-    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -167,20 +125,20 @@ class RequestsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let acceptAction = UIContextualAction(style: .destructive, title: "Akzeptieren") { (ac: UIContextualAction, view: UIView, success: @escaping (Bool) -> Void) in
             let requestingId = self.ids[indexPath.row]
-            let currentUser = MainController.currentUser
+            let currentUser = MainController.dataService.currentUser
             self.rawRequests[requestingId] = 1
             
-            self.setFriendList(uid: currentUser!.uid, data: self.rawRequests) { (successful) in
+            MainController.dataService.setFriendList(uid: currentUser!.uid, data: self.rawRequests) { (successful) in
                 if successful {
                     self.names.remove(at: indexPath.row)
                     self.ids.remove(at: indexPath.row)
                     self.images.remove(at: indexPath.row)
                     self.tableView.deleteRows(at: [indexPath], with: .right)
                     
-                    self.getFriendList(uid: requestingId) { (friendsList) in
+                    MainController.dataService.getFriendList(uid: requestingId) { (friendsList) in
                         var updatedList = friendsList
                         updatedList[currentUser!.uid] = 1
-                        self.setFriendList(uid: requestingId, data: updatedList, completion: { (successful) in })
+                        MainController.dataService.setFriendList(uid: requestingId, data: updatedList, completion: { (successful) in })
                     }
                     
                     success(true)
@@ -201,9 +159,9 @@ class RequestsTableViewController: UITableViewController {
             if let deletionIndex = self.rawRequests.index(forKey: self.ids[indexPath.row]) {
                 self.rawRequests.remove(at: deletionIndex)
             }
-            let currentUser = MainController.currentUser
+            let currentUser = MainController.dataService.currentUser
             
-            self.setFriendList(uid: currentUser!.uid, data: self.rawRequests) { (successful) in
+            MainController.dataService.setFriendList(uid: currentUser!.uid, data: self.rawRequests) { (successful) in
                 if successful {
                     self.names.remove(at: indexPath.row)
                     self.ids.remove(at: indexPath.row)

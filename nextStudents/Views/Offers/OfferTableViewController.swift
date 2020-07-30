@@ -58,45 +58,35 @@ class OfferTableViewController: UITableViewController {
         df.dateFormat = "dd.MM.yyyy hh:mm:ss"
         offerCreationDateLabel.text = df.string(from: offer.date)
         
-        let storageRef = MainController.storage.reference().child("offers/\(offer.uid)")
-        storageRef.listAll { (result, error) in
-            if let error = error {
-                print("Error while listing data: \(error.localizedDescription)")
-            } else {
-                var removedFirstImage = false
-                for item in result.items {
-                    item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                        if let error = error {
-                            print("Error while downloading image: \(error.localizedDescription)")
-                        } else {
-                            let image = UIImage(data: data!)
-                            let newView = UIImageView(image: image)
-                            
-                            newView.frame.size.width = self.firstOfferImageView.frame.size.width
-                            newView.frame.size.height = self.firstOfferImageView.frame.size.height
-                            
-                            self.imageViews.insert(newView, at: 0)
-                            self.imageScrollView.insertSubview(newView, at: 0)
-                            
-                            self.imageScrollView.contentSize.width = self.imageScrollView.frame.size.width + CGFloat(self.imageViews.count - 1) * self.firstOfferImageView.frame.size.width + CGFloat(self.imageViews.count - 1) * 5.0
-                            if !removedFirstImage {
-                                let firstOrigin = self.firstOfferImageView.bounds.origin
-                                self.firstOfferImageView.removeFromSuperview()
-                                self.firstOfferImageView = newView
-                                self.imageScrollView.insertSubview(self.firstOfferImageView, at: 0)
-                                self.firstOfferImageView.bounds.origin = firstOrigin
-                                if let index = self.imageViews.firstIndex(of: self.firstOfferImageView) {
-                                    self.imageViews.remove(at: index)
-                                }
-                                removedFirstImage = !removedFirstImage
-                            }
-                            self.layoutImages(animated: false)
+        MainController.dataService.getOfferPicturesReferences(for: offer.uid, completion: { references in
+            var removedFirstImage = false
+            for reference in references {
+                MainController.dataService.getOfferPicture(from: reference, completion: { image in
+                    let newView = UIImageView(image: image)
+                    
+                    newView.frame.size.width = self.firstOfferImageView.frame.size.width
+                    newView.frame.size.height = self.firstOfferImageView.frame.size.height
+                    
+                    self.imageViews.insert(newView, at: 0)
+                    self.imageScrollView.insertSubview(newView, at: 0)
+                    
+                    self.imageScrollView.contentSize.width = self.imageScrollView.frame.size.width + CGFloat(self.imageViews.count - 1) * self.firstOfferImageView.frame.size.width + CGFloat(self.imageViews.count - 1) * 5.0
+                    if !removedFirstImage {
+                        let firstOrigin = self.firstOfferImageView.bounds.origin
+                        self.firstOfferImageView.removeFromSuperview()
+                        self.firstOfferImageView = newView
+                        self.imageScrollView.insertSubview(self.firstOfferImageView, at: 0)
+                        self.firstOfferImageView.bounds.origin = firstOrigin
+                        if let index = self.imageViews.firstIndex(of: self.firstOfferImageView) {
+                            self.imageViews.remove(at: index)
                         }
+                        removedFirstImage = !removedFirstImage
                     }
-                }
-                self.imagesCell.isHidden = false
+                    self.layoutImages(animated: false)
+                })
             }
-        }
+            self.imagesCell.isHidden = false
+        })
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -118,17 +108,9 @@ class OfferTableViewController: UITableViewController {
             detailViewController.chatPartnerName = offer.ownerFirstName + " " + offer.ownerLastName
             
             // Get profile image of the neighbor
-            MainController.storage
-                .reference(withPath: "profilePictures/\(offer.ownerUID)/profilePicture.jpg")
-                .getData(maxSize: 4 * 1024 * 1024) { data, error in
-                    if let error = error {
-                        print("Error while downloading profile image: \(error.localizedDescription)")
-                        detailViewController.chatPartnerProfileImage = UIImage(named: "defaultProfilePicture")!
-                    } else {
-                        // Data for "profilePicture.jpg" is returned
-                        detailViewController.chatPartnerProfileImage = UIImage(data: data!)
-                    }
-            }
+            MainController.dataService.getProfilePicture(for: offer.ownerUID, completion: {image in
+                detailViewController.chatPartnerProfileImage = image
+            })
         }
     }
     

@@ -74,13 +74,8 @@ class PasswordViewController: FormViewController {
                 if row.section?.form?.validate().isEmpty ?? false {
                     let dict = self.form.values(includeHidden: true)
                     let newPassword = dict["confirmedPassword"] as! String
-                    MainController.currentUserAuth.updatePassword(to: newPassword) { (error) in
-                        if let error = error {
-                            // An error happened.
-                            print(error.localizedDescription)
-                        } else {
-                            SettingsTableViewController.signOut()
-                        }
+                    MainController.dataService.updatePassword(newPassword: newPassword) {
+                        SettingsTableViewController.signOut()
                     }
                 }
         }

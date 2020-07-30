@@ -25,7 +25,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     
     var listener: ListenerRegistration?
     
-    var batch = MainController.database.batch()
+    var batch = MainController.dataService.database.batch()
     
     // MARK: - UIViewController events
     
@@ -102,44 +102,27 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             let neighborTableViewController = storyboard.instantiateViewController(withIdentifier: "neighborTableVC") as! NeighborTableViewController
             neighborTableViewController.cameFromChat = true
             
-            let chatPartner = MainController.allUsers.first(where: { $0.uid == chatPartnerUID})
+            let chatPartner = MainController.dataService.allUsers.first(where: { $0.uid == chatPartnerUID})
             
             if chatPartner == nil {
-                MainController.database.collection("users")
-                    .document(chatPartnerUID!)
-                    .getDocument { (querySnapshot, error) in
-                        if error != nil {
-                            print("Error getting document: \(error!.localizedDescription)")
-                        } else {
-                            do {
-                                // get current user
-                                neighborTableViewController.user = try User().mapData(uid: querySnapshot!.documentID, data: querySnapshot!.data()!)
-                                
-                                // get profile image if it exists
-                                MainController.storage
-                                    .reference(withPath: "profilePictures/\(String(describing: self.chatPartnerUID!))/profilePicture.jpg")
-                                    .getData(maxSize: 4 * 1024 * 1024) { data, error in
-                                        if let error = error {
-                                            print("Error while downloading profile image: \(error.localizedDescription)")
-                                            // Using default image
-                                            neighborTableViewController.user.profileImage = UIImage(named: "defaultProfilePicture")!
-                                        } else {
-                                            // Data for "profilePicture.jpg" is returned
-                                            neighborTableViewController.user.profileImage = UIImage(data: data!)!
-                                        }
-                                        
-                                        self.navigationController?.pushViewController(neighborTableViewController, animated: true)
-                                }
-                                
-                            } catch UserError.mapDataError {
-                                print("Error while mapping User!")
-                                let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
-                                self.present(alert, animated: true, completion: nil)
-                            } catch {
-                                print("Unexpected error: \(error)")
-                            }
-                        }
-                }
+                MainController.dataService.getNeighbor(with: chatPartnerUID!, completion: {data, documentID in
+                    do {
+                        // get current user
+                        neighborTableViewController.user = try User().mapData(uid: documentID, data: data)
+                        
+                        // get profile image if it exists
+                        MainController.dataService.getProfilePicture(for: self.chatPartnerUID!, completion: { image in
+                            neighborTableViewController.user.profileImage = image
+                            self.navigationController?.pushViewController(neighborTableViewController, animated: true)
+                        })
+                    } catch UserError.mapDataError {
+                        print("Error while mapping User!")
+                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
+                        self.present(alert, animated: true, completion: nil)
+                    } catch {
+                        print("Unexpected error: \(error)")
+                    }
+                })
             } else {
                 neighborTableViewController.user = chatPartner
                 self.navigationController?.pushViewController(neighborTableViewController, animated: true)
@@ -150,74 +133,58 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - Custom messages handlers
     
     func createNewChat() {
-        let users = [MainController.currentUser.uid, self.chatPartnerUID]
+        let users = [MainController.dataService.currentUser.uid, self.chatPartnerUID]
         let data: [String: Any] = [
             "users": users
         ]
         
-        docReference = MainController.database.collection("Chats").document()
+        docReference = MainController.dataService.database.collection("Chats").document()
         batch.setData(data, forDocument: docReference!)
     }
     
     func loadChat() {
         // Fetch all the chats which has current user in it
-        MainController.database.collection("Chats")
-            .whereField("users", arrayContains: MainController.currentUser.uid)
-            .getDocuments { (chatQuerySnap, error) in
-                if let error = error {
-                    print("Error: \(error)")
-                    return
-                } else {
-                    // Count the no. of documents returned
-                    let numberOfChats = chatQuerySnap!.documents.count
-                    
-                    if numberOfChats == 0 {
-                        // If documents count is zero that means there is no chat available and we need to create a new instance
-                        self.createNewChat()
-                    }
-                    else if numberOfChats >= 1 {
-                        // Chat(s) found for currentUser
-                        for loadedChat in chatQuerySnap!.documents {
-                            // Get the chat with the chat partner
-                            if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
-                                self.docReference = loadedChat.reference
-                                // fetch it's thread collection
-                                self.listener = loadedChat.reference.collection("thread")
-                                    .order(by: "created", descending: false)
-                                    .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
-                                        if let error = error {
-                                            print("Error: \(error)")
-                                            return
-                                        } else {
-                                            self.messages.removeAll()
-                                            for message in threadQuery!.documents {
-                                                do {
-                                                    let newMessage = try Message().mapData(data: message.data())
-                                                    self.messages.append(newMessage!)
-                                                } catch MessageError.mapDataError {
-                                                    print("Error while mapping User!")
-                                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
-                                                    self.present(alert, animated: true, completion: nil)
-                                                } catch {
-                                                    print("Unexpected error: \(error)")
-                                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
-                                                    self.present(alert, animated: true, completion: nil)
-                                                }
-                                            }
-                                            self.messagesCollectionView.reloadData()
-                                            self.messagesCollectionView.scrollToBottom(animated: true)
-                                        }
-                                    })
-                                return
+        MainController.dataService.getChats(for: MainController.dataService.currentUser.uid, completion: { chatQuerySnap in
+            // Count the no. of documents returned
+            let numberOfChats = chatQuerySnap.documents.count
+            
+            if numberOfChats == 0 {
+                // If documents count is zero that means there is no chat available and we need to create a new instance
+                self.createNewChat()
+            }
+            else if numberOfChats >= 1 {
+                // Chat(s) found for currentUser
+                for loadedChat in chatQuerySnap.documents {
+                    // Get the chat with the chat partner
+                    if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
+                        self.docReference = loadedChat.reference
+                        // fetch it's thread collection
+                        self.listener = MainController.dataService.createListenerForChatThreadOrdered(snapshot: loadedChat, completion: { threadQuery in
+                            self.messages.removeAll()
+                            for message in threadQuery.documents {
+                                do {
+                                    let newMessage = try Message().mapData(data: message.data())
+                                    self.messages.append(newMessage!)
+                                } catch MessageError.mapDataError {
+                                    print("Error while mapping User!")
+                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
+                                    self.present(alert, animated: true, completion: nil)
+                                } catch {
+                                    print("Unexpected error: \(error)")
+                                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
+                                    self.present(alert, animated: true, completion: nil)
+                                }
                             }
-                        }
-                        // Only gets called, when the searched chat doesn't already exists
-                        self.createNewChat()
-                    } else {
-                        print("Let's hope this error never prints!")
+                            self.messagesCollectionView.reloadData()
+                            self.messagesCollectionView.scrollToBottom(animated: true)
+                        })
+                        return
                     }
                 }
-        }
+                // Only gets called, when the searched chat doesn't already exist
+                self.createNewChat()
+            }
+        })
     }
     
     private func insertNewMessage(_ message: Message) {
@@ -240,7 +207,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
             let messageRef = docReference.collection("thread").document()
             batch.setData(data, forDocument: messageRef)
             batch.commit()
-            batch = MainController.database.batch()
+            batch = MainController.dataService.database.batch()
         }
         
     }
@@ -252,7 +219,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - InputBarAccessoryViewDelegate
     
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = Message(id: UUID().uuidString, senderUID: MainController.currentUser.uid, created: Timestamp(), content: text)
+        let message = Message(id: UUID().uuidString, senderUID: MainController.dataService.currentUser.uid, created: Timestamp(), content: text)
         
         insertNewMessage(message)
         save(message)
@@ -265,10 +232,10 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     // MARK: - MessagesDataSource
     
     func currentSender() -> SenderType {
-        if MainController.currentUser == nil {
+        if MainController.dataService.currentUser == nil {
             return Sender(senderId: "User not found")
         } else {
-            return Sender(senderId: MainController.currentUser.uid)
+            return Sender(senderId: MainController.dataService.currentUser.uid)
         }
     }
     
@@ -293,9 +260,9 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        if MainController.currentUser != nil {
-            if message.sender.senderId == MainController.currentUser.uid {
-                avatarView.image = MainController.currentUser.profileImage
+        if MainController.dataService.currentUser != nil {
+            if message.sender.senderId == MainController.dataService.currentUser.uid {
+                avatarView.image = MainController.dataService.currentUser.profileImage
             } else {
                 avatarView.image = chatPartnerProfileImage
             }

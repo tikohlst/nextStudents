@@ -82,100 +82,61 @@ class ChatsTableViewController: SortableTableViewController {
         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).title = "Abbrechen"
         
         // Get all chats from the current user
-        MainController.listeners.append(MainController.database.collection("Chats")
-            .addSnapshotListener() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for chat in querySnapshot!.documents {
-                        // Get both users of the chat
-                        let users = chat.data()["users"] as! Array<String>
-                        
-                        if users.contains(MainController.currentUser.uid) {
-                            // Get uid from chat partner
-                            let chatPartnerUID = users.first(where: { $0 != MainController.currentUser.uid})! as String
-                            if let listener = ChatsTableViewController.threadListeners[chatPartnerUID] {
-                                listener.remove()
-                                ChatsTableViewController.threadListeners[chatPartnerUID] = nil
-                            }
-                            // Get newest message from the chat with the found chat id
-                            ChatsTableViewController.threadListeners[chatPartnerUID] = (MainController.database.collection("Chats")
-                                .document(chat.documentID)
-                                .collection("thread")
-                                .order(by: "created", descending: true)
-                                .limit(to: 1)
-                                .addSnapshotListener { querySnapshot, error in
-                                    guard let documents = querySnapshot?.documents else {
-                                        print("Error fetching documents: \(error!)")
-                                        return
-                                    }
-                                    
-                                    for latestMessage in documents {
-                                        // Create Chat object with the uid of the currentUser and its chat partner
-                                        // and the timestamp and the content from the latest message
-                                        
-                                        // Remove old chat object if exists
-                                        if let existingChat = self.chatsArray.firstIndex(where: { $0.chatPartner.uid == chatPartnerUID }) {
-                                            self.chatsArray.remove(at: existingChat)
-                                        }
-                                        
-                                        // Get information about the chat partner
-                                        MainController.database.collection("users")
-                                            .document(chatPartnerUID)
-                                            .getDocument { (querySnapshot, error) in
-                                                if error != nil {
-                                                    print("Error occured")
-                                                }
-                                                else if querySnapshot!.exists == false {
-                                                    print("Chat partner doesn't exist!")
-                                                }
-                                                else {
-                                                    do {
-                                                        let chatPartner = try User().mapData(uid: querySnapshot!.documentID, data: querySnapshot!.data()!)
-                                                        let newChat = try Chat().mapData(data: latestMessage.data(), chatPartner: chatPartner)
-                                                        
-                                                        // Get profile image of the chat partner
-                                                        MainController.storage
-                                                            .reference(withPath: "profilePictures/\(chatPartnerUID)/profilePicture.jpg")
-                                                            .getData(maxSize: 4 * 1024 * 1024) { data, error in
-                                                                
-                                                                if let error = error {
-                                                                    print("Error while downloading profile image: \(error.localizedDescription)")
-                                                                    newChat!.chatPartner.profileImage = UIImage(named: "defaultProfilePicture")!
-                                                                } else {
-                                                                    // Data for "profilePicture.jpg" is returned
-                                                                    newChat!.chatPartner.profileImage = UIImage(data: data!)!
-                                                                }
-                                                                
-                                                                self.chatsArray.append(newChat!)
-                                                                
-                                                                // Sort the chats by time
-                                                                self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
-                                                                    firstChat.timestampOfTheLatestMessage.seconds > secondChat.timestampOfTheLatestMessage.seconds
-                                                                })
-                                                                
-                                                                // Update the table
-                                                                self.tableView.reloadData()
-                                                        }
-                                                    } catch UserError.mapDataError {
-                                                        print("Error while mapping User!")
-                                                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
-                                                        self.present(alert, animated: true, completion: nil)
-                                                    } catch ChatError.mapDataError {
-                                                        print("Error while mapping Chat!")
-                                                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
-                                                        self.present(alert, animated: true, completion: nil)
-                                                    } catch {
-                                                        print("Unexpected error: \(error)")
-                                                    }
-                                                }
-                                        }
-                                    }
+        
+        MainController.dataService.addListener(for: "Chats") { chat in
+            // Get both users of the chat
+            let users = chat.data()["users"] as! Array<String>
+            
+            if users.contains(MainController.dataService.currentUser.uid) {
+                // Get uid from chat partner
+                let chatPartnerUID = users.first(where: { $0 != MainController.dataService.currentUser.uid})! as String
+                if let listener = ChatsTableViewController.threadListeners[chatPartnerUID] {
+                    listener.remove()
+                    ChatsTableViewController.threadListeners[chatPartnerUID] = nil
+                }
+                // Get newest message from the chat with the found chat id
+                MainController.dataService.addListenerForChatThread(chatId: chat.documentID, chatPartnerUID: chatPartnerUID) { latestMessage in
+                    // Create Chat object with the uid of the currentUser and its chat partner
+                    // and the timestamp and the content from the latest message
+                    
+                    // Remove old chat object if exists
+                    if let existingChat = self.chatsArray.firstIndex(where: { $0.chatPartner.uid == chatPartnerUID }) {
+                        self.chatsArray.remove(at: existingChat)
+                    }
+                    
+                    // Get information about the chat partner
+                    MainController.dataService.getNeighbor(with: chatPartnerUID) { data, documentID in
+                        do {
+                            let chatPartner = try User().mapData(uid: documentID, data: data)
+                            let newChat = try Chat().mapData(data: latestMessage.data(), chatPartner: chatPartner)
+                            
+                            // Get profile image of the chat partner
+                            MainController.dataService.getProfilePicture(for: chatPartnerUID, completion: { image in
+                                newChat!.chatPartner.profileImage = image
+                                self.chatsArray.append(newChat!)
+                                
+                                // Sort the chats by time
+                                self.chatsArray.sort(by: { (firstChat: Chat, secondChat: Chat) in
+                                    firstChat.timestampOfTheLatestMessage.seconds > secondChat.timestampOfTheLatestMessage.seconds
+                                })
+                                // Update the table
+                                self.tableView.reloadData()
                             })
+                        } catch UserError.mapDataError {
+                            print("Error while mapping User!")
+                            let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
+                            self.present(alert, animated: true, completion: nil)
+                        } catch ChatError.mapDataError {
+                            print("Error while mapping Chat!")
+                            let alert = Utility.displayAlert(withMessage: nil, withSignOut: false)
+                            self.present(alert, animated: true, completion: nil)
+                        } catch {
+                            print("Unexpected error: \(error)")
                         }
                     }
                 }
-        })
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -233,50 +194,51 @@ class ChatsTableViewController: SortableTableViewController {
             let currentChat = displayedChats[indexPath.row]
             
             // get all chats of current user
-            MainController.database.collection("Chats").whereField("users", arrayContains: MainController.currentUser.uid).getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error getting chats: \(error.localizedDescription)")
-                } else if let snapshot = snapshot, !snapshot.isEmpty {
+            MainController.dataService.getChats(for: MainController.dataService.currentUser.uid) { snapshot in
+                if !snapshot.isEmpty {
                     for document in snapshot.documents {
                         let data = document.data()["users"] as! Array<String>
                         let chatRef = document.reference
                         // get the current chat
                         if data.contains(currentChat.chatPartner.uid) {
                             // get the thread collection for the current chat
-                            chatRef.collection("thread").getDocuments { (threadQuery, error) in
-                                if let error = error {
-                                    print("Error gettin thread: \(error.localizedDescription)")
-                                } else if let threadQuery = threadQuery, !threadQuery.isEmpty {
-                                    // delete thread listener
-                                    if let listener = ChatsTableViewController.threadListeners[currentChat.chatPartner.uid] {
-                                        listener.remove()
-                                    }
-                                    // delete every chat message
-                                    for chatMessage in threadQuery.documents {
-                                        let messageRef = chatMessage.reference
-                                        messageRef.delete()
-                                    }
-                                    // delete the chat document (Chats/{chatId})
-                                    chatRef.delete()
-                                    // delete data from tableview data source
-                                    if self.isSorting {
-                                        let removedChat = self.searchedChats.remove(at: indexPath.row)
-                                        let tmp = self.searchedChats
-                                        if let index = self.chatsArray.firstIndex(where: { (chat) -> Bool in
-                                            return chat.localChatID == removedChat.localChatID
-                                        }) {
-                                            self.chatsArray.remove(at: index)
-                                        }
-                                        self.searchedChats = tmp
-                                    } else {
-                                        self.chatsArray.remove(at: indexPath.row)
-                                    }
-                                    // delete row from tableview
-                                    self.tableView.deleteRows(at: [indexPath], with: .left)
+                            MainController.dataService.getChatThreadCollection(for: chatRef) { threadQuery in
+                                // delete thread listener
+                                if let listener = ChatsTableViewController.threadListeners[currentChat.chatPartner.uid] {
+                                    listener.remove()
                                 }
+                                // delete every chat message
+                                for chatMessage in threadQuery.documents {
+                                    let messageRef = chatMessage.reference
+                                    messageRef.delete()
+                                }
+                                // delete the chat document (Chats/{chatId})
+                                chatRef.delete()
+                                // delete data from tableview data source
+                                if self.isSorting {
+                                    let removedChat = self.searchedChats.remove(at: indexPath.row)
+                                    let tmp = self.searchedChats
+                                    if let index = self.chatsArray.firstIndex(where: { (chat) -> Bool in
+                                        return chat.localChatID == removedChat.localChatID
+                                    }) {
+                                        self.chatsArray.remove(at: index)
+                                    }
+                                    self.searchedChats = tmp
+                                } else {
+                                    self.chatsArray.remove(at: indexPath.row)
+                                }
+                                // delete row from tableview
+                                self.tableView.deleteRows(at: [indexPath], with: .left)
                             }
                         }
                     }
+                }
+            }
+            MainController.dataService.database.collection("Chats").whereField("users", arrayContains: MainController.dataService.currentUser.uid).getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error getting chats: \(error.localizedDescription)")
+                } else if let snapshot = snapshot, !snapshot.isEmpty {
+                    
                 }
             }
         }

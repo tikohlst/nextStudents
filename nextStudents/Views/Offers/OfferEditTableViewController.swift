@@ -54,43 +54,31 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             timePickerView.selectRow(pickerDataShown.firstIndex(of: currentOffer!.duration)!, inComponent: 0, animated: true)
             deleteOfferCell.isHidden = false
             
-            MainController.storage
-                .reference()
-                .child("offers/\(currentOffer!.uid)")
-                .listAll { (result, error) in
-                    if let error = error {
-                        print("Error while listing data: \(error.localizedDescription)")
-                    } else {
-                        for item in result.items {
-                            item.getData(maxSize: 4 * 1024 * 1024) { (data, error) in
-                                if let error = error {
-                                    print("Error while downloading image: \(error.localizedDescription)")
-                                } else {
-                                    let image = UIImage(data: data!)
-                                    let newView = UIImageView(image: image)
-                                    newView.accessibilityIdentifier = item.name
-                                    
-                                    newView.frame.size.width = self.newOfferImageView.frame.size.width
-                                    newView.frame.size.height = self.newOfferImageView.frame.size.height
-                                    
-                                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTappedDelete(gesture:)))
-                                    newView.addGestureRecognizer(tapGesture)
-                                    newView.isUserInteractionEnabled = true
-                                    
-                                    self.imageViews.insert(newView, at: 0)
-                                    self.imageScrollView.insertSubview(newView, at: 0)
-                                    
-                                    self.imageScrollView.contentSize.width = self.imageScrollView.frame.size.width
-                                        + CGFloat(self.imageViews.count - 1)
-                                        * self.newOfferImageView.frame.size.width
-                                        + CGFloat(self.imageViews.count - 1) * 5.0
-                                    
-                                    self.layoutImages(animated: false)
-                                }
-                            }
-                        }
-                    }
-            }
+            MainController.dataService.getOfferPicturesReferences(for: currentOffer!.uid, completion: { references in
+                for reference in references {
+                    MainController.dataService.getOfferPicture(from: reference, completion: { image in
+                        let newView = UIImageView(image: image)
+                        newView.accessibilityIdentifier = reference.name
+                        
+                        newView.frame.size.width = self.newOfferImageView.frame.size.width
+                        newView.frame.size.height = self.newOfferImageView.frame.size.height
+                        
+                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTappedDelete(gesture:)))
+                        newView.addGestureRecognizer(tapGesture)
+                        newView.isUserInteractionEnabled = true
+                        
+                        self.imageViews.insert(newView, at: 0)
+                        self.imageScrollView.insertSubview(newView, at: 0)
+                        
+                        self.imageScrollView.contentSize.width = self.imageScrollView.frame.size.width
+                            + CGFloat(self.imageViews.count - 1)
+                            * self.newOfferImageView.frame.size.width
+                            + CGFloat(self.imageViews.count - 1) * 5.0
+                        
+                        self.layoutImages(animated: false)
+                    })
+                }
+            })
         }
         
     }
@@ -172,15 +160,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
             title: "Ja",
             style: .default,
             handler: { (UIAlertAction) in
-                MainController.database
-                    .collection("offers")
-                    .document(MainController.currentUser.uid)
-                    .collection("offer")
-                    .document(self.currentOffer!.uid)
-                    .delete()
-                MainController.storage
-                    .reference(withPath: "offers/\(self.currentOffer!.uid)")
-                    .delete()
+                MainController.dataService.deleteOffer(for: self.currentOffer!.uid)
                 // Remove Offer object from array
                 if let existingOffer = OffersTableViewController.offersArray.firstIndex(where: { $0.uid == self.currentOffer!.uid }) {
                     OffersTableViewController.offersArray.remove(at: existingOffer)
@@ -266,111 +246,57 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     private func createOffer() {
-        let newOfferId = UUID.init().uuidString
-        MainController.database.collection("offers")
-            .document(MainController.currentUser.uid)
-            .collection("offer")
-            .document(newOfferId)
-            .setData([
-                "date": Timestamp(),
-                "title": titleTextField.text ?? "",
-                "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
-                "description": descriptionTextField.text ?? "",
-                "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
-                "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
-            ]) { err in
-                if let err = err {
-                    print("Error creating document: \(err.localizedDescription)")
-                }
-        }
+        let dict: [String: Any] = [
+            "date": Timestamp(),
+            "title": titleTextField.text!,
+            "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+            "description": descriptionTextField.text!,
+            "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
+            "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
+        ]
         
-        uploadImages(images: addedImages, for: newOfferId)
+        MainController.dataService.createOffer(with: dict, completion: { newOfferId in
+            if let newOfferId = newOfferId {
+                self.uploadImages(images: self.addedImages, for: newOfferId)
+            }
+        })
     }
     
     private func saveOffer() {
-        MainController.database.collection("offers")
-            .document(MainController.currentUser.uid)
-            .collection("offer")
-            .document(currentOffer!.uid)
-            .updateData([
-                "title": titleTextField.text ?? "",
-                "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
-                "description": descriptionTextField.text ?? "",
-                "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
-                "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
-            ]) { err in
-                if let err = err {
-                    print("Error editing document: \(err.localizedDescription)")
-                }
-        }
+        let dict: [String: Any] = [
+            "title": titleTextField.text ?? "",
+            "type": offerNeedControl.titleForSegment(at: offerNeedControl.selectedSegmentIndex)!,
+            "description": descriptionTextField.text ?? "",
+            "duration": pickerDataShown[timePickerView.selectedRow(inComponent: 0)],
+            "timeFormat" : pickerData[2][timePickerView.selectedRow(inComponent: 1)]
+        ]
+        MainController.dataService.updateOffer(with: dict, offerID: currentOffer!.uid)
         
         if !deletedImages.isEmpty {
-            for identifier in deletedImages {
-                MainController.storage
-                    .reference(withPath: "offers/\(currentOffer!.uid)/\(identifier)")
-                    .delete { error in
-                        if let error = error {
-                            print ("Error deleting image: \(error.localizedDescription)")
-                        } else {
-                            self.uploadImages(images: self.addedImages, for: self.currentOffer!.uid)
-                        }
-                }
+            for imageID in deletedImages {
+                MainController.dataService.deleteOfferPicture(for: currentOffer!.uid, imageID: imageID)
             }
-        } else {
-            self.uploadImages(images: self.addedImages, for: currentOffer!.uid)
         }
+        self.uploadImages(images: self.addedImages, for: currentOffer!.uid)
+        
     }
     
     private func uploadImages(currentOfferUID: String) {
-        if imageViews.count > 0 {
-            for view in imageViews {
-                let storageRef = MainController.storage
-                    .reference(withPath: "offers/\(currentOfferUID)/\(UUID.init().uuidString).jpeg")
-                if let image = view.image, let imageData = image.jpegData(compressionQuality: 0.75) {
-                    let imageMetaData = StorageMetadata.init()
-                    imageMetaData.contentType = "image/jpeg"
-                    // Upload image
-                    storageRef.putData(imageData, metadata: imageMetaData) { (storageMetadata, error) in
-                        if let error = error {
-                            print("Error while uploading data: \(error.localizedDescription)")
-                        } else {
-                            print("uplaod complete with metadata: \(storageMetadata?.description ?? "nil")")
-                            
-                            // Don't go back to the offers TableView until the new image has been completely uploaded
-                            self.performSegue(withIdentifier: "backToOffers", sender: nil)
-                        }
-                    }
-                }
-            }
-        } else {
-            // Perform segue without having to wait for an image to be uploaded
-            self.performSegue(withIdentifier: "backToOffers", sender: nil)
-        }
+        uploadImages(images: imageViews, for: currentOfferUID)
     }
     
     private func uploadImages(images: [UIImageView], for offerID: String) {
         if images.count > 0 {
             for view in images {
-                let storageRef = MainController.storage
-                    .reference(withPath: "offers/\(offerID)/\(UUID.init().uuidString).jpeg")
-                if let image = view.image, let imageData = image.jpegData(compressionQuality: 0.75) {
-                    let imageMetaData = StorageMetadata.init()
-                    imageMetaData.contentType = "image/jpeg"
-                    // Upload image
-                    storageRef.putData(imageData, metadata: imageMetaData) { (storageMetadata, error) in
-                        if let error = error {
-                            print("Error while uploading data: \(error.localizedDescription)")
-                        } else {
-                            print("uplaod complete with metadata: \(storageMetadata?.description ?? "nil")")
-                            
-                            // Don't go back to the offers TableView until the new image has been completely uploaded
-                            self.performSegue(withIdentifier: "backToOffers", sender: nil)
-                        }
-                    }
+                if let image = view.image {
+                    MainController.dataService.uploadOfferPicture(image: image, offerID: offerID, completion: {
+                        // Don't go back to the offers TableView until the new image has been completely uploaded
+                        self.performSegue(withIdentifier: "backToOffers", sender: nil)
+                    })
                 }
             }
         } else {
-            // Don't go back to the offers TableView until the new image has been completely uploaded
+            // Perform segue without having to wait for an image to be uploaded
             self.performSegue(withIdentifier: "backToOffers", sender: nil)
         }
     }

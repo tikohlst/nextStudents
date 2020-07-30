@@ -279,7 +279,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                 }
         }
         
-        if accountInfoMissing, let user = MainController.currentUser {
+        if accountInfoMissing, let user = MainController.dataService.currentUser {
             form.rowBy(tag: "firstName")?.baseValue = user.firstName
             form.rowBy(tag: "lastName")?.baseValue = user.lastName
             form.rowBy(tag: "street")?.baseValue = user.street
@@ -393,51 +393,19 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
         
-        Auth.auth().createUser(
-            withEmail: (dict["email"] as! String),
-            password: dict["password"] as! String) { authResult, error in
-                // Error handling
-                if error != nil {
-                    print("An error occurred: \(error!.localizedDescription)")
-                    let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
-                    self.present(alert, animated: true, completion: nil)
-                } else if authResult != nil {
-                    // Write userdata to firestore
-                    if let firstName = dict["firstName"] as? String,
-                        let lastName = dict["lastName"] as? String,
-                        let street = dict["street"] as? String,
-                        let housenumber = dict["housenumber"] as? String,
-                        let zipcode = dict["zipcode"] as? Int,
-                        let school = dict["hs"] as? String {
-                        let degreeProgram = dict["degreeProgram"] as? String ?? ""
-                        
-                        MainController.database.collection("users")
-                            .document(Auth.auth().currentUser!.uid)
-                            .setData([
-                                "firstName": firstName,
-                                "lastName": lastName,
-                                "street": street,
-                                "housenumber": housenumber,
-                                "zipcode": String(zipcode),
-                                "radius": self.defaultRadius,
-                                "gpsCoordinates": self.formGpsCoordinates!,
-                                "bio": "",
-                                "skills": "",
-                                "school": school,
-                                "degreeProgram" : degreeProgram
-                            ]) { err in
-                                if let err = err {
-                                    print("Error adding document: \(err)")
-                                }
-                                else {
-                                    self.presentLoginViewController()
-                                }
-                        }
-                    } else {
-                        print("Something went wrong.")
-                    }
-                }
-        }
+        MainController.dataService.createUser(from: dict, completion: { success in
+            if success {
+                MainController.dataService.setUserData(from: dict,
+                                                       radius: self.defaultRadius,
+                                                       gpsCoordinates: self.formGpsCoordinates,
+                                                       completion: {
+                                                        self.presentLoginViewController()
+                })
+            } else {
+                let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
     }
     
     func updateAccount() {
@@ -445,35 +413,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         let dict = form.values(includeHidden: true)
         
         // Write userdata to firestore
-        if let firstName = dict["firstName"] as? String,
-            let name = dict["lastName"] as? String,
-            let street = dict["street"] as? String,
-            let housenumber = dict["housenumber"] as? String,
-            let zipcode = dict["zipcode"] as? Int,
-            let school = dict["hs"] as? String,
-            let degreeProgram = dict["degreeProgram"] as? String {
-            
-            MainController.database.collection("users")
-                .document(MainController.currentUser.uid)
-                .updateData([
-                    "firstName": firstName,
-                    "lastName": name,
-                    "street": street,
-                    "housenumber": housenumber,
-                    "zipcode": String(zipcode),
-                    "radius": self.defaultRadius,
-                    "gpsCoordinates": self.formGpsCoordinates!,
-                    "school": school,
-                    "degreeProgram": degreeProgram
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        self.presentTabBarViewController()
-                    }
-            }
-        } else {
-            print("something went wrong.")
+        MainController.dataService.updateUserData(from: dict, radius: self.defaultRadius, gpsCoordinates: self.formGpsCoordinates) {
+            self.presentTabBarViewController()
         }
     }
     

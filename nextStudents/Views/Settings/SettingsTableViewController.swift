@@ -29,8 +29,8 @@ class SettingsTableViewController: UITableViewController {
             }
         }
         
-        userNameLabel.text = MainController.currentUser.firstName + " " + MainController.currentUser.lastName
-        self.userImageView.image = MainController.currentUser.profileImage
+        userNameLabel.text = MainController.dataService.currentUser.firstName + " " + MainController.dataService.currentUser.lastName
+        self.userImageView.image = MainController.dataService.currentUser.profileImage
         
         // Show the profile image without whitespace
         if userImageView.frame.width > userImageView.frame.height {
@@ -95,15 +95,15 @@ class SettingsTableViewController: UITableViewController {
     static func signOut() {
         do {
             // remove all active listeners
-            for listener in MainController.listeners {
+            for listener in MainController.dataService.listeners {
                 listener.remove()
             }
             for listener in ChatsTableViewController.threadListeners.values {
                 listener.remove()
             }
             try Auth.auth().signOut()
-            MainController.currentUserAuth = nil
-            MainController.currentUser = nil
+            MainController.dataService.currentUserAuth = nil
+            MainController.dataService.currentUser = nil
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as UINavigationController
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(vc)
