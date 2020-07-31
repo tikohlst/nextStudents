@@ -2,8 +2,7 @@
 //  Utilities.swift
 //  nextStudents
 //
-//  Created by Tim Kohlstadt on 17.07.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import CoreLocation

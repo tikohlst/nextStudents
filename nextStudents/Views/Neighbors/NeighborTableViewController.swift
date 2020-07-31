@@ -41,7 +41,7 @@ class NeighborTableViewController: UITableViewController {
                 message: "Anfrage annehmen?",
                 preferredStyle: .alert)
             
-            let deleteAction = UIAlertAction(title: "Ja", style: .default) { _ in
+            let acceptAction = UIAlertAction(title: "Ja", style: .default) { _ in
                 // accept request
                 self.userFriendList![self.user.uid] = 1
                 MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { success in
@@ -60,7 +60,7 @@ class NeighborTableViewController: UITableViewController {
                 }
             }
             
-            let cancelAction = UIAlertAction(title: "Nein", style: .cancel) { _ in
+            let declineAction = UIAlertAction(title: "Nein", style: .cancel) { _ in
                 // deny request
                 self.userFriendList![self.user.uid] = nil
                 MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { (success) in
@@ -72,8 +72,8 @@ class NeighborTableViewController: UITableViewController {
                 }
             }
             
-            alert.addAction(deleteAction)
-            alert.addAction(cancelAction)
+            alert.addAction(acceptAction)
+            alert.addAction(declineAction)
             
             present(alert, animated: true, completion: nil)
         } else {

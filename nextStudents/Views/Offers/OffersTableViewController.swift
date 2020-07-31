@@ -240,30 +240,30 @@ class OffersTableViewController: SortableTableViewController {
             }
             let displayedOffers = isSorting ? searchedOffers : OffersTableViewController.offersArray
             switch identifier {
-                case showOfferDetailSegue:
-                    if let vc = segue.destination as? OfferTableViewController {
-                        let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = displayedOffers[selectedIndex.row]
-                        vc.offer = selectedOffer
+            case showOfferDetailSegue:
+                if let vc = segue.destination as? OfferTableViewController {
+                    let selectedIndex = self.tableView.indexPathForSelectedRow!
+                    let selectedOffer = displayedOffers[selectedIndex.row]
+                    vc.offer = selectedOffer
                 }
-                case editOfferSegue:
-                    if let vc = segue.destination as? OfferEditTableViewController {
-                        let selectedIndex = self.tableView.indexPathForSelectedRow!
-                        let selectedOffer = displayedOffers[selectedIndex.row]
-                        vc.currentOffer = selectedOffer
+            case editOfferSegue:
+                if let vc = segue.destination as? OfferEditTableViewController {
+                    let selectedIndex = self.tableView.indexPathForSelectedRow!
+                    let selectedOffer = displayedOffers[selectedIndex.row]
+                    vc.currentOffer = selectedOffer
                 }
-                case "createNewOffer":
-                    if let vc = segue.destination as? OfferEditTableViewController {
-                        vc.pickerDataShown = vc.pickerData[0]
+            case "createNewOffer":
+                if let vc = segue.destination as? OfferEditTableViewController {
+                    vc.pickerDataShown = vc.pickerData[0]
                 }
-                case "showFilterOptions":
-                    if let vc = segue.destination as? OfferPopOverController, let ppc = vc.popoverPresentationController {
-                        ppc.delegate = self
-                        vc.delegate = self
-                        vc.offers = isSorting ? searchedOffers : allOffers
+            case "showFilterOptions":
+                if let vc = segue.destination as? OfferPopOverController, let ppc = vc.popoverPresentationController {
+                    ppc.delegate = self
+                    vc.delegate = self
+                    vc.offers = isSorting ? searchedOffers : allOffers
                 }
-                default:
-                    break
+            default:
+                break
             }
         }
     }

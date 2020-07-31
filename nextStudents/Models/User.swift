@@ -1,6 +1,6 @@
 //
 //  User.swift
-//  nextDoor
+//  nextStudents
 //
 //  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //

@@ -18,10 +18,6 @@ class MainController: UITabBarController {
     
     // MARK: - UIViewController events
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
     override func viewDidLoad() {
         // Do any additional setup after loading the view.
         super.viewDidLoad()

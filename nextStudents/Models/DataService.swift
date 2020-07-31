@@ -2,14 +2,15 @@
 //  DataService.swift
 //  nextStudents
 //
-//  Created by Benedict Zendel on 30.07.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import Foundation
 import Firebase
 
 class DataService {
+    
+    // MARK: - Variables
     
     let database = Firestore.firestore()
     let storage = Storage.storage()
@@ -26,6 +27,7 @@ class DataService {
     
     var listeners = [ListenerRegistration]()
     
+    // MARK: - Methods
     
     func createUser(from dict: [String: Any?], completion: @escaping (_ success: Bool) -> Void) {
         Auth.auth().createUser(
@@ -36,22 +38,22 @@ class DataService {
                     print("An error occurred: \(error!.localizedDescription)")
                     completion(false)
                 } else if authResult != nil {
-                        completion(true)
+                    completion(true)
                 }
         }
     }
     
-func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoPoint?, completion: @escaping () -> Void) {
-    
-    // Write userdata to firestore
-    if let firstName = dict["firstName"] as? String,
-        let lastName = dict["lastName"] as? String,
-        let street = dict["street"] as? String,
-        let housenumber = dict["housenumber"] as? String,
-        let zipcode = dict["zipcode"] as? Int,
-        let school = dict["hs"] as? String {
+    func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoPoint?, completion: @escaping () -> Void) {
         
-        let degreeProgram = dict["degreeProgram"] as? String ?? ""
+        // Write userdata to firestore
+        if let firstName = dict["firstName"] as? String,
+            let lastName = dict["lastName"] as? String,
+            let street = dict["street"] as? String,
+            let housenumber = dict["housenumber"] as? String,
+            let zipcode = dict["zipcode"] as? Int,
+            let school = dict["hs"] as? String {
+            
+            let degreeProgram = dict["degreeProgram"] as? String ?? ""
             
             MainController.dataService.database.collection("users")
                 .document(Auth.auth().currentUser!.uid)
@@ -113,7 +115,9 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
     }
     
     func deleteUser(completion: @escaping () -> Void) {
-        database.collection("users").document(MainController.dataService.currentUser.uid).delete { error in
+        database.collection("users")
+            .document(MainController.dataService.currentUser.uid)
+            .delete { error in
             if let error = error {
                 // An error happened.
                 print(error.localizedDescription)
@@ -153,7 +157,9 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
                 } else {
                     
                     for currentNeighbor in querySnapshot!.documents {
-                        let differenceInMeter = Utility.getGPSDifference(currentNeighbor.data()["gpsCoordinates"] as! GeoPoint, self.currentUser.gpsCoordinates)
+                        let differenceInMeter = Utility.getGPSDifference(
+                            currentNeighbor.data()["gpsCoordinates"] as! GeoPoint,
+                            self.currentUser.gpsCoordinates)
                         // Only show neighbors in the defined range
                         if (differenceInMeter) < Double(self.currentUser.radius) {
                             // Don't show currentUser as its own neighbor
@@ -178,12 +184,12 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
     
     func getRawNeighborData(completion: @escaping (_ data: [QueryDocumentSnapshot]) -> Void) {
         database.collection("users")
-        .getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else if let documents = querySnapshot?.documents{
-                completion(documents)
-            }
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else if let documents = querySnapshot?.documents{
+                    completion(documents)
+                }
         }
     }
     
@@ -202,7 +208,6 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
     }
     
     func getChats(for userID: String, completion: @escaping (_ querySnapshot: QuerySnapshot) -> Void) {
-        //let array1:
         database.collection("Chats")
             .whereField("users", arrayContains: userID)
             .getDocuments { (chatQuerySnap, error) in
@@ -218,7 +223,6 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
     }
     
     func getChatThreadCollection(for reference: DocumentReference, completion: @escaping (_ threadQuery: QuerySnapshot) -> Void) {
-        
         reference.collection("thread").getDocuments { (threadQuery, error) in
             if let error = error {
                 print("Error gettin thread: \(error.localizedDescription)")
@@ -250,12 +254,13 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
             let imageMetadata = StorageMetadata.init()
             imageMetadata.contentType = "image/jpeg"
             storage
-            .reference(withPath: "profilePictures/\(String(describing: MainController.dataService.currentUser.uid))/profilePicture.jpg").putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
-                if let error = error {
-                    print("Error while uploading profile image: \(error.localizedDescription)")
-                }
-                print("upload complete with metadata: \(String(describing: storageMetadata))")
-                completion()
+                .reference(withPath: "profilePictures/\(String(describing: MainController.dataService.currentUser.uid))/profilePicture.jpg")
+                .putData(imageData, metadata: imageMetadata) { (storageMetadata, error) in
+                    if let error = error {
+                        print("Error while uploading profile image: \(error.localizedDescription)")
+                    }
+                    print("upload complete with metadata: \(String(describing: storageMetadata))")
+                    completion()
             }
         }
     }
@@ -305,7 +310,8 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
             let imageMetaData = StorageMetadata.init()
             imageMetaData.contentType = "image/jpeg"
             storage
-                .reference(withPath: "offers/\(offerID)/\(imageID).jpeg").putData(imageData, metadata: imageMetaData) { (storageMetadata, error) in
+                .reference(withPath: "offers/\(offerID)/\(imageID).jpeg")
+                .putData(imageData, metadata: imageMetaData) { (storageMetadata, error) in
                     if let error = error {
                         print("Error while uploading data: \(error.localizedDescription)")
                     } else {
@@ -356,7 +362,7 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
             .reference(withPath: "offers/\(offerID)")
             .delete()
     }
-
+    
     func addRequest(with data: [String:Any], to id: String, completion: @escaping () -> Void) {
         database.collection("friends").document(id).setData(data) { error in
             if let error = error {
@@ -433,7 +439,7 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
                 }
                 
                 for latestMessage in documents {
-                   completion(latestMessage)
+                    completion(latestMessage)
                 }
         }
     }
@@ -453,16 +459,16 @@ func setUserData(from dict: [String: Any?], radius: Double, gpsCoordinates: GeoP
     
     func createListenerForChatThreadOrdered(snapshot: QueryDocumentSnapshot, completion: @escaping (_ threadQuery: QuerySnapshot) -> Void) -> ListenerRegistration {
         return snapshot.reference.collection("thread")
-                .order(by: "created", descending: false)
-                .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
-                    if let error = error {
-                        print("Error: \(error)")
-                        return
-                    } else {
-                        if let threadQuery = threadQuery {
-                            completion(threadQuery)
-                        }
+            .order(by: "created", descending: false)
+            .addSnapshotListener(includeMetadataChanges: true, listener: { (threadQuery, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                    return
+                } else {
+                    if let threadQuery = threadQuery {
+                        completion(threadQuery)
                     }
-                })
-        }
+                }
+            })
+    }
 }

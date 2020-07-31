@@ -41,7 +41,10 @@ class NeighborTableViewCell: UITableViewCell {
         neighborView.layer.rasterizationScale = UIScreen.main.scale
         
         neighborView.layer.borderWidth = 0.5
-        neighborView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
+        neighborView.layer.borderColor = UIColor(displayP3Red: 211.0/255.0,
+                                                 green: 211.0/255.0,
+                                                 blue: 211.0/255.0,
+                                                 alpha: 1.0).cgColor
         
         neighborView.layer.shadowOffset = CGSize(width: 3, height: 3)
         neighborView.layer.shadowRadius  = 3
@@ -96,16 +99,16 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController!.setupSortingCellsAndDelegate()
         }
         
-            MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (data) in
-                self.rawRequests = data
-            })
+        MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (data) in
+            self.rawRequests = data
+        })
         
         if MainController.dataService.currentUserUpdated {
             MainController.dataService.currentUserUpdated = false
             MainController.dataService.allUsers = []
             // Update the table if there are no neighbors in range
             self.tableView.reloadData()
-            MainController.dataService.getNeighbors {newUser in
+            MainController.dataService.getNeighbors { newUser in
                 // Get profile image of the neighbor
                 if let newUser = newUser {
                     MainController.dataService.getProfilePicture(for: newUser.uid, completion: { image in
@@ -170,12 +173,12 @@ class NeighborsTableViewController: SortableTableViewController {
             
             if let status = rawRequests[currentUser.uid] {
                 switch status {
-                    case 0:
-                        cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.exclam")
-                    case 1:
-                        cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.checkmark")
-                    default:
-                        break
+                case 0:
+                    cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.exclam")
+                case 1:
+                    cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.checkmark")
+                default:
+                    break
                 }
             } else {
                 // no request nor friendship

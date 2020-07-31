@@ -2,8 +2,7 @@
 //  OfferPopOverController.swift
 //  nextStudents
 //
-//  Created by Benedict Zendel on 21.07.20.
-//  Copyright © 2020 Tim Kohlstadt. All rights reserved.
+//  Copyright © 2020 Tim Kohlstadt, Benedict Zendel. All rights reserved.
 //
 
 import UIKit
