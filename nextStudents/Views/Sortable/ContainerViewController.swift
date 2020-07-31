@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ContainerViewController: UIViewController {
     
@@ -28,6 +29,41 @@ class ContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bottomConstraint.constant = self.sortingContainer.frame.size.height
+        
+        // This variable is set to true the first time the app is loaded, so
+        // that all current users in the area are updated when you log in again
+        MainController.dataService.currentUserUpdated = true
+        
+        MainController.dataService.currentUserAuth = Auth.auth().currentUser!
+        
+        MainController.dataService.addListenerForCurrentUser {data, docId in
+            do {
+                // get current user
+                MainController.dataService.currentUser = try User().mapData(uid: docId, data: data)
+                
+                // get profile image if it exists
+                MainController.dataService.getProfilePicture(for: MainController.dataService.currentUser.uid, completion: { image in
+                    MainController.dataService.currentUser.profileImage = image
+                })
+                
+                // check if userdata is complete
+                self.checkMissingUserData()
+                
+            } catch UserError.mapDataError {
+                print("Error while mapping User!")
+                let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
+                self.present(alert, animated: true, completion: nil)
+            } catch {
+                print("Unexpected error: \(error)")
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if MainController.dataService.currentUser != nil {
+            checkMissingUserData()
+        }
     }
     
     // MARK: - Helper methods
@@ -49,6 +85,23 @@ class ContainerViewController: UIViewController {
             })
         }
         sortMenuVisible = !sortMenuVisible
+    }
+    
+    func checkMissingUserData() {
+        if MainController.dataService.currentUser.firstName.isEmpty || MainController.dataService.currentUser.lastName.isEmpty ||
+            MainController.dataService.currentUser.street.isEmpty || MainController.dataService.currentUser.housenumber.isEmpty ||
+            MainController.dataService.currentUser.zipcode.isEmpty || MainController.dataService.currentUser.radius == 0 {
+            // prompt the registration screen
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
+            viewController.accountInfoMissing = true
+            viewController.navigationItem.title = "Registrierung abschließen"
+            
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.modalTransitionStyle = .crossDissolve
+            self.present(navigationController, animated: true, completion: nil)
+        }
     }
     
     // TODO: refactor copy pasted code

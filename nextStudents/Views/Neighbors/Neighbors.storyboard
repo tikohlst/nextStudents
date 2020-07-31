@@ -49,10 +49,19 @@
                                                     <color key="textColor" name="Black-White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5b9-DL-8je">
+                                                    <rect key="frame" x="314" y="28" width="52" height="44"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="5mq-rJ-EQM"/>
+                                                        <constraint firstAttribute="width" constant="52" id="aOJ-bp-MFf"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" name="White-Grey"/>
                                             <constraints>
                                                 <constraint firstItem="yQH-T7-e0t" firstAttribute="top" secondItem="uaY-hV-Cuf" secondAttribute="bottom" constant="5" id="1Ql-9P-he5"/>
+                                                <constraint firstAttribute="trailing" secondItem="5b9-DL-8je" secondAttribute="trailing" constant="8" id="8kF-DQ-jzu"/>
                                                 <constraint firstAttribute="bottom" secondItem="yQH-T7-e0t" secondAttribute="bottom" constant="20" id="D9h-NW-A7F"/>
                                                 <constraint firstItem="sVr-Bt-X9E" firstAttribute="leading" secondItem="VEc-zd-VVr" secondAttribute="leading" constant="10" id="EAu-qp-1vz"/>
                                                 <constraint firstItem="sVr-Bt-X9E" firstAttribute="top" secondItem="VEc-zd-VVr" secondAttribute="top" constant="10" id="QhV-iy-s2Z"/>
@@ -61,6 +70,7 @@
                                                 <constraint firstItem="yQH-T7-e0t" firstAttribute="trailing" secondItem="VEc-zd-VVr" secondAttribute="trailingMargin" id="g8m-GA-4NN"/>
                                                 <constraint firstAttribute="trailing" secondItem="uaY-hV-Cuf" secondAttribute="trailing" constant="10" id="h5T-lE-jrN"/>
                                                 <constraint firstItem="yQH-T7-e0t" firstAttribute="leading" secondItem="sVr-Bt-X9E" secondAttribute="trailing" constant="30" id="nSv-fl-Cwv"/>
+                                                <constraint firstItem="5b9-DL-8je" firstAttribute="centerY" secondItem="VEc-zd-VVr" secondAttribute="centerY" id="sCW-jq-j9d"/>
                                                 <constraint firstAttribute="bottom" secondItem="sVr-Bt-X9E" secondAttribute="bottom" constant="10" id="yaY-Gy-SQJ"/>
                                             </constraints>
                                         </view>
@@ -73,6 +83,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="friendshipStatusImageView" destination="5b9-DL-8je" id="A98-PY-7aF"/>
                                     <outlet property="neighborImageView" destination="sVr-Bt-X9E" id="2aH-r0-FSo"/>
                                     <outlet property="neighborNameLabel" destination="uaY-hV-Cuf" id="ocE-QH-0gL"/>
                                     <outlet property="neighborRangeLabel" destination="yQH-T7-e0t" id="dKr-Jw-TPT"/>

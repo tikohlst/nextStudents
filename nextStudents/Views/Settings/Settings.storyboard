@@ -11,7 +11,7 @@
         <!--Einstellungen-->
         <scene sceneID="Hb8-zL-oHp">
             <objects>
-                <tableViewController id="3VT-Zs-mwq" customClass="SettingsTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="3VT-Zs-mwq" customClass="SettingsTableViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorInsetReference="fromAutomaticInsets" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="7E1-Tj-xij">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -109,39 +109,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="sxM-zW-swh">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="e2t-eT-1qY">
-                                        <rect key="frame" x="0.0" y="277" width="414" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="e2t-eT-1qY" id="tg2-Q0-uwU">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.badge.plus.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="KYB-Fn-vAT">
-                                                    <rect key="frame" x="20" y="6.5" width="32" height="28"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="tintColor" name="Black-White"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anfragen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Anv-ou-s3w">
-                                                    <rect key="frame" x="60" y="10" width="315" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="W9n-Cp-bds" kind="show" id="zgA-cZ-Snk"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection id="ysm-hs-q9r">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="kzU-Vs-jIR">
-                                        <rect key="frame" x="0.0" y="356.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="277" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kzU-Vs-jIR" id="IZe-0z-Cif">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
@@ -182,65 +153,6 @@
             </objects>
             <point key="canvasLocation" x="2557.971014492754" y="628.125"/>
         </scene>
-        <!--Anfragen-->
-        <scene sceneID="Tje-jr-8l5">
-            <objects>
-                <tableViewController id="W9n-Cp-bds" userLabel="Anfragen" customClass="RequestsTableViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="WRa-ED-3rV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="requestCell" rowHeight="100" id="f4l-La-8IL" customClass="RequestTableViewCell" customModule="nextDoor" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="100"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f4l-La-8IL" id="Wco-Vu-mGj">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dyE-ae-R1f">
-                                            <rect key="frame" x="20" y="10" width="80" height="80"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="80" id="GxV-pD-6bw"/>
-                                                <constraint firstAttribute="height" constant="80" id="eqm-61-Wjg"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vorname Nachname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xty-lc-zKw">
-                                            <rect key="frame" x="120" y="33" width="274" height="34"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="34" id="ekH-Xy-bTV"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="xty-lc-zKw" firstAttribute="trailing" secondItem="Wco-Vu-mGj" secondAttribute="trailingMargin" id="AOp-Eo-HwK"/>
-                                        <constraint firstItem="xty-lc-zKw" firstAttribute="leading" secondItem="dyE-ae-R1f" secondAttribute="trailing" constant="20" id="D3V-3O-P0j"/>
-                                        <constraint firstItem="dyE-ae-R1f" firstAttribute="leading" secondItem="Wco-Vu-mGj" secondAttribute="leading" constant="20" id="RIK-tl-41Y"/>
-                                        <constraint firstItem="dyE-ae-R1f" firstAttribute="top" secondItem="Wco-Vu-mGj" secondAttribute="top" constant="10" id="VDO-HY-Jjp"/>
-                                        <constraint firstAttribute="bottom" secondItem="dyE-ae-R1f" secondAttribute="bottom" constant="10" id="ZIa-5T-j3x"/>
-                                        <constraint firstItem="xty-lc-zKw" firstAttribute="top" secondItem="Wco-Vu-mGj" secondAttribute="topMargin" constant="22" id="r6S-A6-RDG"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="nameLabel" destination="xty-lc-zKw" id="gEz-Ko-zgl"/>
-                                    <outlet property="profileImageView" destination="dyE-ae-R1f" id="of9-BE-GaN"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="W9n-Cp-bds" id="p5h-mS-C3U"/>
-                            <outlet property="delegate" destination="W9n-Cp-bds" id="nNo-EQ-0mD"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Anfragen" id="Dav-CE-gVl"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vpO-3V-npP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2558" y="1363"/>
-        </scene>
         <!--Einstellungen-->
         <scene sceneID="PRv-ey-uI7">
             <objects>
@@ -262,7 +174,7 @@
         <!--Passwort ändern-->
         <scene sceneID="mZq-iD-ijr">
             <objects>
-                <viewController id="fcj-5z-4s2" customClass="PasswordViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fcj-5z-4s2" customClass="PasswordViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Oie-ON-8eO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -295,7 +207,7 @@
         <!--Profil-->
         <scene sceneID="hKN-nU-sX5">
             <objects>
-                <viewController id="F6s-AM-fa9" customClass="ProfileViewController" customModule="nextDoor" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="F6s-AM-fa9" customClass="ProfileViewController" customModule="nextStudents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lQq-1J-LaD">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -331,7 +243,6 @@
         <image name="gear" catalog="system" width="128" height="119"/>
         <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="lock.fill" catalog="system" width="128" height="128"/>
-        <image name="person.badge.plus.fill" catalog="system" width="128" height="116"/>
         <namedColor name="Black-White">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

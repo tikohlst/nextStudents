@@ -16,7 +16,8 @@ class NeighborTableViewController: UITableViewController {
     
     // currentNeighbor
     var user: User!
-    var friendList: Dictionary<String,Int>?
+    var neighborFriendList: Dictionary<String,Int>?
+    var userFriendList: Dictionary<String, Int>?
     var cameFromChat = false
     
     // MARK: - IBOutlets
@@ -30,17 +31,61 @@ class NeighborTableViewController: UITableViewController {
     @IBOutlet weak var contactButton: UIButton!
     
     @IBAction func touchGetToKnow(_ sender: UIButton) {
-        if friendList == nil {
-            friendList = Dictionary<String, Int>()
+        if neighborFriendList == nil {
+            neighborFriendList = Dictionary<String, Int>()
         }
-        friendList![MainController.dataService.currentUser!.uid] = 0
-        var docData = [String:Any]()
-        docData["list"] = friendList
-        MainController.dataService.addRequest(with: docData, to: user.uid, completion: {
-            self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
-            self.getToKnowButton.isEnabled = false
-            self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-        })
+        
+        if userFriendList != nil , let status = userFriendList![user.uid], status == 0 {
+            let alert = UIAlertController(
+                title: nil,
+                message: "Anfrage annehmen?",
+                preferredStyle: .alert)
+            
+            let deleteAction = UIAlertAction(title: "Ja", style: .default) { _ in
+                // accept request
+                self.userFriendList![self.user.uid] = 1
+                MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { success in
+                    if success {
+                        
+                        self.neighborFriendList![MainController.dataService.currentUser.uid] = 1
+                        MainController.dataService.setFriendList(uid: self.user.uid, data: self.neighborFriendList!) { success in
+                            
+                            if success {
+                                self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
+                                self.getToKnowButton.isEnabled = false
+                                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Nein", style: .cancel) { _ in
+                // deny request
+                self.userFriendList![self.user.uid] = nil
+                MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { (success) in
+                    if success {
+                        self.getToKnowButton.setTitle("Kennenlernen", for: .normal)
+                        self.getToKnowButton.isEnabled = true
+                        self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.03529411765, green: 0.5176470588, blue: 1, alpha: 1)
+                    }
+                }
+            }
+            
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        } else {
+            neighborFriendList![MainController.dataService.currentUser!.uid] = 0
+            var docData = [String:Any]()
+            docData["list"] = neighborFriendList
+            MainController.dataService.addRequest(with: docData, to: user.uid, completion: {
+                self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
+                self.getToKnowButton.isEnabled = false
+                self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
+            })
+        }
     }
     
     // MARK: - UIViewController events
@@ -55,7 +100,7 @@ class NeighborTableViewController: UITableViewController {
         
         
         MainController.dataService.getFriendList(uid: user.uid) { data in
-            self.friendList = data
+            self.neighborFriendList = data
             if let status = data[MainController.dataService.currentUser!.uid] {
                 switch status {
                 case 0:
@@ -78,6 +123,11 @@ class NeighborTableViewController: UITableViewController {
                     
                 default:
                     break
+                }
+            } else {
+                if let status = self.userFriendList?[self.user.uid] {
+                    self.getToKnowButton.setTitle("Anfrage beantworten", for: .normal)
+                    
                 }
             }
         }

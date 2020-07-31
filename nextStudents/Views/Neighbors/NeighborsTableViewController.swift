@@ -17,6 +17,7 @@ class NeighborTableViewCell: UITableViewCell {
     @IBOutlet weak var neighborRangeLabel: UILabel!
     @IBOutlet weak var neighborImageView: UIImageView!
     @IBOutlet weak var neighborView: UIView!
+    @IBOutlet weak var friendshipStatusImageView: UIImageView!
     
     // MARK: - Methods
     
@@ -70,6 +71,8 @@ class NeighborsTableViewController: SortableTableViewController {
         }
     }
     
+    var rawRequests = Dictionary<String, Int>()
+    
     // MARK: - UIViewController events
     
     override func viewDidLoad() {
@@ -92,6 +95,10 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController!.tabViewController = self
             containerController!.setupSortingCellsAndDelegate()
         }
+        
+            MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (data) in
+                self.rawRequests = data
+            })
         
         if MainController.dataService.currentUserUpdated {
             MainController.dataService.currentUserUpdated = false
@@ -160,6 +167,19 @@ class NeighborsTableViewController: SortableTableViewController {
             cell.neighborImageView.image = currentUser.profileImage
             // Set profile image rounded
             cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height/2
+            
+            if let status = rawRequests[currentUser.uid] {
+                switch status {
+                    case 0:
+                        cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.exclam")
+                    case 1:
+                        cell.friendshipStatusImageView.image = UIImage(systemName: "person.crop.circle.badge.checkmark")
+                    default:
+                        break
+                }
+            } else {
+                // no request nor friendship
+            }
         }
         
         return cell
@@ -189,6 +209,8 @@ class NeighborsTableViewController: SortableTableViewController {
                 
                 // Set the currentUser at the NeighborTableViewController.
                 detailViewController.user = currentUser
+                
+                detailViewController.userFriendList = rawRequests
             case "showFilterOptions":
                 if let vc = segue.destination as? NeighborPopOverController, let ppc = vc.popoverPresentationController {
                     ppc.delegate = self
