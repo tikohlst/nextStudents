@@ -145,8 +145,16 @@ class NeighborTableViewController: UITableViewController {
         // Show profile image rounded
         self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height/2
         
-        // show user address
-        self.address.text = "\(self.user.street) \(self.user.housenumber), \(self.user.zipcode)"
+        if let userFriendList = userFriendList?[user.uid], userFriendList == 1 {
+            // Show user address
+            self.address.text = "\(self.user.street) \(self.user.housenumber), \(self.user.zipcode)"
+        } else {
+            // Show differnce in meter
+            let differenceInMeter = Utility.getGPSDifference(
+                user.gpsCoordinates,
+                MainController.dataService.currentUser.gpsCoordinates)
+            self.address.text = "\(Int(differenceInMeter))m"
+        }
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

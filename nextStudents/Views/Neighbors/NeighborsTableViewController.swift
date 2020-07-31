@@ -163,8 +163,12 @@ class NeighborsTableViewController: SortableTableViewController {
             // Write first name of the neighbor in the cell
             cell.neighborNameLabel.text = currentUser.firstName
             
-            // Write radius to actual user in cell
-            cell.neighborRangeLabel.text = "\(currentUser.street) \(currentUser.housenumber)"
+            let differenceInMeter = Utility.getGPSDifference(
+                currentUser.gpsCoordinates,
+                MainController.dataService.currentUser.gpsCoordinates)
+            
+            // Write distance to actual user in cell
+            cell.neighborRangeLabel.text = "\(Int(differenceInMeter))m"
             
             // Write profil image in cell
             cell.neighborImageView.image = currentUser.profileImage
