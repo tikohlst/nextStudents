@@ -15,6 +15,8 @@ class OfferTableViewController: UITableViewController {
     var offer: Offer!
     var imageViews = [UIImageView]()
     
+    var offerOwnerProfileImage: UIImage!
+    
     private let showChatFromOfferSegue = "showChatFromOffer"
     
     // MARK: - IBOutlets
@@ -87,6 +89,10 @@ class OfferTableViewController: UITableViewController {
             }
             self.imagesCell.isHidden = false
         })
+        
+        MainController.dataService.getProfilePicture(for: offer.ownerUID, completion: {image in
+            self.offerOwnerProfileImage = image
+        })
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -108,13 +114,12 @@ class OfferTableViewController: UITableViewController {
             detailViewController.chatPartnerName = offer.ownerFirstName + " " + offer.ownerLastName
             
             // Get profile image of the neighbor
-            MainController.dataService.getProfilePicture(for: offer.ownerUID, completion: {image in
-                detailViewController.chatPartnerProfileImage = image
-            })
+            detailViewController.chatPartnerProfileImage = offerOwnerProfileImage
         }
     }
     
     // MARK: - Methods
+    
     private func layoutImages(animated: Bool) {
         var latestView = firstOfferImageView
         for view in imageViews {
