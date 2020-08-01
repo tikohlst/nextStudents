@@ -400,15 +400,15 @@ class DataService {
         }
     }
     
-    func addListenerForCurrentUser(completion: @escaping (_ data: [String: Any], _ documentId: String) -> Void) {
+    func addListenerForCurrentUser(completion: @escaping (_ data: [String: Any], _ documentID: String) -> Void) {
         listeners.append(MainController.dataService.database.collection("users")
             .document(MainController.dataService.currentUserAuth.uid)
             .addSnapshotListener { (querySnapshot, error) in
                 if error != nil {
                     print("Error getting document: \(error!.localizedDescription)")
                 } else  if let querySnapshot = querySnapshot, let data = querySnapshot.data() {
-                    let docId = querySnapshot.documentID
-                    completion(data, docId)
+                    let documentID = querySnapshot.documentID
+                    completion(data, documentID)
                 }
         })
     }
