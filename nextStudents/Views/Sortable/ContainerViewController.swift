@@ -70,16 +70,18 @@ class ContainerViewController: UIViewController {
     
     func toggleSortMenu(from viewController: UIViewController) {
         if sortMenuVisible {
+            // hide sort menu
             UIView.animate(withDuration: 0.5, animations: {
                 self.bottomConstraint.constant = self.sortingContainer.frame.size.height
                 //self.topConstraint.constant = 0
                 self.view.layoutIfNeeded()
             })
         } else {
+            // show sort menu
             self.view.bringSubviewToFront(sortingContainer)
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.5, animations: {
-                self.bottomConstraint.constant = 0 - (self.tabViewController?.navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+                self.bottomConstraint.constant = 0
                 //self.topConstraint.constant = self.sortingContainer.frame.size.height
                 self.view.layoutIfNeeded()
             })
