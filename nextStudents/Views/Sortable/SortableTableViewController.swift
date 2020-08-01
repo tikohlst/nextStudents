@@ -48,7 +48,14 @@ class SortableTableViewController: UITableViewController {
                 }) as! T
             }
         case .distance:
-            break
+            if entities is [User] {
+                result = (entities as! [User]).sorted(by: { (u1, u2) -> Bool in
+                    let diff1 = Utility.getGPSDifference(u1.gpsCoordinates, MainController.dataService.currentUser!.gpsCoordinates)
+                    let diff2 = Utility.getGPSDifference(u2.gpsCoordinates, MainController.dataService.currentUser!.gpsCoordinates)
+                    
+                    return diff1 < diff2
+                }) as! T
+            }
         case .title:
             if entities is [Offer] {
                 result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
@@ -68,9 +75,21 @@ class SortableTableViewController: UITableViewController {
         case .duration:
             if entities is [Offer] {
                 result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
-                    let duration1 = o1.duration
-                    let duration2 = o2.duration
-                    return duration1.localizedCaseInsensitiveCompare(duration2) == .orderedAscending
+                    let format1 = o1.timeFormat
+                    let format2 = o2.timeFormat
+                    let duration1 = format1 == "Min." ? Double(o1.duration)! * 60 : Double(o1.duration)! * 60 * 60
+                    let duration2 = format2 == "Min." ? Double(o2.duration)! * 60 : Double(o2.duration)! * 60 * 60
+                    
+                    let offerEnd1 = Date(timeInterval: duration1, since: o1.date)
+                    let offerEnd2 = Date(timeInterval: duration2, since: o2.date)
+                    
+                    if format1 == format2 {
+                        return offerEnd1.compare(offerEnd2) == .orderedAscending
+                    }
+                    if format1 == "Min." {
+                        return true
+                    }
+                    return false
                 }) as! T
             }
         case .date:
@@ -78,7 +97,7 @@ class SortableTableViewController: UITableViewController {
                 result = (entities as! [Offer]).sorted(by: { (o1, o2) -> Bool in
                     let date1 = o1.date
                     let date2 = o2.date
-                    return date1.compare(date2) == .orderedAscending
+                    return date1.compare(date2) == .orderedDescending
                 }) as! T
             } else if entities is [Chat] {
                 result = (entities as! [Chat]).sorted(by: { (c1, c2) -> Bool in
