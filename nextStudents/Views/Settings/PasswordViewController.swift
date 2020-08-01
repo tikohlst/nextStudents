@@ -53,8 +53,15 @@ class PasswordViewController: FormViewController {
             
             +++ Section()
             
+            <<< PasswordRow("oldPassword") {
+                $0.title = "Altes Passwort"
+                $0.add(rule: RuleRequired(msg: "Du musst dein altes Passwort eingeben."))
+            }
+            
+            +++ Section()
+            
             <<< PasswordRow("password") {
-                $0.title = "Neues Password"
+                $0.title = "Neues Passwort"
                 $0.add(rule: RuleRequired(msg: "Du musst erst ein neues Passwort eingeben."))
                 $0.add(rule: RuleMinLength(minLength: 8, msg:  "Das Passwort muss mindestens 8 Zeichen enthalten"))
                 $0.add(rule: RuleMaxLength(maxLength: 16, msg: "Das Passwort darf maximal 16 Zeichen enthalten"))
@@ -62,7 +69,7 @@ class PasswordViewController: FormViewController {
             
             <<< PasswordRow() {
                 $0.tag = "confirmedPassword"
-                $0.title = "Password bestätigen"
+                $0.title = "Passwort bestätigen"
                 $0.add(rule: RuleEqualsToRow(form: form, tag: "password", msg: "Die Passwörter stimmen nicht überein"))
             }
             
@@ -72,10 +79,23 @@ class PasswordViewController: FormViewController {
                 $0.title = "Passwort ändern"
             }.onCellSelection { cell, row in
                 if row.section?.form?.validate().isEmpty ?? false {
+                    
                     let dict = self.form.values(includeHidden: true)
                     let newPassword = dict["confirmedPassword"] as! String
-                    MainController.dataService.updatePassword(newPassword: newPassword) {
-                        SettingsTableViewController.signOut()
+                    let oldPassword = dict["oldPassword"] as! String
+                    
+                    if let info = Auth.auth().currentUser?.providerData[0].providerID, info == "password" {
+                        let credential = EmailAuthProvider.credential(withEmail: Auth.auth().currentUser!.email!, password: oldPassword)
+                        
+                        MainController.dataService.currentUserAuth.reauthenticate(with: credential) { (authResult, error) in
+                            if error != nil {
+                                print("Error reauthenticating the user: \(error!.localizedDescription)")
+                            } else if authResult != nil {
+                                MainController.dataService.updatePassword(newPassword: newPassword) {
+                                    SettingsTableViewController.signOut()
+                                }
+                            }
+                        }
                     }
                 }
         }

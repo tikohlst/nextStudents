@@ -203,7 +203,7 @@ class OffersTableViewController: SortableTableViewController {
         if offersToDisplay.count > 0 {
             let currentOffer = offersToDisplay[indexPath.row]
             
-            if currentOffer.ownerUID == MainController.dataService.currentUser.uid {
+            if currentOffer.ownerUID == Auth.auth().currentUser!.uid {
                 cell.offerView.backgroundColor = #colorLiteral(red: 0.9844052196, green: 0.5142533779, blue: 0.005369255785, alpha: 1)
             } else {
                 cell.offerView.backgroundColor = UIColor(named: "White-Grey")

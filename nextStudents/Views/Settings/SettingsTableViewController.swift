@@ -17,6 +17,9 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var helpTableViewCell: UITableViewCell!
     @IBOutlet weak var signOutTableViewCell: UITableViewCell!
+    @IBOutlet weak var changePasswordCell: UITableViewCell!
+    
+    var providerID: String?
     
     // MARK: - UIViewController events
     
@@ -43,6 +46,13 @@ class SettingsTableViewController: UITableViewController {
         self.userImageView.layer.cornerRadius = self.userImageView.frame.width/2
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let authUser = Auth.auth().currentUser {
+            providerID = authUser.providerData[0].providerID
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
         case self.tableView.indexPath(for: helpTableViewCell):
@@ -54,6 +64,13 @@ class SettingsTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row > 0, providerID != nil, providerID != "password" {
+            return super.tableView(tableView, cellForRowAt: IndexPath(row: indexPath.row + 1, section: indexPath.section))
+        }
+        return super.tableView(tableView, cellForRowAt: indexPath)
+    }
+    
     func showReadme() {
         let url = URL(string: "https://github.com/tikohlst/nextStudents")!
         let vc = SFSafariViewController(url: url)
@@ -63,14 +80,16 @@ class SettingsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         switch section {
-        case 1: return 2
+        case 1:
+            if providerID != nil, providerID != "password" {
+                return 1
+            }
+            return 2
         default: return 1
         }
     }

@@ -143,6 +143,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Einstellungen" id="bpg-G2-dTJ"/>
                     <connections>
+                        <outlet property="changePasswordCell" destination="bPy-mf-Xxn" id="ySa-GZ-cVm"/>
                         <outlet property="helpTableViewCell" destination="bFI-hL-I8X" id="pkq-ZF-Pam"/>
                         <outlet property="signOutTableViewCell" destination="kzU-Vs-jIR" id="ZYv-Ut-xBT"/>
                         <outlet property="userImageView" destination="hPo-wr-Cob" id="Pb3-hF-Kn7"/>
