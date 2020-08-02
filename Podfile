@@ -9,6 +9,7 @@ target 'nextStudents' do
   
   # Pods for nextStudents
   pod 'MessageKit'
+  pod 'MessageInputBar'
   
   # Programmatically load custom fonts
   pod 'FontBlaster'
@@ -29,8 +30,7 @@ target 'nextStudents' do
   pod 'Firebase/Storage'
   pod 'GoogleSignIn'
   pod 'Firebase/Core'
-  pod 'SDWebImage'
-  pod 'MessageInputBar'
+  
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 end
@@ -41,6 +41,7 @@ target 'nextStudentsTests' do
   
   # Pods for nextStudents
   pod 'MessageKit'
+  pod 'MessageInputBar'
   
   # Programmatically load custom fonts
   pod 'FontBlaster'
@@ -60,8 +61,7 @@ target 'nextStudentsTests' do
   pod 'Firebase/Storage'
   pod 'GoogleSignIn'
   pod 'Firebase/Core'
-  pod 'SDWebImage'
-  pod 'MessageInputBar'
+  
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 end

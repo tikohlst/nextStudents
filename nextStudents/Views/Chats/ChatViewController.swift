@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 import MessageKit
 import InputBarAccessoryView
-import SDWebImage
 
 class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate, MessagesDataSource, MessagesLayoutDelegate, MessagesDisplayDelegate {
     
