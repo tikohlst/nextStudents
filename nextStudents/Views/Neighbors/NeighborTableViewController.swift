@@ -124,11 +124,8 @@ class NeighborTableViewController: UITableViewController {
                 default:
                     break
                 }
-            } else {
-                if let status = self.userFriendList?[self.user.uid] {
-                    self.getToKnowButton.setTitle("Anfrage beantworten", for: .normal)
-                    
-                }
+            } else if self.userFriendList?[self.user.uid] != nil {
+                self.getToKnowButton.setTitle("Anfrage beantworten", for: .normal)
             }
         }
         
