@@ -31,35 +31,22 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let imageView = UIImageView(image: chatPartnerProfileImage)
-        
-        // Show the profile image without whitespace
-        if imageView.frame.width > imageView.frame.height {
-            imageView.contentMode = .scaleAspectFit
-        } else {
-            imageView.contentMode = .scaleAspectFill
-        }
+        let button = UIButton()
+        button.setImage(chatPartnerProfileImage, for: .normal)
+        button.addTarget(self, action: #selector(imageTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
         
         // Show profile image rounded
-        imageView.layer.cornerRadius = 10
-        imageView.layer.masksToBounds = false
-        imageView.layer.shouldRasterize = true
-        imageView.layer.rasterizationScale = UIScreen.main.scale
+        button.imageView?.layer.cornerRadius = 15
+        button.imageView?.layer.borderWidth = 0.5
+        button.imageView?.layer.borderColor = UIColor(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
         
-        imageView.layer.borderWidth = 0.5
-        imageView.layer.borderColor = UIColor.init(displayP3Red: 211.0/255.0, green: 211.0/255.0, blue: 211.0/255.0, alpha: 1.0).cgColor
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-        // add it to the image view
-        imageView.addGestureRecognizer(tapGesture)
-        // make sure imageView can be interacted with by user
-        imageView.isUserInteractionEnabled = true
-        
-        let buttonItem = UIBarButtonItem(customView: imageView)
-        buttonItem.customView?.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        buttonItem.customView?.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        let buttonItem = UIBarButtonItem(customView: button)
+        buttonItem.customView?.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        buttonItem.customView?.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         navigationItem.rightBarButtonItem = buttonItem
+        
         navigationItem.title = chatPartnerName
         navigationItem.largeTitleDisplayMode = .never
         
@@ -91,41 +78,39 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
     
     // MARK: - Methods
     
-    @objc func imageTapped(gesture: UIGestureRecognizer) {
-        if (gesture.view as? UIImageView) != nil {
-            let backItem = UIBarButtonItem()
-            backItem.title = "Zurück"
-            navigationItem.backBarButtonItem = backItem
-            
-            let storyboard = UIStoryboard(name: "Neighbors", bundle: nil)
-            let neighborTableViewController = storyboard.instantiateViewController(withIdentifier: "neighborTableVC") as! NeighborTableViewController
-            neighborTableViewController.cameFromChat = true
-            
-            let chatPartner = MainController.dataService.allUsers.first(where: { $0.uid == chatPartnerUID})
-            
-            if chatPartner == nil {
-                MainController.dataService.getNeighbor(with: chatPartnerUID!, completion: {data, documentID in
-                    do {
-                        // get current user
-                        neighborTableViewController.user = try User().mapData(uid: documentID, data: data)
-                        
-                        // get profile image if it exists
-                        MainController.dataService.getProfilePicture(for: self.chatPartnerUID!, completion: { image in
-                            neighborTableViewController.user.profileImage = image
-                            self.navigationController?.pushViewController(neighborTableViewController, animated: true)
-                        })
-                    } catch UserError.mapDataError {
-                        print("Error while mapping User!")
-                        let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
-                        self.present(alert, animated: true, completion: nil)
-                    } catch {
-                        print("Unexpected error: \(error)")
-                    }
-                })
-            } else {
-                neighborTableViewController.user = chatPartner
-                self.navigationController?.pushViewController(neighborTableViewController, animated: true)
-            }
+    @objc func imageTapped() {
+        let backItem = UIBarButtonItem()
+        backItem.title = "Zurück"
+        navigationItem.backBarButtonItem = backItem
+        
+        let storyboard = UIStoryboard(name: "Neighbors", bundle: nil)
+        let neighborTableViewController = storyboard.instantiateViewController(withIdentifier: "neighborTableVC") as! NeighborTableViewController
+        neighborTableViewController.cameFromChat = true
+        
+        let chatPartner = MainController.dataService.allUsers.first(where: { $0.uid == chatPartnerUID})
+        
+        if chatPartner == nil {
+            MainController.dataService.getNeighbor(with: chatPartnerUID!, completion: {data, documentID in
+                do {
+                    // get current user
+                    neighborTableViewController.user = try User().mapData(uid: documentID, data: data)
+                    
+                    // get profile image if it exists
+                    MainController.dataService.getProfilePicture(for: self.chatPartnerUID!, completion: { image in
+                        neighborTableViewController.user.profileImage = image
+                        self.navigationController?.pushViewController(neighborTableViewController, animated: true)
+                    })
+                } catch UserError.mapDataError {
+                    print("Error while mapping User!")
+                    let alert = Utility.displayAlert(withMessage: nil, withSignOut: true)
+                    self.present(alert, animated: true, completion: nil)
+                } catch {
+                    print("Unexpected error: \(error)")
+                }
+            })
+        } else {
+            neighborTableViewController.user = chatPartner
+            self.navigationController?.pushViewController(neighborTableViewController, animated: true)
         }
     }
     
