@@ -303,9 +303,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e15-Pk-36X">
-                                                    <rect key="frame" x="0.0" y="-1" width="394" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e15-Pk-36X">
+                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                                     <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <state key="normal" title="Kennenlernen">
@@ -321,6 +320,12 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="e15-Pk-36X" secondAttribute="trailing" id="IrQ-3B-AYH"/>
+                                                <constraint firstAttribute="bottom" secondItem="e15-Pk-36X" secondAttribute="bottom" constant="10" id="JbE-MD-hWG"/>
+                                                <constraint firstItem="e15-Pk-36X" firstAttribute="leading" secondItem="3oU-O4-QrO" secondAttribute="leading" id="OvH-3b-Z24"/>
+                                                <constraint firstItem="e15-Pk-36X" firstAttribute="top" secondItem="3oU-O4-QrO" secondAttribute="top" id="jO3-h5-sub"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="45" id="AZY-iY-U7d">
@@ -330,9 +335,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ief-Xu-JoG">
-                                                    <rect key="frame" x="0.0" y="0.0" width="394" height="45"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ief-Xu-JoG">
+                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                                     <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <state key="normal" title="Kontaktieren">
@@ -348,6 +352,12 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ief-Xu-JoG" firstAttribute="leading" secondItem="YPd-oO-wtD" secondAttribute="leading" id="1CK-q3-7jS"/>
+                                                <constraint firstAttribute="bottom" secondItem="ief-Xu-JoG" secondAttribute="bottom" id="3iQ-O8-1zn"/>
+                                                <constraint firstAttribute="trailing" secondItem="ief-Xu-JoG" secondAttribute="trailing" id="NoZ-uW-RCr"/>
+                                                <constraint firstItem="ief-Xu-JoG" firstAttribute="top" secondItem="YPd-oO-wtD" secondAttribute="top" id="Wdr-7y-U4R"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
