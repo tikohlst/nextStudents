@@ -29,16 +29,16 @@ class DataService {
     
     // MARK: - Methods
     
-    func createUser(from dict: [String: Any?], completion: @escaping (_ success: Bool) -> Void) {
+    func createUser(from dict: [String: Any?], completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         Auth.auth().createUser(
             withEmail: (dict["email"] as! String),
             password: dict["password"] as! String) { authResult, error in
                 // Error handling
                 if error != nil {
                     print("An error occurred: \(error!.localizedDescription)")
-                    completion(false)
+                    completion(false, error)
                 } else if authResult != nil {
-                    completion(true)
+                    completion(true, nil)
                 }
         }
     }
@@ -51,7 +51,7 @@ class DataService {
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? Int,
-            let school = dict["hs"] as? String {
+            let school = dict["hs"] as? String ?? Optional("keine Angabe") {
             
             let degreeProgram = dict["degreeProgram"] as? String ?? ""
             

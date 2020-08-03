@@ -362,8 +362,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         Utility.getCoordinate(addressString: addressString,
                               completionHandler: { (coordinates, error) in
                                 
-                                self.formGpsCoordinates = GeoPoint(latitude: coordinates.latitude,
-                                                                   longitude: coordinates.longitude)
+                                self.formGpsCoordinates = GeoPoint(
+                                    latitude: coordinates.latitude,
+                                    longitude: coordinates.longitude)
                                 
                                 if self.checkAddress() {
                                     if self.accountInfoMissing {
@@ -393,16 +394,32 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         // Get values from the registration form
         let dict = form.values(includeHidden: true)
         
-        MainController.dataService.createUser(from: dict, completion: { success in
+        MainController.dataService.createUser(from: dict, completion: { success, error in
             if success {
                 MainController.dataService.setUserData(from: dict,
                                                        radius: self.defaultRadius,
                                                        gpsCoordinates: self.formGpsCoordinates,
                                                        completion: {
-                                                        self.presentLoginViewController()
+                                                        let alert = Utility.displayAlert(
+                                                            withTitle: "Registrierung erfolgreich",
+                                                            withMessage: "Sie können sich mit Ihrer bei der Registrierung eingegebenen E-Mail-Adresse und dem Passwort anmelden.",
+                                                            withSignOut: false,
+                                                            withOwnAction: true)
+                                                        alert.addAction(
+                                                            UIAlertAction(
+                                                                title: NSLocalizedString("Ok", comment: ""),
+                                                                style: .default,
+                                                                handler: { action in
+                                                                    self.presentLoginViewController()
+                                                            })
+                                                        )
+                                                        self.present(alert, animated: true, completion: nil)
                 })
+            } else if error?.localizedDescription == "The email address is already in use by another account." {
+                let alert = Utility.displayAlert(withTitle: "Fehler", withMessage: "Für die eingegebene E-Mail-Adresse existiert bereits ein Account.", withSignOut: false)
+                self.present(alert, animated: true, completion: nil)
             } else {
-                let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                let alert = Utility.displayAlert(withTitle: "Fehler", withMessage: "Die eingegebene Adresse und die aktuellen GPS-Daten stimmen nicht überein.", withSignOut: false)
                 self.present(alert, animated: true, completion: nil)
             }
         })

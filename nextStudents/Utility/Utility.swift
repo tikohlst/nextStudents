@@ -21,7 +21,10 @@ enum SortOption: String {
 
 class Utility {
     
-    static func displayAlert(withTitle title: String = "Interner Fehler", withMessage message: String?, withSignOut: Bool) -> UIAlertController {
+    static func displayAlert(withTitle title: String = "Interner Fehler",
+                             withMessage message: String?,
+                             withSignOut: Bool,
+                             withOwnAction: Bool = false) -> UIAlertController {
         let alert = UIAlertController(
             title: title,
             message: message ?? "Bitte wenden Sie sich an den Support.",
@@ -36,7 +39,7 @@ class Utility {
                         SettingsTableViewController.signOut()
                 })
             )
-        } else {
+        } else if !withOwnAction {
             alert.addAction(
                 UIAlertAction(
                     title: NSLocalizedString("Ok", comment: ""),
