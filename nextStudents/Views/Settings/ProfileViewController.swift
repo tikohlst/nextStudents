@@ -466,7 +466,7 @@ class ProfileViewController: FormViewController {
             MainController.dataService.deleteUserAuth {
                 // Account was deleted. Go to login screen
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC") as LoginViewController
+                let vc = storyboard.instantiateViewController(identifier: "loginNavigationVC")
                 vc.modalPresentationStyle = .fullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 self.present(vc, animated: true, completion: nil)
