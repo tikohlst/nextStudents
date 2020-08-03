@@ -447,11 +447,11 @@ class ProfileViewController: FormViewController {
             message: "Möchten Sie Ihr Konto wirklich löschen?",
             preferredStyle: .alert)
         
-        let deleteAction = UIAlertAction(title: "Yes", style: .default) { _ in
+        let deleteAction = UIAlertAction(title: "Ja", style: .default) { _ in
             self.deleteUser()
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel, handler: nil)
         
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)

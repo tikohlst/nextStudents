@@ -328,7 +328,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                                           message: message,
                                                                           preferredStyle: .alert)
                                             
-                                            let acceptAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                                            let acceptAction = UIAlertAction(title: "Ja", style: .default) { _ in
                                                 // Write address in textfields
                                                 self.form.rowBy(tag: "street")?.value = street
                                                 self.form.rowBy(tag: "street")?.reload()
@@ -337,7 +337,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                 self.form.rowBy(tag: "zipcode")?.value = Int(zipcode)
                                                 self.form.rowBy(tag: "zipcode")?.reload()
                                             }
-                                            let rejectAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+                                            let rejectAction = UIAlertAction(title: "Nein", style: .cancel, handler: nil)
                                             
                                             alert.addAction(acceptAction)
                                             alert.addAction(rejectAction)

@@ -169,7 +169,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         }))
         
         alert.addAction(UIAlertAction(
-            title: "Nein",
+            title: "Abbrechen",
             style: .default,
             handler: nil))
         
