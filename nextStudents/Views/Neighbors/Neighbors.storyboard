@@ -51,7 +51,7 @@
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5b9-DL-8je">
                                                     <rect key="frame" x="314" y="28" width="52" height="44"/>
-                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" name="Black-White"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="5mq-rJ-EQM"/>
                                                         <constraint firstAttribute="width" constant="52" id="aOJ-bp-MFf"/>
