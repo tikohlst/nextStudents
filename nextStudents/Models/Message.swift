@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseFirestore
 import MessageKit
 
 enum MessageError: Error {

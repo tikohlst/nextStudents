@@ -7,6 +7,7 @@
 
 import Eureka
 import Firebase
+import FirebaseFirestore
 import CoreLocation
 
 class RegistrationViewController: FormViewController, CLLocationManagerDelegate {

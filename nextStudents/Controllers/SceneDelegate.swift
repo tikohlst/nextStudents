@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     

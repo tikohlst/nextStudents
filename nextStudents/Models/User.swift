@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseFirestore
 import CoreLocation
 
 enum UserError: Error {

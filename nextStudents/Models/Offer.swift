@@ -6,6 +6,7 @@
 //
 
 import Firebase
+import FirebaseFirestore
 
 enum OfferError: Error {
     case mapDataError

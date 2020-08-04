@@ -8,6 +8,7 @@
 import Eureka
 import ImageRow
 import Firebase
+import FirebaseFirestore
 
 class ProfileViewController: FormViewController {
     

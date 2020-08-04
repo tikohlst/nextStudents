@@ -7,6 +7,7 @@
 
 import CoreLocation
 import Firebase
+import FirebaseFirestore
 import UIKit
 
 enum SortOption: String {

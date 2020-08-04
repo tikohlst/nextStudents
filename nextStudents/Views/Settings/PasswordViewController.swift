@@ -7,6 +7,7 @@
 
 import Eureka
 import Firebase
+import FirebaseAuth
 
 class PasswordViewController: FormViewController {
     

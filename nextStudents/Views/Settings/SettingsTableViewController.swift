@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 import SafariServices
 
 class SettingsTableViewController: UITableViewController {
