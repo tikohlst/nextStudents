@@ -61,8 +61,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
                         let newView = UIImageView(image: image)
                         newView.accessibilityIdentifier = reference.name
                         
-                        newView.frame.size.width = self.newOfferImageView.frame.size.width
-                        newView.frame.size.height = self.newOfferImageView.frame.size.height
+                        newView.frame.size.width = 115
+                        newView.frame.size.height = 106
+                        newView.contentMode = .scaleAspectFit
                         
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTappedDelete(gesture:)))
                         newView.addGestureRecognizer(tapGesture)
@@ -210,7 +211,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         var latestView = newOfferImageView
         for view in imageViews {
             let newX = latestView!.frame.origin.x + latestView!.frame.size.width + 5.0
-            let newY = latestView!.frame.origin.y
+            let newY: CGFloat = imageScrollView.frame.origin.y + (imageScrollView.frame.size.height - view.frame.size.height) / 2
             if animated {
                 UIView.animate(withDuration: 0.5) {
                     view.frame.origin = CGPoint(x: newX, y: newY)
@@ -333,8 +334,9 @@ extension OfferEditTableViewController: ImagePickerDelegate {
         var latestView = newOfferImageView
         for image in images {
             let newView = UIImageView(image: image)
-            newView.frame.size.width = newOfferImageView.frame.size.width
-            newView.frame.size.height = newOfferImageView.frame.size.height
+            newView.frame.size.width = 115
+            newView.frame.size.height = 106
+            newView.contentMode = .scaleAspectFit
             imageScrollView.insertSubview(newView, at: 0)
             
             latestView = newView

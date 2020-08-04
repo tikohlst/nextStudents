@@ -70,6 +70,10 @@ class OfferTableViewController: UITableViewController {
         df.dateFormat = "dd.MM.yyyy hh:mm:ss"
         offerCreationDateLabel.text = df.string(from: offer.date)
         
+        
+    }
+    
+    override func viewDidLoad() {
         MainController.dataService.getOfferPicturesReferences(for: offer.uid, completion: { references in
             var removedFirstImage = false
             for reference in references {
@@ -78,6 +82,7 @@ class OfferTableViewController: UITableViewController {
                     
                     newView.frame.size.width = self.firstOfferImageView.frame.size.width
                     newView.frame.size.height = self.firstOfferImageView.frame.size.height
+                    newView.contentMode = .scaleAspectFit
                     
                     self.imageViews.insert(newView, at: 0)
                     self.imageScrollView.insertSubview(newView, at: 0)
@@ -91,6 +96,7 @@ class OfferTableViewController: UITableViewController {
                         self.firstOfferImageView.bounds.origin = firstOrigin
                         if let index = self.imageViews.firstIndex(of: self.firstOfferImageView) {
                             self.imageViews.remove(at: index)
+                        self.firstOfferImageView.frame.origin.y = self.imageScrollView.frame.origin.y + (self.imageScrollView.frame.size.height - self.firstOfferImageView.frame.size.height) / 2
                         }
                         removedFirstImage = !removedFirstImage
                     }
@@ -140,7 +146,7 @@ class OfferTableViewController: UITableViewController {
         var latestView = firstOfferImageView
         for view in imageViews {
             let newX = latestView!.frame.origin.x + latestView!.frame.size.width + 5.0
-            let newY = latestView!.frame.origin.y
+            let newY: CGFloat = imageScrollView.frame.origin.y + (imageScrollView.frame.size.height - view.frame.size.height) / 2
             if animated {
                 UIView.animate(withDuration: 0.5) {
                     view.frame.origin = CGPoint(x: newX, y: newY)
