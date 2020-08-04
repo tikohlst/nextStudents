@@ -19,6 +19,7 @@ class NeighborTableViewController: UITableViewController {
     var neighborFriendList: Dictionary<String,Int>?
     var userFriendList: Dictionary<String, Int>?
     var cameFromChat = false
+    var neighborFriendStatus = false
     
     // MARK: - IBOutlets
     
@@ -98,6 +99,13 @@ class NeighborTableViewController: UITableViewController {
             contactButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
         }
         
+        self.userNameLabel.text = "\(self.user.firstName)"
+        let differenceInMeter = Utility.getGPSDifference(
+            self.user.gpsCoordinates,
+            MainController.dataService.currentUser.gpsCoordinates)
+        self.address.text = "\(Int(differenceInMeter))m"
+        self.bioTextView.text = "Die Biografie kannst du erst sehen, wenn ihr befreundet seid."
+        self.skillsTextView.text = "Die Eigenschaften kannst du erst sehen, wenn ihr befreundet seid."
         
         MainController.dataService.getFriendList(uid: user.uid) { data in
             self.neighborFriendList = data
@@ -107,18 +115,16 @@ class NeighborTableViewController: UITableViewController {
                     self.getToKnowButton.setTitle("Anfrage gesendet", for: .disabled)
                     self.getToKnowButton.isEnabled = false
                     self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-                    
                 case 1:
+                    self.neighborFriendStatus = true
+                    
                     self.getToKnowButton.setTitle("Ihr kennt euch!", for: .disabled)
                     self.getToKnowButton.isEnabled = false
                     self.getToKnowButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
                     
                     self.userNameLabel.text = "\(self.user.firstName) \(self.user.lastName)"
-                    
-                    // show user bio
+                    self.address.text = "\(self.user.street) \(self.user.housenumber), \(self.user.zipcode)"
                     self.bioTextView.text = self.user.bio
-                    
-                    // show user skills
                     self.skillsTextView.text = self.user.skills
                     
                 default:
@@ -129,8 +135,7 @@ class NeighborTableViewController: UITableViewController {
             }
         }
         
-        self.userNameLabel.text = "\(self.user.firstName)"
-        // show user profile Image
+        // Show the user's profile image
         self.profileImageView.image = self.user.profileImage
         // Show the profile image without whitespace
         if self.profileImageView.frame.width > self.profileImageView.frame.height {
@@ -138,20 +143,8 @@ class NeighborTableViewController: UITableViewController {
         } else {
             self.profileImageView.contentMode = .scaleAspectFill
         }
-        
-        // Show profile image rounded
+        // Show the profile image rounded
         self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height/2
-        
-        if let userFriendList = userFriendList?[user.uid], userFriendList == 1 {
-            // Show user address
-            self.address.text = "\(self.user.street) \(self.user.housenumber), \(self.user.zipcode)"
-        } else {
-            // Show differnce in meter
-            let differenceInMeter = Utility.getGPSDifference(
-                user.gpsCoordinates,
-                MainController.dataService.currentUser.gpsCoordinates)
-            self.address.text = "\(Int(differenceInMeter))m"
-        }
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -167,11 +160,19 @@ class NeighborTableViewController: UITableViewController {
             // Set the user ID at the ChatViewController
             detailViewController.chatPartnerUID = user.uid
             
-            // Get first and last name of the chat partner and write it in the correct label
-            detailViewController.chatPartnerName = "\(user.firstName) \(user.lastName)"
-            
-            // Set the title of the navigation item on the ChatViewController
-            detailViewController.navigationItem.title = "\(user.firstName) \(user.lastName)"
+            if neighborFriendStatus {
+                // Get first and last name of the chat partner and write it in the correct label
+                detailViewController.chatPartnerName = self.user.firstName + " " + self.user.lastName
+                
+                // Set the title of the navigation item on the ChatViewController
+                detailViewController.navigationItem.title = self.user.firstName + " " + self.user.lastName
+            } else {
+                // Get first name of the chat partner and write it in the correct label
+                detailViewController.chatPartnerName = self.user.firstName
+                
+                // Set the title of the navigation item on the ChatViewController
+                detailViewController.navigationItem.title = self.user.firstName
+            }
             
             // Set the user image
             detailViewController.chatPartnerProfileImage = user.profileImage

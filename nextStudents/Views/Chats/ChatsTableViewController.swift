@@ -54,6 +54,7 @@ class ChatsTableViewController: SortableTableViewController {
         }
     }
     var searchedChats = [Chat]()
+    var localNeighborFriendList: Dictionary<String,Int> = [:]
     
     override var sortingOption: SortOption? {
         didSet {
@@ -174,8 +175,17 @@ class ChatsTableViewController: SortableTableViewController {
         if chatsToDisplay.count > 0 {
             let currentChat = chatsToDisplay[indexPath.row]
             
-            // Write first and last name of the chat partner in the cell
-            cell.chatPartnerNameLabel.text = currentChat.chatPartner.firstName + " " + currentChat.chatPartner.lastName
+            MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (userFriendList) in
+                if let userFriendStatus = userFriendList[currentChat.chatPartner.uid], userFriendStatus == 1 {
+                    self.localNeighborFriendList[currentChat.chatPartner.uid] = 1
+                    // Write first and last name of the chat partner in the cell
+                    cell.chatPartnerNameLabel.text = currentChat.chatPartner.firstName + " " + currentChat.chatPartner.lastName
+                } else {
+                    self.localNeighborFriendList[currentChat.chatPartner.uid] = 0
+                    // Write first name of the chat partner in the cell
+                    cell.chatPartnerNameLabel.text = currentChat.chatPartner.firstName
+                }
+            })
             
             // Write latest message in cell
             cell.lastMessageLabel.text = currentChat.latestMessage
@@ -269,7 +279,13 @@ class ChatsTableViewController: SortableTableViewController {
             detailViewController.chatPartnerUID = currentChat.chatPartner.uid
             
             // Set the label on the ChatViewController
-            detailViewController.chatPartnerName = "\(currentChat.chatPartner.firstName) \(currentChat.chatPartner.lastName)"
+            if self.localNeighborFriendList[currentChat.chatPartner.uid] == 1 {
+                // Write first and last name of the chat partner in the cell
+                detailViewController.chatPartnerName = currentChat.chatPartner.firstName + " " + currentChat.chatPartner.lastName
+            } else {
+                // Write first name of the chat partner in the cell
+                detailViewController.chatPartnerName = currentChat.chatPartner.firstName
+            }
             
             // Set the user image
             detailViewController.chatPartnerProfileImage = currentChat.chatPartner.profileImage

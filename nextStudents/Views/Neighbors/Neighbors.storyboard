@@ -35,7 +35,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uaY-hV-Cuf">
-                                                    <rect key="frame" x="120" y="20" width="244" height="30"/>
+                                                    <rect key="frame" x="120" y="20" width="184" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Vmf-iu-6MQ"/>
                                                     </constraints>
@@ -68,7 +68,7 @@
                                                 <constraint firstItem="uaY-hV-Cuf" firstAttribute="leading" secondItem="sVr-Bt-X9E" secondAttribute="trailing" constant="30" id="Z8m-9H-gND"/>
                                                 <constraint firstItem="uaY-hV-Cuf" firstAttribute="top" secondItem="VEc-zd-VVr" secondAttribute="top" constant="20" id="eyN-Lj-aVK"/>
                                                 <constraint firstItem="yQH-T7-e0t" firstAttribute="trailing" secondItem="VEc-zd-VVr" secondAttribute="trailingMargin" id="g8m-GA-4NN"/>
-                                                <constraint firstAttribute="trailing" secondItem="uaY-hV-Cuf" secondAttribute="trailing" constant="10" id="h5T-lE-jrN"/>
+                                                <constraint firstAttribute="trailing" secondItem="uaY-hV-Cuf" secondAttribute="trailing" constant="70" id="h5T-lE-jrN"/>
                                                 <constraint firstItem="yQH-T7-e0t" firstAttribute="leading" secondItem="sVr-Bt-X9E" secondAttribute="trailing" constant="30" id="nSv-fl-Cwv"/>
                                                 <constraint firstItem="5b9-DL-8je" firstAttribute="centerY" secondItem="VEc-zd-VVr" secondAttribute="centerY" id="sCW-jq-j9d"/>
                                                 <constraint firstAttribute="bottom" secondItem="sVr-Bt-X9E" secondAttribute="bottom" constant="10" id="yaY-Gy-SQJ"/>

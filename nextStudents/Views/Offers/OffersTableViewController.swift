@@ -215,8 +215,15 @@ class OffersTableViewController: SortableTableViewController {
             // Write the type of the current offer in the cell
             cell.typeLabel.text = currentOffer.type
             
-            // Write the name of the owner of the current offer in the cell
-            cell.ownerLabel.text = currentOffer.ownerFirstName + " " +  currentOffer.ownerLastName
+            MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (userFriendList) in
+                if let userFriendStatus = userFriendList[currentOffer.ownerUID], userFriendStatus == 1 {
+                    // Write the first and last name of the owner of the current offer in the cell
+                    cell.ownerLabel.text = currentOffer.ownerFirstName + " " + currentOffer.ownerLastName
+                } else {
+                    // Write the first name of the owner of the current offer in the cell
+                    cell.ownerLabel.text = currentOffer.ownerFirstName
+                }
+            })
             
             // Write profil image in cell
             cell.offerImageView.image = currentOffer.offerImage

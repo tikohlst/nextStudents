@@ -16,6 +16,7 @@ class OfferTableViewController: UITableViewController {
     var imageViews = [UIImageView]()
     
     var offerOwnerProfileImage: UIImage!
+    var offerOwnerFriendStatus: Bool!
     
     private let showChatFromOfferSegue = "showChatFromOffer"
     
@@ -46,8 +47,17 @@ class OfferTableViewController: UITableViewController {
         // Show title of the offer
         offerNameLabel.text = offer.title
         
-        // Show the first and last name of the neighbor who created the offer
-        offerCreatorLabel.text = offer.ownerFirstName + " " + offer.ownerLastName
+        MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (userFriendList) in
+            if let userFriendStatus = userFriendList[self.offer.ownerUID], userFriendStatus == 1 {
+                self.offerOwnerFriendStatus = true
+                // Show the first and last name of the neighbor who created the offer
+                self.offerCreatorLabel.text = self.offer.ownerFirstName + " " + self.offer.ownerLastName
+            } else {
+                self.offerOwnerFriendStatus = false
+                // Show the first name of the neighbor who created the offer
+                self.offerCreatorLabel.text = self.offer.ownerFirstName
+            }
+        })
         
         // Show the description of the offer
         offerDescriptionTextView.text = offer.description
@@ -110,8 +120,14 @@ class OfferTableViewController: UITableViewController {
             // Set the user ID at the ChatViewController
             detailViewController.chatPartnerUID = offer.ownerUID
             
-            // Get first and last name of the chat partner and write it in the correct label
-            detailViewController.chatPartnerName = offer.ownerFirstName + " " + offer.ownerLastName
+            // Set the label on the ChatViewController
+            if offerOwnerFriendStatus {
+                // Get first and last name of the chat partner and write it in the correct label
+                detailViewController.chatPartnerName = self.offer.ownerFirstName + " " + self.offer.ownerLastName
+            } else {
+                // Get first name of the chat partner and write it in the correct label
+                detailViewController.chatPartnerName = self.offer.ownerFirstName
+            }
             
             // Get profile image of the neighbor
             detailViewController.chatPartnerProfileImage = offerOwnerProfileImage

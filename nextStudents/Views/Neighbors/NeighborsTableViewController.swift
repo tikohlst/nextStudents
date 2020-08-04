@@ -160,15 +160,24 @@ class NeighborsTableViewController: SortableTableViewController {
         if usersToDisplay.count > 0 {
             let currentUser = usersToDisplay[indexPath.row]
             
-            // Write first name of the neighbor in the cell
-            cell.neighborNameLabel.text = currentUser.firstName
-            
-            let differenceInMeter = Utility.getGPSDifference(
-                currentUser.gpsCoordinates,
-                MainController.dataService.currentUser.gpsCoordinates)
-            
-            // Write distance to actual user in cell
-            cell.neighborRangeLabel.text = "\(Int(differenceInMeter))m"
+            MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (userFriendList) in
+                if let userFriendStatus = userFriendList[currentUser.uid], userFriendStatus == 1 {
+                    // Write first and last name of the neighbor in the cell
+                    cell.neighborNameLabel.text = currentUser.firstName + " " + currentUser.lastName
+                    
+                    cell.neighborRangeLabel.text = "\(currentUser.street) \(currentUser.housenumber)"
+                } else {
+                    // Write first name of the neighbor in the cell
+                    cell.neighborNameLabel.text = currentUser.firstName
+                    
+                    let differenceInMeter = Utility.getGPSDifference(
+                        currentUser.gpsCoordinates,
+                        MainController.dataService.currentUser.gpsCoordinates)
+                    
+                    // Write distance to actual user in cell
+                    cell.neighborRangeLabel.text = "\(Int(differenceInMeter))m"
+                }
+            })
             
             // Write profil image in cell
             cell.neighborImageView.image = currentUser.profileImage
@@ -186,6 +195,7 @@ class NeighborsTableViewController: SortableTableViewController {
                 }
             } else {
                 // no request nor friendship
+                cell.friendshipStatusImageView.image = nil
             }
         }
         
