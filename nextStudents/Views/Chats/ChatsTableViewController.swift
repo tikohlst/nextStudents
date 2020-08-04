@@ -203,28 +203,28 @@ class ChatsTableViewController: SortableTableViewController {
             // Retrieve the selected chat
             let currentChat = displayedChats[indexPath.row]
             
-            // get all chats of current user
+            // Get all chats of current user
             MainController.dataService.getChats(for: MainController.dataService.currentUser.uid) { snapshot in
                 if !snapshot.isEmpty {
                     for document in snapshot.documents {
                         let data = document.data()["users"] as! Array<String>
                         let chatRef = document.reference
-                        // get the current chat
+                        // Get the current chat
                         if data.contains(currentChat.chatPartner.uid) {
-                            // get the thread collection for the current chat
+                            // Get the thread collection for the current chat
                             MainController.dataService.getChatThreadCollection(for: chatRef) { threadQuery in
-                                // delete thread listener
+                                // Delete thread listener
                                 if let listener = ChatsTableViewController.threadListeners[currentChat.chatPartner.uid] {
                                     listener.remove()
                                 }
-                                // delete every chat message
+                                // Delete every chat message
                                 for chatMessage in threadQuery.documents {
                                     let messageRef = chatMessage.reference
                                     messageRef.delete()
                                 }
-                                // delete the chat document (Chats/{chatId})
+                                // Delete the chat document (Chats/{chatId})
                                 chatRef.delete()
-                                // delete data from tableview data source
+                                // Delete data from tableview data source
                                 if self.isSorting {
                                     let removedChat = self.searchedChats.remove(at: indexPath.row)
                                     let tmp = self.searchedChats
@@ -237,7 +237,7 @@ class ChatsTableViewController: SortableTableViewController {
                                 } else {
                                     self.chatsArray.remove(at: indexPath.row)
                                 }
-                                // delete row from tableview
+                                // Delete row from tableview
                                 self.tableView.deleteRows(at: [indexPath], with: .left)
                             }
                         }

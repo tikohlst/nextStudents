@@ -115,7 +115,7 @@ class SettingsTableViewController: UITableViewController {
     
     static func signOut() {
         do {
-            // remove all active listeners
+            // Remove all active listeners
             for listener in MainController.dataService.listeners {
                 listener.remove()
             }

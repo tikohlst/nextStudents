@@ -89,9 +89,9 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
         timePickerView.delegate = self
         timePickerView.dataSource = self
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(OfferEditTableViewController.imageTapped(gesture:)))
-        // add it to the image view
+        // Add it to the image view
         newOfferImageView.addGestureRecognizer(tapGesture)
-        // make sure imageView can be interacted with by user
+        // Make sure imageView can be interacted with by user
         newOfferImageView.isUserInteractionEnabled = true
     }
     
@@ -181,7 +181,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     // MARK: - Methods
     
     @objc func imageTapped(gesture: UIGestureRecognizer) {
-        // if the tapped view is a UIImageView then set it to imageview
+        // If the tapped view is a UIImageView then set it to imageview
         if (gesture.view as? UIImageView) != nil {
             let pickerController = ImagePickerController()
             pickerController.delegate = self
@@ -190,7 +190,7 @@ class OfferEditTableViewController: UITableViewController, UIPickerViewDelegate,
     }
     
     @objc func imageTappedDelete(gesture: UIGestureRecognizer) {
-        // if the tapped view is a UIImageView then set it to imageview
+        // If the tapped view is a UIImageView then set it to imageview
         if let gestureView = gesture.view as? UIImageView {
             if let index = imageViews.firstIndex(of: gestureView) {
                 let deletedView = imageViews.remove(at: index)

@@ -383,7 +383,7 @@ class DataService {
             } else if let docData = document?.data(), let data = (docData["list"] as! Dictionary<String, Int>?) {
                 completion(data)
             } else {
-                // no error but document doesn't exist right now -> create data for empty document
+                // No error, but the document doesn't exist right now -> create data for empty document
                 let newData = Dictionary<String, Int>()
                 completion(newData)
             }

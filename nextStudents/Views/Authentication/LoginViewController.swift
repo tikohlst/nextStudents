@@ -74,7 +74,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        // might need some optional value handling
         Auth.auth().removeStateDidChangeListener(handle!)
     }
     

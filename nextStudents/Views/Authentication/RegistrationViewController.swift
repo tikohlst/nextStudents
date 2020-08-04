@@ -31,13 +31,13 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
         
         startLocationManager()
         
-        // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
+        // Call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_ :)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         
-        // call the 'keyboardWillHide' function from eureka when the view controller receive notification that a keyboard is going to be hidden
+        // Call the 'keyboardWillHide' function from eureka when the view controller receive notification that a keyboard is going to be hidden
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide(_ :)),
                                                name: UIResponder.keyboardWillHideNotification,

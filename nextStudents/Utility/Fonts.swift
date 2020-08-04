@@ -13,7 +13,7 @@ struct AppFontName {
     static let lightAlt = "OpenSans-Italic"
 }
 
-//customise font
+// Customise font
 
 // MARK: - Extensions
 

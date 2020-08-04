@@ -148,8 +148,8 @@ class NeighborsTableViewController: SortableTableViewController {
         return isSorting ? searchedUsers.count : MainController.dataService.usersInRangeArray.count
     }
     
-    // The tableView(cellForRowAt:)-method is called to create UITableViewCell objects
-    // for visible table cells.
+    // The tableView(cellForRowAt:)-method is called to create
+    // UITableViewCell objects for visible table cells.
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // With dequeueReusableCell, cells are created according to the prototypes defined in the storyboard
@@ -194,7 +194,7 @@ class NeighborsTableViewController: SortableTableViewController {
                     break
                 }
             } else {
-                // no request nor friendship
+                // No request nor friendship
                 cell.friendshipStatusImageView.image = nil
             }
         }

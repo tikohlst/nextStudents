@@ -93,10 +93,10 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
         if chatPartner == nil {
             MainController.dataService.getNeighbor(with: chatPartnerUID!, completion: {data, documentID in
                 do {
-                    // get current user
+                    // Get current user
                     neighborTableViewController.user = try User().mapData(uid: documentID, data: data)
                     
-                    // get profile image if it exists
+                    // Get profile image if it exists
                     MainController.dataService.getProfilePicture(for: self.chatPartnerUID!, completion: { image in
                         neighborTableViewController.user.profileImage = image
                         self.navigationController?.pushViewController(neighborTableViewController, animated: true)
@@ -143,7 +143,7 @@ class ChatViewController: MessagesViewController, InputBarAccessoryViewDelegate,
                     // Get the chat with the chat partner
                     if (loadedChat.data()["users"] as! Array).contains(self.chatPartnerUID!) {
                         self.docReference = loadedChat.reference
-                        // fetch it's thread collection
+                        // Fetch it's thread collection
                         self.listener = MainController.dataService.createListenerForChatThreadOrdered(snapshot: loadedChat, completion: { threadQuery in
                             self.messages.removeAll()
                             for message in threadQuery.documents {

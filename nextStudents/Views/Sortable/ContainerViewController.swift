@@ -39,15 +39,15 @@ class ContainerViewController: UIViewController {
         
         MainController.dataService.addListenerForCurrentUser {data, docId in
             do {
-                // get current user
+                // Get current user
                 MainController.dataService.currentUser = try User().mapData(uid: docId, data: data)
                 
-                // get profile image if it exists
+                // Get profile image if it exists
                 MainController.dataService.getProfilePicture(for: MainController.dataService.currentUser.uid, completion: { image in
                     MainController.dataService.currentUser.profileImage = image
                 })
                 
-                // check if userdata is complete
+                // Check if userdata is complete
                 self.checkMissingUserData()
                 
             } catch UserError.mapDataError {
@@ -71,19 +71,17 @@ class ContainerViewController: UIViewController {
     
     func toggleSortMenu(from viewController: UIViewController) {
         if sortMenuVisible {
-            // hide sort menu
+            // Hide sort menu
             UIView.animate(withDuration: 0.5, animations: {
                 self.bottomConstraint.constant = self.sortingContainer.frame.size.height
-                //self.topConstraint.constant = 0
                 self.view.layoutIfNeeded()
             })
         } else {
-            // show sort menu
+            // Show sort menu
             self.view.bringSubviewToFront(sortingContainer)
             self.view.layoutIfNeeded()
             UIView.animate(withDuration: 0.5, animations: {
                 self.bottomConstraint.constant = 0
-                //self.topConstraint.constant = self.sortingContainer.frame.size.height
                 self.view.layoutIfNeeded()
             })
         }
@@ -94,7 +92,7 @@ class ContainerViewController: UIViewController {
         if MainController.dataService.currentUser.firstName.isEmpty || MainController.dataService.currentUser.lastName.isEmpty ||
             MainController.dataService.currentUser.street.isEmpty || MainController.dataService.currentUser.housenumber.isEmpty ||
             MainController.dataService.currentUser.zipcode.isEmpty || MainController.dataService.currentUser.radius == 0 {
-            // prompt the registration screen
+            // Prompt the registration screen
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewController(identifier: "registrationvc") as RegistrationViewController
             viewController.accountInfoMissing = true

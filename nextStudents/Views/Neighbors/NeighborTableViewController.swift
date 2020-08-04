@@ -43,7 +43,7 @@ class NeighborTableViewController: UITableViewController {
                 preferredStyle: .alert)
             
             let acceptAction = UIAlertAction(title: "Ja", style: .default) { _ in
-                // accept request
+                // Accept request
                 self.userFriendList![self.user.uid] = 1
                 MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { success in
                     if success {
@@ -62,7 +62,7 @@ class NeighborTableViewController: UITableViewController {
             }
             
             let declineAction = UIAlertAction(title: "Nein", style: .cancel) { _ in
-                // deny request
+                // Deny request
                 self.userFriendList![self.user.uid] = nil
                 MainController.dataService.setFriendList(uid: MainController.dataService.currentUser.uid, data: self.userFriendList!) { (success) in
                     if success {

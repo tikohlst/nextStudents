@@ -21,7 +21,7 @@ class MainController: UITabBarController {
     override func viewDidLoad() {
         // Do any additional setup after loading the view.
         super.viewDidLoad()
-        // show the offers screen after login
+        // Show the offers screen after login
         self.selectedIndex = 1
         
     }

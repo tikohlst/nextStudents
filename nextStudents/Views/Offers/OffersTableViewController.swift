@@ -26,7 +26,7 @@ class OfferTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // show profile image rounded
+        // Show profile image rounded
         offerImageView.layer.cornerRadius = offerImageView.frame.width/2
         
         offerView.layer.cornerRadius = 10
@@ -183,7 +183,7 @@ class OffersTableViewController: SortableTableViewController {
         if displayedOffers.count > 0 {
             let selectedOffer = displayedOffers[indexPath.row]
             if selectedOffer.ownerUID == MainController.dataService.currentUser.uid {
-                // selected offer is owned by current user
+                // Selected offer is owned by current user
                 performSegue(withIdentifier: editOfferSegue, sender: nil)
             } else {
                 performSegue(withIdentifier: showOfferDetailSegue, sender: nil)
@@ -200,7 +200,7 @@ class OffersTableViewController: SortableTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OfferCell", for: indexPath) as! OfferTableViewCell
         let offersToDisplay = isSorting ? searchedOffers : OffersTableViewController.offersArray
         
-        // show all existing offers
+        // Show all existing offers
         if offersToDisplay.count > 0 {
             let currentOffer = offersToDisplay[indexPath.row]
             
@@ -284,7 +284,7 @@ class OffersTableViewController: SortableTableViewController {
         }
     }
     
-    // unwind segue
+    // Unwind segue
     @IBAction func goBack(segue: UIStoryboardSegue) {
     }
     

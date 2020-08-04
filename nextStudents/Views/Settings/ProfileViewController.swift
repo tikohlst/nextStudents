@@ -68,13 +68,13 @@ class ProfileViewController: FormViewController {
             self.form.rowBy(tag: "numberOfNeighbors")?.reload()
         } )
         
-        // call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
+        // Call the 'keyboardWillShow' function from eureka when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_ :)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         
-        // call the 'keyboardWillHide' function fro eureka when the view controller receive notification that keyboard is going to be hidden
+        // Call the 'keyboardWillHide' function fro eureka when the view controller receive notification that keyboard is going to be hidden
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide(_ :)),
                                                name: UIResponder.keyboardWillHideNotification,
@@ -418,7 +418,7 @@ class ProfileViewController: FormViewController {
                                         // This variable is set to true to update the neighbors shown in NeighborsTableView
                                         MainController.dataService.currentUserUpdated = true
                                         
-                                        // profile image upload
+                                        // Profile image upload
                                         MainController.dataService.setProfilePicture(image: profileImage, completion: {
                                             // Don't go back until the new image has been completely uploaded
                                             self.navigationController?.popViewController(animated: true)

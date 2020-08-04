@@ -39,12 +39,10 @@ class OfferPopOverController: UIViewController {
         
         switch filterControl.selectedSegmentIndex {
         case 0:
-            // Biete
             filteredOffers = offers?.filter({ offer -> Bool in
                 offer.type == "Biete"
             })
         case 2:
-            // Suche
             filteredOffers = offers?.filter({ offer -> Bool in
                 offer.type == "Suche"
             })
