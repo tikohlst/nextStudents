@@ -81,6 +81,14 @@ class NeighborsTableViewController: SortableTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        MainController.dataService.addListenerForFriendList(for: MainController.dataService.currentUser!.uid, completion: { (data) in
+            if let data = data {
+                self.rawRequests = data
+                self.tableView.reloadData()
+            }
+            
+        })
+        
         // Don't view the lines between the cells
         tableView.separatorStyle = .none
         
@@ -98,10 +106,6 @@ class NeighborsTableViewController: SortableTableViewController {
             containerController!.tabViewController = self
             containerController!.setupSortingCellsAndDelegate()
         }
-        
-        MainController.dataService.getFriendList(uid: MainController.dataService.currentUser!.uid, completion: { (data) in
-            self.rawRequests = data
-        })
         
         if MainController.dataService.currentUserUpdated {
             MainController.dataService.currentUserUpdated = false

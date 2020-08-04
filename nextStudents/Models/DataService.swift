@@ -460,6 +460,20 @@ class DataService {
         })
     }
     
+    func addListenerForFriendList(for userID: String, completion: @escaping (_ documentData: Dictionary<String, Int>?) -> Void) {
+        listeners.append(MainController.dataService.database.collection("friends")
+            .document(userID)
+            .addSnapshotListener({ (documentSnapshot, error) in
+                guard let documentData = documentSnapshot?.data() else {
+                    print("Error fetching document: \(error!.localizedDescription)")
+                    return
+                }
+                if let data = (documentData["list"] as! Dictionary<String, Int>?) {
+                    completion(data)
+                }
+            }))
+    }
+    
     func createListenerForChatThreadOrdered(snapshot: QueryDocumentSnapshot, completion: @escaping (_ threadQuery: QuerySnapshot) -> Void) -> ListenerRegistration {
         return snapshot.reference.collection("thread")
             .order(by: "created", descending: false)
