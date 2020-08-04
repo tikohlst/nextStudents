@@ -67,7 +67,7 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row > 0, providerID != nil, providerID != "password" {
+        if indexPath.section == 1, indexPath.row == 0, providerID != nil, providerID != "password" {
             return super.tableView(tableView, cellForRowAt: IndexPath(row: indexPath.row + 1, section: indexPath.section))
         }
         return super.tableView(tableView, cellForRowAt: indexPath)
