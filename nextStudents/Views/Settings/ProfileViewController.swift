@@ -293,6 +293,8 @@ class ProfileViewController: FormViewController {
                 $0.tag = "degreeProgram"
                 $0.title = "Studiengang"
                 $0.value = MainController.dataService.currentUser.degreeProgram
+                $0.add(rule: RuleRequired(msg: "Gib deinen Studiengang ein."))
+                $0.validationOptions = .validatesOnChange
             }
             
             +++ Section("Biografie")

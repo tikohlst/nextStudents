@@ -264,6 +264,8 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             <<< TextRow() {
                 $0.tag = "degreeProgram"
                 $0.title = "Studiengang"
+                $0.add(rule: RuleRequired(msg: "Gib deinen Studiengang ein."))
+                $0.validationOptions = .validatesOnChange
             }
             
             +++ Section()
