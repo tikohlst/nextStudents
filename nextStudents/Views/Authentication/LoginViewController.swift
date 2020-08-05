@@ -38,17 +38,18 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
         emailText.delegate = self
         passwordText.delegate = self
         
-        // Shadow for email view
-        emailView.layer.shadowColor = UIColor.black.cgColor
-        emailView.layer.shadowRadius = 10
-        emailView.layer.shadowOpacity = 0.1
-        emailView.layer.shadowOffset.height = -3
-        
-        // Shadow for password view
-        passwordView.layer.shadowColor = UIColor.black.cgColor
-        passwordView.layer.shadowRadius = 10
-        passwordView.layer.shadowOpacity = 0.1
-        passwordView.layer.shadowOffset.height = -3
+        for view in [emailView, passwordView] {
+            // Shadow for email view and password view
+            view!.layer.shadowColor = UIColor.black.cgColor
+            view!.layer.shadowRadius = 10
+            view!.layer.shadowOpacity = 0.1
+            view!.layer.shadowOffset.height = -3
+            // Border for email view and password view
+            view!.layer.borderColor = UIColor(named: "Grey-White")?.cgColor
+            view!.layer.borderWidth = 1
+            view!.layer.cornerRadius = 5
+            view!.layer.masksToBounds = true
+        }
         
         signInButton.setImage(UIImage(named: "Google Logo"), for: .normal)
         signInButton.imageEdgeInsets = UIEdgeInsets(
