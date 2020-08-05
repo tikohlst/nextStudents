@@ -32,7 +32,7 @@ open nextStudents.xcworkspace
 
 ## Configuration
 
-See the Google Firebase documentation how to build an firebase account. Download your generated `GoogleService-Info.plist` file and copy it to the root directory of the sample you wish to run.
+See the Google Firebase documentation how to build an firebase account. Download your generated `GoogleService-Info.plist` file and copy it into the directory [nextStudents/SupportingFiles](nextStudents/SupportingFiles).
 
 ## License
 
