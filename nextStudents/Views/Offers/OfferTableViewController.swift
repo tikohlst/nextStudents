@@ -66,11 +66,10 @@ class OfferTableViewController: UITableViewController {
         offerDurationLabel.text = offer.duration + " Min."
         
         // Show creation date
-        let df = DateFormatter()
-        df.dateFormat = "dd.MM.yyyy hh:mm:ss"
-        offerCreationDateLabel.text = df.string(from: offer.date)
-        
-        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        offerCreationDateLabel.text = formatter.string(from: offer.date)
     }
     
     override func viewDidLoad() {
