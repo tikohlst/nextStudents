@@ -160,7 +160,6 @@ class DataService {
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    
                     for currentNeighbor in querySnapshot!.documents {
                         let differenceInMeter = Utility.getGPSDifference(
                             currentNeighbor.data()["gpsCoordinates"] as! GeoPoint,
@@ -243,7 +242,7 @@ class DataService {
             .getData(maxSize: 4 * 1024 * 1024) { (data, error) in
                 if let error = error {
                     print("Error while downloading profile image: \(error.localizedDescription)")
-                    if let image = UIImage(named: "DefaultProfilePicture") {
+                    if let image = UIImage(named: "defaultProfilePicture") {
                         completion(image)
                     }
                 } else {
