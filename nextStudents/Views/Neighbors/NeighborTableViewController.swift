@@ -94,11 +94,6 @@ class NeighborTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if cameFromChat {
-            contactButton.isEnabled = false
-            contactButton.backgroundColor = #colorLiteral(red: 0.5960784314, green: 0.5960784314, blue: 0.6156862745, alpha: 1)
-        }
-        
         self.userNameLabel.text = "\(self.user.firstName)"
         let differenceInMeter = Utility.getGPSDifference(
             self.user.gpsCoordinates,
@@ -149,6 +144,14 @@ class NeighborTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let count = super.tableView(tableView, numberOfRowsInSection: section)
+        if cameFromChat && section == 3 {
+            return count - 1
+        }
+        return count
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
