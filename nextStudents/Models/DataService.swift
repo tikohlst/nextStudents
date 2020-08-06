@@ -476,7 +476,7 @@ class DataService {
             .document(userID)
             .addSnapshotListener({ (documentSnapshot, error) in
                 guard let documentData = documentSnapshot?.data() else {
-                    print("Error fetching document: \(error!.localizedDescription)")
+                    print("Error fetching document!")
                     return
                 }
                 if let data = (documentData["list"] as! Dictionary<String, Int>?) {
