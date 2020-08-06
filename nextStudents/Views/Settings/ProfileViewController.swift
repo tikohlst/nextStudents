@@ -9,6 +9,8 @@ import Eureka
 import ImageRow
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
+import GoogleSignIn
 
 class ProfileViewController: FormViewController {
     
@@ -447,13 +449,51 @@ class ProfileViewController: FormViewController {
     func presentDeletionFailsafe() {
         let alert = UIAlertController(
             title: nil,
-            message: "Möchten Sie Ihr Konto wirklich löschen?",
+            message: "Möchten Sie Ihr Konto wirklich löschen? Zum Bestätigen müssen Sie Ihr Passwort eingeben",
             preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: "Ja", style: .default) { _ in
-            self.deleteUser()
+            if let textFields = alert.textFields {
+                let password = textFields[0].text
+                
+                
+                if let info = Auth.auth().currentUser?.providerData[0].providerID, info == "password", let password = password {
+                    // user with email and password
+                    let credential = EmailAuthProvider.credential(withEmail: Auth.auth().currentUser!.email!, password: password)
+                    
+                    Auth.auth().currentUser?.reauthenticate(with: credential, completion: { (authResult, error) in
+                        if let error = error {
+                            print("Error reauthenticating the user: \(error.localizedDescription)")
+                        } else {
+                            self.deleteUser()
+                        }
+                    })
+                }
+            } else {
+                // Google user
+                let auth = GIDSignIn.sharedInstance()!.currentUser.authentication!
+                Auth.auth().currentUser!.getIDToken { (token, error) in
+                    if let error = error {
+                        print("Error getting IdToken: \(error.localizedDescription)")
+                    } else if let token = token {
+                        let credential = GoogleAuthProvider.credential(withIDToken: token, accessToken: auth.accessToken)
+                        Auth.auth().currentUser!.reauthenticate(with: credential, completion: { (authResult, error) in
+                            if let error = error {
+                                print("Error reauthenticating the user: \(error.localizedDescription)")
+                            } else {
+                                self.deleteUser()
+                            }
+                        })
+                    }
+                }
+            }
         }
-        
+        if let info = Auth.auth().currentUser?.providerData[0].providerID, info == "password" {
+            alert.addTextField(configurationHandler: {textField in
+                textField.placeholder = "Passwort"
+                textField.isSecureTextEntry = true
+            })
+        }
         let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel, handler: nil)
         
         alert.addAction(deleteAction)

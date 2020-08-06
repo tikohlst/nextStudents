@@ -125,7 +125,9 @@ class DataService {
                 // An error happened.
                 print(error.localizedDescription)
             } else {
-                completion()
+                self.setProfilePicture(image: nil) {
+                    completion()
+                }
             }
         }
     }
@@ -252,8 +254,8 @@ class DataService {
         }
     }
     
-    func setProfilePicture(image: UIImage, completion: @escaping () -> Void) {
-        if let imageData = image.jpegData(compressionQuality: 0.75) {
+    func setProfilePicture(image: UIImage?, completion: @escaping () -> Void) {
+        if let image = image, let imageData = image.jpegData(compressionQuality: 0.75) {
             let imageMetadata = StorageMetadata.init()
             imageMetadata.contentType = "image/jpeg"
             storage
@@ -264,6 +266,16 @@ class DataService {
                     }
                     print("upload complete with metadata: \(String(describing: storageMetadata))")
                     completion()
+            }
+        } else {
+            // delete profile picture
+            storage.reference(withPath: "profilePictures/\(currentUser.uid)/profilePicture.jpg").delete { (error) in
+                if let error = error {
+                    print("Error deleting profile picture: \(error.localizedDescription)")
+                    completion()
+                } else {
+                    completion()
+                }
             }
         }
     }
