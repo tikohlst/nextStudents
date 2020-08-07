@@ -255,7 +255,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
             +++ Section("Weitere Informationen")
             
             <<< PickerRow<String>("Hochschule/Universität") {
-                $0.tag = "hs"
+                $0.tag = "school"
                 $0.options = ["keine Angabe", "Hochschule RheinMain", "Uni Mainz", "Uni2"]
             }
             
@@ -395,9 +395,14 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
     
     func createAccount() {
         // Get values from the registration form
-        let dict = form.values(includeHidden: true)
+        var dict = form.values(includeHidden: true)
         
         MainController.dataService.createUser(from: dict, completion: { success, error in
+            // Type cast Int to String
+            if let zipcode = dict["zipcode"] as? Int {
+                dict.removeValue(forKey: "zipcode")
+                dict["zipcode"] = String(zipcode)
+            }
             if success {
                 MainController.dataService.setUserData(from: dict,
                                                        radius: self.defaultRadius,

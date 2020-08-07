@@ -286,7 +286,7 @@ class ProfileViewController: FormViewController {
             +++ Section("Hochschule/Universität")
             
             <<< PickerRow<String>() {
-                $0.tag = "hs"
+                $0.tag = "school"
                 $0.options = ["keine Angabe", "Hochschule RheinMain", "Uni Mainz", "Uni2"]
                 $0.value = $0.options[$0.options.firstIndex(of: MainController.dataService.currentUser.school)!]
             }
@@ -375,7 +375,7 @@ class ProfileViewController: FormViewController {
             let bio = data["bio"] as? String,
             let skills = data["skills"] as? String,
             let profileImage = data["profileImage"] as? UIImage,
-            let school = data["hs"] as? String,
+            let school = data["school"] as? String,
             let degreeProgram = data["degreeProgram"] as? String
             else {
                 throw UserError.mapDataError

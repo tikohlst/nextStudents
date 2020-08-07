@@ -53,8 +53,8 @@ class DataService {
             let lastName = dict["lastName"] as? String,
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
-            let zipcode = dict["zipcode"] as? Int,
-            let school = dict["hs"] as? String ?? Optional("keine Angabe") {
+            let zipcode = dict["zipcode"] as? String,
+            let school = dict["school"] as? String ?? Optional("keine Angabe") {
             
             let degreeProgram = dict["degreeProgram"] as? String ?? ""
             
@@ -65,7 +65,7 @@ class DataService {
                     "lastName": lastName,
                     "street": street,
                     "housenumber": housenumber,
-                    "zipcode": String(zipcode),
+                    "zipcode": zipcode,
                     "radius": radius,
                     "gpsCoordinates": gpsCoordinates!,
                     "bio": "",
@@ -90,7 +90,7 @@ class DataService {
             let street = dict["street"] as? String,
             let housenumber = dict["housenumber"] as? String,
             let zipcode = dict["zipcode"] as? Int,
-            let school = dict["hs"] as? String,
+            let school = dict["school"] as? String,
             let degreeProgram = dict["degreeProgram"] as? String {
             
             MainController.dataService.database.collection("users")
