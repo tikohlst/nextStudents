@@ -148,7 +148,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, UITextFieldDeleg
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let containerController = storyboard.instantiateViewController(identifier: "containervc")
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
-            
         }
     }
     

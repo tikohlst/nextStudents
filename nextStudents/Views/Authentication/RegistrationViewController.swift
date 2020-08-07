@@ -408,20 +408,9 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                                        radius: self.defaultRadius,
                                                        gpsCoordinates: self.formGpsCoordinates,
                                                        completion: {
-                                                        let alert = Utility.displayAlert(
-                                                            withTitle: "Registrierung erfolgreich",
-                                                            withMessage: "Sie können sich mit Ihrer bei der Registrierung eingegebenen E-Mail-Adresse und dem Passwort anmelden.",
-                                                            withSignOut: false,
-                                                            withOwnAction: true)
-                                                        alert.addAction(
-                                                            UIAlertAction(
-                                                                title: NSLocalizedString("Ok", comment: ""),
-                                                                style: .default,
-                                                                handler: { action in
-                                                                    self.presentLoginViewController()
-                                                            })
-                                                        )
-                                                        self.present(alert, animated: true, completion: nil)
+                                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                                        let containerController = storyboard.instantiateViewController(identifier: "containervc")
+                                                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewControllerTo(containerController)
                 })
             } else if error?.localizedDescription == "The email address is already in use by another account." {
                 let alert = Utility.displayAlert(withTitle: "Fehler", withMessage: "Für die eingegebene E-Mail-Adresse existiert bereits ein Account.", withSignOut: false)
