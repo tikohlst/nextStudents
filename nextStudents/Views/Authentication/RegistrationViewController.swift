@@ -376,7 +376,7 @@ class RegistrationViewController: FormViewController, CLLocationManagerDelegate 
                                         self.createAccount()
                                     }
                                 } else {
-                                    let alert = Utility.displayAlert(withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
+                                    let alert = Utility.displayAlert(withTitle: "Fehler", withMessage: "Die eingegebene Adresse und die GPS-Daten stimmen nicht überein.", withSignOut: false)
                                     self.present(alert, animated: true, completion: nil)
                                 }
         })
